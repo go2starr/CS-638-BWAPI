@@ -1,4 +1,4 @@
 # BWAPI Bot 
 
 ## Wiki
-[Units](Units)
+[Units](CS-638-BWAPI/wiki)
