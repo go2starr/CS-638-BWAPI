@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$classActor.html" title="{Actor\n|&#45; species\l|+ Actor()\l+ ~Actor()\l}" alt="" coords="101,187,200,301"/>
-<area shape="rect" id="node9" href="$classAddonStructure.html" title="{AddonStructure\n|&#45; associatedStructure\l|+ AddonStructure()\l+ ~AddonStructure()\l}" alt="" coords="224,187,403,301"/>
-<area shape="rect" id="node11" href="$classStructure.html" title="{Structure\n||+ Structure()\l+ ~Structure()\l}" alt="" coords="427,187,552,301"/>
-<area shape="rect" id="node5" href="$classAirBased.html" title="{AirBased\n||+ AirBased()\l+ ~AirBased()\l}" alt="" coords="5,350,131,463"/>
-<area shape="rect" id="node7" href="$classGroundBased.html" title="{GroundBased\n||+ GroundBased()\l+ ~GroundBased()\l}" alt="" coords="155,350,312,463"/>
-</map>

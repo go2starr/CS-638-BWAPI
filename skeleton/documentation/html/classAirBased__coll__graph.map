@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$classActor.html" title="{Actor\n|&#45; species\l|+ Actor()\l+ ~Actor()\l}" alt="" coords="107,355,205,469"/>
-<area shape="rect" id="node4" href="$classAgent.html" title="{Agent\n||+ Agent()\l+ ~Agent()\l}" alt="" coords="105,190,207,303"/>
-<area shape="rect" id="node6" href="$classAgentState.html" title="{AgentState\n||+ AgentState()\l+ ~AgentState()\l}" alt="" coords="5,6,144,119"/>
-<area shape="rect" id="node8" href="$classBWAPIUnit.html" title="{BWAPIUnit\n||+ BWAPIUnit()\l+ ~BWAPIUnit()\l}" alt="" coords="168,6,309,119"/>
-</map>

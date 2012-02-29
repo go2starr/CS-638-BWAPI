@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1" href="$classAgent.html" title="Agent" alt="" coords="5,89,69,121"/>
-<area shape="rect" id="node3" href="$classActor.html" title="Actor" alt="" coords="155,33,216,65"/>
-<area shape="rect" id="node9" href="$classAddonStructure.html" title="AddonStructure" alt="" coords="117,89,253,121"/>
-<area shape="rect" id="node11" href="$classStructure.html" title="Structure" alt="" coords="141,145,229,177"/>
-<area shape="rect" id="node5" href="$classAirBased.html" title="AirBased" alt="" coords="319,5,407,37"/>
-<area shape="rect" id="node7" href="$classGroundBased.html" title="GroundBased" alt="" coords="301,61,424,93"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$AirBased_8h.html" title="badgerai&#45;skeleton/include/Agents/AirBased.h" alt="" coords="15,85,364,117"/>
-<area shape="rect" id="node7" href="$GroundBased_8h.html" title="badgerai&#45;skeleton/include/Agents/GroundBased.h" alt="" coords="396,85,777,117"/>
-<area shape="rect" id="node11" href="$Squad_8h.html" title="badgerai&#45;skeleton/include/Squad.h" alt="" coords="801,85,1076,117"/>
-<area shape="rect" id="node15" href="$Actor_8cpp.html" title="badgerai&#45;skeleton/source/Agents/Actor.cpp" alt="" coords="1100,85,1436,117"/>
-<area shape="rect" id="node5" href="$AirBased_8cpp.html" title="badgerai&#45;skeleton/source/Agents/AirBased.cpp" alt="" coords="5,165,371,197"/>
-<area shape="rect" id="node9" href="$GroundBased_8cpp.html" title="badgerai&#45;skeleton/source/Agents/GroundBased.cpp" alt="" coords="395,165,792,197"/>
-<area shape="rect" id="node13" href="$Squad_8cpp.html" title="badgerai&#45;skeleton/Squad.cpp" alt="" coords="821,165,1056,197"/>
-</map>

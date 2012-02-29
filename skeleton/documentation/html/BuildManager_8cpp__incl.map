@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$BuildManager_8h.html" title="BuildManager.h" alt="" coords="147,85,283,117"/>
-<area shape="rect" id="node5" href="$Manager_8h.html" title="Manager.h" alt="" coords="165,165,264,197"/>
-<area shape="rect" id="node7" href="$Controller_8h.html" title="Controller.h" alt="" coords="45,245,152,277"/>
-<area shape="rect" id="node9" href="$Agent_8h.html" title="Agent.h" alt="" coords="176,245,253,277"/>
-<area shape="rect" id="node11" href="$AgentState_8h.html" title="AgentState.h" alt="" coords="87,325,201,357"/>
-<area shape="rect" id="node13" href="$BWAPIUnit_8h.html" title="BWAPIUnit.h" alt="" coords="225,325,343,357"/>
-</map>
