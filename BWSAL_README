@@ -1,0 +1,54 @@
+----------------
+| BWSAL 0.9.12 |
+----------------
+
+The BWSAL web site    http://code.google.com/p/bwsal/
+Documentation         http://code.google.com/p/bwsal/wiki/BWSALManual
+Bug Reports           http://code.google.com/p/bwsal/issues/list
+
+The BWAPI web site    http://code.google.com/p/bwapi/
+BWAPI Documentation   http://code.google.com/p/bwapi/wiki/BWAPIManual
+Bug Reports           http://code.google.com/p/bwapi/issues/list
+Google Group          http://groups.google.com/group/bwapi
+IRC Channel           QuakeNet #BWAPI
+
+1. Introduction to BWAPI
+------------------------
+
+   The Brood War Application Programming Interface (BWAPI) is a free and open
+source C++ framework for creating AI modules for Starcraft: Broodwar. Using
+BWAPI, programmers can retrieve information on players and individual units
+in Starcraft as well as issue a wide variety of commands to units, opening
+the doors for custom AIs with new micro and macro algorithms.
+
+2. Basic AI Module
+------------------
+
+1. Extract the entire zip to a folder on your computer.
+2. Copy the contents of Chaoslauncher/ to your Chaos Launcher folder.
+3. Copy the contents of Starcraft/ to your Starcraft folder.
+4. Copy the contents of WINDOWS/ to your C:\WINDOWS or C:\WINNT folder (which
+   ever your version of Windows has).
+5. Open AIModules.sln and compile the project as RELEASE.
+   To do this:
+   5.1. Change the dropdown box in the top center of the window from "Debug" to
+        "Release".
+   5.2. Click Build -> Build Solution. The Basic AI Module is now compiled
+        into a dll.
+6. Copy Release/BasicAIModule.dll to
+   <starcraft folder>/bwapi-data/AI/BasicAIModule.dll
+7. Run Chaoslauncher with BWAPI Injector checked.
+8. Start Starcraft: Broodwar and create a match, either single player or
+   multiplayer LAN (UDP). The melee and free-for-all game modes work best, and
+   BWAPI also works on some UMS maps.
+9. The Basic AI Module also comes with BWTA, the Brood War Terrain Analyzer,
+   which analyzes the map and locates the choke points and possible expansion
+   locations. BWTA is still a work-in-progress and does not work on every map,
+   so it may crash the game.
+   
+3. Macro AI Module
+------------------
+
+This module is not very functional yet and is basically an experimental
+branch to develop a more extensible framework for macro management (since the
+BasicAIModule's build order manager is rather hard to extend and customize).
