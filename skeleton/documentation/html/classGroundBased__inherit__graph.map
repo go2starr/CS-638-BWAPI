@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classActor.html" title="{Actor\n|&#45; species\l|+ Actor()\l+ ~Actor()\l}" alt="" coords="35,187,133,301"/>
+<area shape="rect" id="node4" href="$classAgent.html" title="{Agent\n|# bwapiUnit\l# state\l|+ Agent()\l+ ~Agent()\l}" alt="" coords="31,5,137,139"/>
+</map>

@@ -1,0 +1,31 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$Actor_8h.html" title="badgerai&#45;skeleton/include/Agents/Actor.h" alt="" coords="779,85,1099,117"/>
+<area shape="rect" id="node19" href="$Structure_8h.html" title="badgerai&#45;skeleton/include/Agents/Structure.h" alt="" coords="1887,85,2236,117"/>
+<area shape="rect" id="node27" href="$Manager_8h.html" title="badgerai&#45;skeleton/include/Managers/Manager.h" alt="" coords="3391,85,3759,117"/>
+<area shape="rect" id="node59" href="$Agent_8cpp.html" title="badgerai&#45;skeleton/source/Agents/Agent.cpp" alt="" coords="3783,85,4121,117"/>
+<area shape="rect" id="node5" href="$AirBased_8h.html" title="badgerai&#45;skeleton/include/Agents/AirBased.h" alt="" coords="19,165,368,197"/>
+<area shape="rect" id="node9" href="$GroundBased_8h.html" title="badgerai&#45;skeleton/include/Agents/GroundBased.h" alt="" coords="396,165,777,197"/>
+<area shape="rect" id="node13" href="$Squad_8h.html" title="badgerai&#45;skeleton/include/Squad.h" alt="" coords="801,165,1076,197"/>
+<area shape="rect" id="node17" href="$Actor_8cpp.html" title="badgerai&#45;skeleton/source/Agents/Actor.cpp" alt="" coords="1100,165,1436,197"/>
+<area shape="rect" id="node7" href="$AirBased_8cpp.html" title="badgerai&#45;skeleton/source/Agents/AirBased.cpp" alt="" coords="5,245,371,277"/>
+<area shape="rect" id="node11" href="$GroundBased_8cpp.html" title="badgerai&#45;skeleton/source/Agents/GroundBased.cpp" alt="" coords="395,245,792,277"/>
+<area shape="rect" id="node15" href="$Squad_8cpp.html" title="badgerai&#45;skeleton/Squad.cpp" alt="" coords="821,245,1056,277"/>
+<area shape="rect" id="node21" href="$AddonStructure_8h.html" title="badgerai&#45;skeleton/include/Agents/AddonStructure.h" alt="" coords="1460,165,1855,197"/>
+<area shape="rect" id="node25" href="$Structure_8cpp.html" title="badgerai&#45;skeleton/source/Agents/Structure.cpp" alt="" coords="1879,165,2244,197"/>
+<area shape="rect" id="node23" href="$AddonStructure_8cpp.html" title="badgerai&#45;skeleton/source/Agents/AddonStructure.cpp" alt="" coords="1452,245,1863,277"/>
+<area shape="rect" id="node29" href="$AttackManager_8h.html" title="badgerai&#45;skeleton/include/Managers/AttackManager.h" alt="" coords="2268,165,2681,197"/>
+<area shape="rect" id="node33" href="$BuildManager_8h.html" title="badgerai&#45;skeleton/include/Managers/BuildManager.h" alt="" coords="2705,165,3108,197"/>
+<area shape="rect" id="node37" href="$DefenseManager_8h.html" title="badgerai&#45;skeleton/include/Managers/DefenseManager.h" alt="" coords="3132,165,3561,197"/>
+<area shape="rect" id="node41" href="$ResourceManager_8h.html" title="badgerai&#45;skeleton/include/Managers/ResourceManager.h" alt="" coords="3585,165,4023,197"/>
+<area shape="rect" id="node45" href="$ScoutManager_8h.html" title="badgerai&#45;skeleton/include/Managers/ScoutManager.h" alt="" coords="4047,165,4457,197"/>
+<area shape="rect" id="node49" href="$StructureManager_8h.html" title="badgerai&#45;skeleton/include/Managers/StructureManager.h" alt="" coords="4481,165,4916,197"/>
+<area shape="rect" id="node53" href="$WorkerManager_8h.html" title="badgerai&#45;skeleton/include/Managers/WorkerManager.h" alt="" coords="4940,165,5361,197"/>
+<area shape="rect" id="node57" href="$Manager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/Manager.cpp" alt="" coords="5385,165,5769,197"/>
+<area shape="rect" id="node31" href="$AttackManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/AttackManager.cpp" alt="" coords="2212,245,2641,277"/>
+<area shape="rect" id="node35" href="$BuildManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/BuildManager.cpp" alt="" coords="2665,245,3084,277"/>
+<area shape="rect" id="node39" href="$DefenseManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/DefenseManager.cpp" alt="" coords="3108,245,3553,277"/>
+<area shape="rect" id="node43" href="$ResourceManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/ResourceManager.cpp" alt="" coords="3577,245,4031,277"/>
+<area shape="rect" id="node47" href="$ScoutManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/ScoutManager.cpp" alt="" coords="4055,245,4481,277"/>
+<area shape="rect" id="node51" href="$StructureManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/StructureManager.cpp" alt="" coords="4505,245,4956,277"/>
+<area shape="rect" id="node55" href="$WorkerManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/WorkerManager.cpp" alt="" coords="4980,245,5417,277"/>
+</map>

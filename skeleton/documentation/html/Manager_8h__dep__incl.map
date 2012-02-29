@@ -1,0 +1,17 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$AttackManager_8h.html" title="badgerai&#45;skeleton/include/Managers/AttackManager.h" alt="" coords="21,85,435,117"/>
+<area shape="rect" id="node7" href="$BuildManager_8h.html" title="badgerai&#45;skeleton/include/Managers/BuildManager.h" alt="" coords="475,85,877,117"/>
+<area shape="rect" id="node11" href="$DefenseManager_8h.html" title="badgerai&#45;skeleton/include/Managers/DefenseManager.h" alt="" coords="917,85,1347,117"/>
+<area shape="rect" id="node15" href="$ResourceManager_8h.html" title="badgerai&#45;skeleton/include/Managers/ResourceManager.h" alt="" coords="1379,85,1816,117"/>
+<area shape="rect" id="node19" href="$ScoutManager_8h.html" title="badgerai&#45;skeleton/include/Managers/ScoutManager.h" alt="" coords="1840,85,2251,117"/>
+<area shape="rect" id="node23" href="$StructureManager_8h.html" title="badgerai&#45;skeleton/include/Managers/StructureManager.h" alt="" coords="2275,85,2709,117"/>
+<area shape="rect" id="node27" href="$WorkerManager_8h.html" title="badgerai&#45;skeleton/include/Managers/WorkerManager.h" alt="" coords="2733,85,3155,117"/>
+<area shape="rect" id="node31" href="$Manager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/Manager.cpp" alt="" coords="3179,85,3563,117"/>
+<area shape="rect" id="node5" href="$AttackManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/AttackManager.cpp" alt="" coords="5,165,435,197"/>
+<area shape="rect" id="node9" href="$BuildManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/BuildManager.cpp" alt="" coords="459,165,877,197"/>
+<area shape="rect" id="node13" href="$DefenseManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/DefenseManager.cpp" alt="" coords="901,165,1347,197"/>
+<area shape="rect" id="node17" href="$ResourceManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/ResourceManager.cpp" alt="" coords="1371,165,1824,197"/>
+<area shape="rect" id="node21" href="$ScoutManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/ScoutManager.cpp" alt="" coords="1848,165,2275,197"/>
+<area shape="rect" id="node25" href="$StructureManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/StructureManager.cpp" alt="" coords="2299,165,2749,197"/>
+<area shape="rect" id="node29" href="$WorkerManager_8cpp.html" title="badgerai&#45;skeleton/source/Managers/WorkerManager.cpp" alt="" coords="2773,165,3211,197"/>
+</map>
