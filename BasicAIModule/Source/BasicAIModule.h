@@ -1,24 +1,6 @@
 #pragma once
 #include <BWAPI.h>
 #include <BWTA.h>
-#include <Arbitrator.h>
-#include <WorkerManager.h>
-#include <SupplyManager.h>
-#include <BuildManager.h>
-#include <BuildOrderManager.h>
-#include <TechManager.h>
-#include <UpgradeManager.h>
-#include <BaseManager.h>
-#include <ScoutManager.h>
-#include <DefenseManager.h>
-#include <InformationManager.h>
-#include <BorderManager.h>
-#include <UnitGroupManager.h>
-#include <EnhancedUI.h>
-
-/* Forced compile */
-#include "Agents/Agent.h"
-/* End-of forced compile */
 
 class BasicAIModule : public BWAPI::AIModule
 {
@@ -36,21 +18,4 @@ public:
   void showStats(); //not part of BWAPI::AIModule
   void showPlayers();
   void showForces();
-  bool analyzed;
-  std::map<BWAPI::Unit*,BWAPI::UnitType> buildings;
-  Arbitrator::Arbitrator<BWAPI::Unit*,double> arbitrator;
-  WorkerManager* workerManager;
-  SupplyManager* supplyManager;
-  BuildManager* buildManager;
-  TechManager* techManager;
-  UpgradeManager* upgradeManager;
-  BaseManager* baseManager;
-  ScoutManager* scoutManager;
-  BuildOrderManager* buildOrderManager;
-  DefenseManager* defenseManager;
-  InformationManager* informationManager;
-  BorderManager* borderManager;
-  UnitGroupManager* unitGroupManager;
-  EnhancedUI* enhancedUI;
-  bool showManagerAssignments;
 };
