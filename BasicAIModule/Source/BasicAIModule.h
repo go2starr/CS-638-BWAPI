@@ -53,4 +53,6 @@ public:
   UnitGroupManager* unitGroupManager;
   EnhancedUI* enhancedUI;
   bool showManagerAssignments;
+
 };
+
