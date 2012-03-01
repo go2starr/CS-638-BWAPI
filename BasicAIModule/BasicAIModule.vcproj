@@ -633,6 +633,14 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="Agents"
+			>
+			<File
+				RelativePath=".\Source\States\State.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

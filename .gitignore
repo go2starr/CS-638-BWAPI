@@ -3,6 +3,7 @@ docs
 #Emacs files
 \#*
 ~*
+.#*
 
 #OS junk files
 [Tt]humbs.db

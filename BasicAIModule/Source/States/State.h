@@ -3,9 +3,13 @@
  */
 #pragma once
 
-template <class T>
+template <class Target>
 class State
 {
+ protected:
+  Agent& agent;
+  
+
  public:
 
   /* C'tor / D'tor */
@@ -13,12 +17,12 @@ class State
   virtual ~State(){}
 
   /* State entry */
-  virtual void onEnter(T&)=0;
+  virtual void onEnter(Agent&, Target&)=0;
 
   /* State update */
-  virtual void onUpdate(T&)=0;
+  virtual void onUpdate(Agent&, Target&)=0;
 
   /* State exit */
-  virtual void onExit(T&)=0;
+  virtual void onExit(Agent&, Target&)=0;
 
-}
+};
