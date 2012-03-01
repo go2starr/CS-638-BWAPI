@@ -2,6 +2,7 @@
  *  State.h
  */
 #pragma once
+#include "../Agents/Agent.h"
 
 template <class Target>
 class State
@@ -9,7 +10,6 @@ class State
  protected:
   Agent& agent;
   
-
  public:
 
   /* C'tor / D'tor */
