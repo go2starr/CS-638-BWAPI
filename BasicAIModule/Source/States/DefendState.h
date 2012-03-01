@@ -1,10 +1,10 @@
 /*
- *  AttackState.h
+ *  DefendState.h
  */
 #pragma once
 #include "State.h"
 
-class AttackState: public State
+class DefendState: public State
 {
 public:
   AttackState(ActorAgent &a, UnitTarget &t);

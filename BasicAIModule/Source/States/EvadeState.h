@@ -1,13 +1,13 @@
 /*
- *  AttackState.h
+ *  EvadeState.h
  */
 #pragma once
 #include "State.h"
 
-class AttackState: public State
+class EvadeState: public State
 {
 public:
-  AttackState(ActorAgent &a, UnitTarget &t);
+  EvadeState(ActorAgent &a);
   void onEnter();
   void onUpdate();
   void onExit();
