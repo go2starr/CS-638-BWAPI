@@ -17,7 +17,7 @@
 #include <EnhancedUI.h>
 
 /* Forced compile */
-#include "Agents/Agent.h"
+//#include "Agents/Agent.h"
 /* End-of forced compile */
 
 class BasicAIModule : public BWAPI::AIModule

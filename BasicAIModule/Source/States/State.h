@@ -3,21 +3,20 @@
  */
 #pragma once
 #include "../Agents/Agent.h"
+#include "Target.h"
 
-class Agent;                    // Resolve circular dependency
+class Agent;
 
-template <class Target> 
 class State
 {
 protected:
-  Agent& agent;                 // Agent which is in our state
-  Target& target;       // Current target
+  Agent &agent;                 // Agent which is in our state
+  Target &target;               // Current target
   
 public:
-
+  
   // C'tor / D'tor
-  State(Agent &a, Target &t) :
-    agent(a), target(t)
+  State(Agent &a, Target &t);
   ~State(){}
   
   // State entry
@@ -30,5 +29,4 @@ public:
   // attr_accessor
   void setTarget(Target&);
   Target& getTarget();
-
 };

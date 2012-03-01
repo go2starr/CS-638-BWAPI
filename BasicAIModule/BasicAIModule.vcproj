@@ -340,11 +340,23 @@
 				Name="States"
 				>
 				<File
+					RelativePath=".\Source\States\AttackState.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Source\States\IdleState.h"
 					>
 				</File>
 				<File
 					RelativePath=".\Source\States\State.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\States\Target.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\States\UnitTarget.h"
 					>
 				</File>
 			</Filter>
