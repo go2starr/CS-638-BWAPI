@@ -4,11 +4,9 @@
 #pragma once
 #include "State.h"
 
-class EvadeState: public State
+class EvadeState: public ActorState
 {
 public:
-  EvadeState(ActorAgent &a);
-  void onEnter();
-  void onUpdate();
-  void onExit();
+  EvadeState();
+  virtual PositionTarget& getTarget(); // Evading to
 };
