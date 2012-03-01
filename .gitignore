@@ -1,5 +1,9 @@
 docs
 
+#Emacs files
+\#*
+~*
+
 #OS junk files
 [Tt]humbs.db
 *.DS_Store
