@@ -25,5 +25,5 @@ public:
 
   // attr_accessors
   void setState(const State &state);
-  void getState(State &state);
+  State& getState();
 };

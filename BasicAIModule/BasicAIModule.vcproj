@@ -336,6 +336,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="States"
+				>
+				<File
+					RelativePath=".\Source\States\IdleState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\States\State.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -632,14 +644,6 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Agents"
-			>
-			<File
-				RelativePath=".\Source\States\State.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

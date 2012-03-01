@@ -6,5 +6,12 @@
 
 class ActorAgent: public Agent
 {
-  
+protected:
+  // C'tor
+  ActorAgent(BWAPI::Unit&);
+
+  // D'tor
+  ~ActorAgent();
+
+public:
 };

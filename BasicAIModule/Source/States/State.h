@@ -7,22 +7,24 @@
 template <class Target>
 class State
 {
- protected:
-  Agent& agent;
+protected:
+  Agent& agent;                 // Agent which is in our state
+  Target& target;               // Current target
   
- public:
+public:
 
-  /* C'tor / D'tor */
-  virtual State(){}
+  // C'tor / D'tor
+  virtual State(Agent&, Target&);
   virtual ~State(){}
+  
+  // State entry
+  virtual void onEnter()=0;
+  // State update
+  virtual void onUpdate()=0;
+  // State exit
+  virtual void onExit()=0;
 
-  /* State entry */
-  virtual void onEnter(Agent&, Target&)=0;
-
-  /* State update */
-  virtual void onUpdate(Agent&, Target&)=0;
-
-  /* State exit */
-  virtual void onExit(Agent&, Target&)=0;
-
+  // attr_accessor
+  void setTarget(Target&);
+  Target& getTarget();
 };
