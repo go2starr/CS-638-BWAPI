@@ -8,7 +8,7 @@ class AttackState: public Agent<BWAPI::Unit>
 {
 
 public:
-  void onEnter(BWAPI::Unit target);
-  void onUpdate(BWAPI::Unit target);
-  void onExit(
+  void onEnter();
+  void onUpdate();
+  void onExit();
 };

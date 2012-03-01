@@ -4,19 +4,21 @@
 #pragma once
 #include "../Agents/Agent.h"
 
-template <class Target>
+class Agent;                    // Resolve circular dependency
+
+template <class Target> 
 class State
 {
 protected:
   Agent& agent;                 // Agent which is in our state
-  Target& target;               // Current target
+  Target& target;       // Current target
   
 public:
 
   // C'tor / D'tor
-  virtual State(Agent &a, Target &t) :
-    agent(a), target(t);
-  virtual ~State(){}
+  State(Agent &a, Target &t) :
+    agent(a), target(t)
+  ~State(){}
   
   // State entry
   virtual void onEnter()=0;
