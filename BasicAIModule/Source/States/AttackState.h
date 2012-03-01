@@ -7,8 +7,8 @@
 class AttackState: public State
 {
 public:
-  AttackState(ActorAgent &a, UnitTarget &t);
-  void onEnter();
-  void onUpdate();
-  void onExit();
+  AttackState(UnitTarget &t);
+  virtual void onEnter();
+  virtual void onUpdate();
+  virtual void onExit();
 };

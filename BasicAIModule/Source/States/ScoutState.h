@@ -7,9 +7,9 @@
 class ScoutState: public State
 {
 public:
-  ScoutState(ActorAgent &a);
-  ScoutState(ActorAgent &a, PositionTarget &t);
-  void onEnter();
-  void onUpdate();
-  void onExit();
+  ScoutState();
+  ScoutState(PositionTarget &t);
+  virtual void onEnter();
+  virtual void onUpdate();
+  virtual void onExit();
 };

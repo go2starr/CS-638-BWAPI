@@ -6,8 +6,8 @@
 
 class IdleState: public State
 {
-  IdleState(Agent&);            // No target
-  void onEnter(Agent&, Target&);
-  void onUpdate(Agent&, Target&);
-  void onExit(Agent&, Target&);
+  IdleState();            // No target
+  virtual void onEnter();
+  virtual void onUpdate();
+  virtual void onExit();
 };

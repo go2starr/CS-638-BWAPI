@@ -7,8 +7,8 @@
 class EvadeState: public State
 {
 public:
-  EvadeState(ActorAgent &a);
-  void onEnter();
-  void onUpdate();
-  void onExit();
+  EvadeState();
+  virtual void onEnter();
+  virtual void onUpdate();
+  virtual void onExit();
 };
