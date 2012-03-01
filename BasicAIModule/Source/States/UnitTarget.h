@@ -6,10 +6,9 @@
 
 class UnitTarget: public Target
 {
-  BWAPI::Unit target;
+  BWAPI::Unit &target;
 public:
-  UnitTarget(BWAPI::Unit t):
-    target(t)
+  UnitTarget(BWAPI::Unit &target);
   ~UnitTarget();
 
   BWAPI::Unit getTarget();

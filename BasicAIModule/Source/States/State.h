@@ -14,9 +14,7 @@ protected:
   Target &target;               // Current target
   
 public:
-  
-  // C'tor / D'tor
-  State(Agent &a, Target &t);
+  // D'tor
   ~State(){}
   
   // State entry
