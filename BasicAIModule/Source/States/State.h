@@ -14,14 +14,13 @@ public:
   virtual ~State(){}
   
   // State entry
-  virtual void onEnter()=0;
+  virtual void onEnter();
   // State update
-  virtual void onUpdate()=0;
+  virtual void onUpdate();
   // State exit
-  virtual void onExit()=0;
+  virtual void onExit();
 
   // attr_accessor
-  virtual void setTarget(Target&);
   virtual Target& getTarget();
 
   // Enumeration

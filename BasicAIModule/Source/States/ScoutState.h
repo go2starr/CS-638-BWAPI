@@ -4,12 +4,10 @@
 #pragma once
 #include "State.h"
 
-class ScoutState: public State
+class ScoutState: public ActorState
 {
 public:
-  ScoutState();
   ScoutState(PositionTarget &t);
-  virtual void onEnter();
-  virtual void onUpdate();
-  virtual void onExit();
+  virtual void setTarget(PositionTarget &t);
+  virtual PositionTarget& getTarget(); 
 };

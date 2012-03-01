@@ -18,9 +18,8 @@ public:
   /*
    * update - Called on each frame to update this agent's state and unit.
    */
-  void update();
+  virtual void update();
 
   // attr_accessors
-  virtual void setState(const State &state);
   State& getState();
 };

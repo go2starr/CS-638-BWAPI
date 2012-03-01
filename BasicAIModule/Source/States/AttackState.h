@@ -4,11 +4,10 @@
 #pragma once
 #include "State.h"
 
-class AttackState: public State
+class AttackState: public ActorState
 {
 public:
   AttackState(UnitTarget &t);
-  virtual void onEnter();
-  virtual void onUpdate();
-  virtual void onExit();
+  virtual void setTarget(UnitTarget &t);
+  virtual UnitTarget& getTarget();
 };

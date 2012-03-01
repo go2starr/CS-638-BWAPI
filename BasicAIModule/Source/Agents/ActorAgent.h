@@ -6,12 +6,13 @@
 
 class ActorAgent: public Agent
 {
-protected:
+public:
   // C'tor
   ActorAgent(BWAPI::Unit&);
 
   // D'tor
   ~ActorAgent();
 
-public:
+  // Set State
+  void setState(ActorState s);
 };
