@@ -14,7 +14,8 @@ protected:
 public:
 
   // C'tor / D'tor
-  virtual State(Agent&, Target&);
+  virtual State(Agent &a, Target &t) :
+    agent(a), target(t);
   virtual ~State(){}
   
   // State entry
@@ -27,4 +28,5 @@ public:
   // attr_accessor
   void setTarget(Target&);
   Target& getTarget();
+
 };
