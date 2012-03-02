@@ -8,6 +8,8 @@
 #include <map>
 #include <string>
 
+typedef std::map<GameStateEnum, std::string> GameState;
+
 enum GameStateEnum
 {
 	TotalUnitCount, 
@@ -23,17 +25,15 @@ enum GameStateEnum
 class GameStateDB
 {
 private:
-	
-	std::map<GameStateEnum, std::string> db;
+  GameState currentState, lastState;
 
 public:
-
-	Value& query(const GameStateEnum& key);	
+  Value& query(const GameStateEnum& key);	
 
 private:
-
-	// GameStateDB is singleton, hence private ctors/assignment
-	GameStateDB();
-	GameStateDB(const GameStateDB& other);
-	void operator=(const GameStateDB& other);
+  
+  // GameStateDB is singleton, hence private ctors/assignment
+  GameStateDB();
+  GameStateDB(const GameStateDB& other);
+  void operator=(const GameStateDB& other);
 };

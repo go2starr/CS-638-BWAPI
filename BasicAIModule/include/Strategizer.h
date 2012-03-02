@@ -3,6 +3,8 @@
  */
 #pragma once
 #include "Managers/Manager.h"
+#include "GameStateDB.h"
+#include "EventProducer/Event.h"
 
 class Strategizer
 {
@@ -22,6 +24,9 @@ public:
   
   void update();
   static Strategizer& instance() { static Strategizer s; return s; }
+
+  /* onEvent - Called by EventProducer when a new event is detected */
+  void onEvent(Event e);
   
 private:
   
