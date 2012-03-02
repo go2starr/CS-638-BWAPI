@@ -9,7 +9,10 @@ class Agent
 {
 protected:
   BWAPI::Unit &unit;            // The Unit this Agent controls
-  State &state;                 // The State this Agent is in
+  State state;                  // The State this Agent is in
+
+  // C'tor
+  Agent(BWAPI::Unit &unit);
   
   // D'tor
   ~Agent();
@@ -21,5 +24,6 @@ public:
   virtual void update();
 
   // attr_accessors
+  void setState(State &s);
   State& getState();
 };
