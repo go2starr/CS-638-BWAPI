@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA;"
+				AdditionalIncludeDirectories="../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -103,7 +103,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA;"
+				AdditionalIncludeDirectories="../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA"
 				PreprocessorDefinitions="_SECURE_SCL 0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -144,7 +144,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
+			Name="source"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
@@ -156,12 +156,268 @@
 				RelativePath=".\Source\Dll.cpp"
 				>
 			</File>
+			<Filter
+				Name="Agents"
+				>
+				<Filter
+					Name="UnitAgents"
+					>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Managers"
+				>
+			</Filter>
+			<Filter
+				Name="Advisors"
+				>
+			</Filter>
+			<Filter
+				Name="States"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="API Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+		</Filter>
+		<Filter
+			Name="include"
+			>
+			<Filter
+				Name="Agents"
+				>
+				<File
+					RelativePath=".\include\Agents\ActorAgent.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Agents\AddonAgent.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Agents\Agent.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Agents\AirAgent.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Agents\GroundAgent.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Agents\StructureAgent.h"
+					>
+				</File>
+				<Filter
+					Name="UnitAgents"
+					>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\AcademyAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\ArmoryAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\BarracksAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\BattlecruiserAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\BunkerAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\CommandCenterAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\ComsatStationAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\ControlTowerAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\CovertOpsAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\DropshipAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\EngineeringBayAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\FactoryAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\FirebatAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\GhostAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\GoliathAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\MachineShopAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\MarineAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\MedicAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\MissileTurretAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\NuclearMissileAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\NuclearSiloAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\PhysicsLabAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\RefineryAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\ScienceFacilityAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\ScienceVesselAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\SCVAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\SiegeTankAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\StarportAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\SupplyDepotAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\ValkyrieAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\VultureAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\WraithAgent.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="States"
+				>
+				<File
+					RelativePath=".\include\States\ActorState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\AttackState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\BuildingState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\DefendState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\EvadeState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\IdleState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\PositionTarget.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\ResearchState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\ScoutState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\State.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\StructureState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\Target.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\TrainingState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\UnitTarget.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\States\UpgradeState.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Managers"
+				>
+			</Filter>
+			<Filter
+				Name="Advisors"
+				>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
