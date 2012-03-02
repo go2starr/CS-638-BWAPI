@@ -169,10 +169,6 @@
 				>
 			</Filter>
 			<Filter
-				Name="Advisors"
-				>
-			</Filter>
-			<Filter
 				Name="States"
 				>
 			</Filter>
@@ -186,6 +182,18 @@
 		<Filter
 			Name="include"
 			>
+			<File
+				RelativePath=".\include\GameStateDB.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Hawk.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Strategizer.h"
+				>
+			</File>
 			<Filter
 				Name="Agents"
 				>
@@ -412,10 +420,6 @@
 			</Filter>
 			<Filter
 				Name="Managers"
-				>
-			</Filter>
-			<Filter
-				Name="Advisors"
 				>
 			</Filter>
 		</Filter>
