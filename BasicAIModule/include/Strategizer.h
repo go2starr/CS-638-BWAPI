@@ -6,11 +6,18 @@
 
 class Strategizer
 {
+  BuildManager buildManager;
+  CombatManager combatManager;
+  ConstructionManager constructionManager;
+  ProductionManager productionManager;
+  ResourceManager resourceManager;
+  ScoutManager scoutManager;
+  SupplyManager supplyManager;
+
 public:
 
-	void update();
-
-	static Strategizer& instance() { static Strategizer s; return s; }
+  void update();
+  static Strategizer& instance() { static Strategizer s; return s; }
 
 private:
 
