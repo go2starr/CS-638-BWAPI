@@ -6,4 +6,7 @@
 
 class StructureAgent: public Agent
 {
+public:
+  virtual void setState(StructureState &s);
+  virtual StructureState& getState();
 }
