@@ -4,7 +4,7 @@
 #pragma once
 #include "Agent.h"
 #include "State.h"
-#include "Task.h"
+#include "./Task.h"
 #include "queue"
 
 typedef priority_queue<Priority> TaskQueue;
