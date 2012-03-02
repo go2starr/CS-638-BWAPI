@@ -22,11 +22,11 @@ public:
   void doTask(Task &t);
   
   /* mwtpNext  -  Value currently placed on accepting one more of this unit type */
-  int mwtpNext(BWAPI::UnitType &ut);
+  virtual int mwtpNext(BWAPI::UnitType &ut);
 
   /* mwtpLast  - Value currently placed on the last of this unit type */
-  int mwtpLast(BWAPI::UnitType &ut);
+  virtual int mwtpLast(BWAPI::UnitType &ut);
 
   /*  estimateCost  -  best estimate at the cost of completing this task */
-  int estimateCost(Task &t);
+  virtual int estimateCost(Task &t);
 };
