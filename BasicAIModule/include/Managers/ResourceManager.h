@@ -9,3 +9,4 @@ class ResourceManager: public Manager
   int getGasRate();
   int getMineralRate();
 };
+
