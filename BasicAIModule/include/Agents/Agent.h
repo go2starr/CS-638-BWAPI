@@ -9,8 +9,8 @@ class Agent
 {
 protected:
   BWAPI::Unit &unit;            // The Unit this Agent controls
-  State &state;                 // The State this Agent is in
-  
+  State state;                  // The State this Agent is in
+
   // D'tor
   ~Agent();
   
