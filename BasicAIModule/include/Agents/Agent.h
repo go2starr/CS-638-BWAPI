@@ -2,8 +2,8 @@
  *  Agent.h 
  */
 #pragma once
-#include "../BasicAIModule.h"
-#include "../States/State.h"
+#include "BasicAIModule.h"
+#include "States/State.h"
 
 class Agent 
 {

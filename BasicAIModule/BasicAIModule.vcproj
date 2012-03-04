@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA;"
+				AdditionalIncludeDirectories="./include/EventProducer;./include/Managers;./include/Agents;./include;../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_SECURE_SCL 0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

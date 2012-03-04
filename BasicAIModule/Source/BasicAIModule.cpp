@@ -1,5 +1,6 @@
 #include <BWAPI.h>
 #include <BWTA.h>
+#include <Strategizer.h>
 #include "BasicAIModule.h"
 
 void BasicAIModule::onStart()

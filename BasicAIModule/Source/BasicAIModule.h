@@ -1,6 +1,7 @@
 #pragma once
 #include <BWAPI.h>
 #include <BWTA.h>
+#include <Strategizer.h>
 
 class BasicAIModule : public BWAPI::AIModule
 {
