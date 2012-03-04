@@ -33,4 +33,3 @@ extern "C" __declspec(dllexport) BWAPI::AIModule* newAIModule(BWAPI::Game* game)
   return new BasicAIModule();
 }
 
-

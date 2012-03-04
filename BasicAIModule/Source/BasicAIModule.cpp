@@ -4,9 +4,11 @@
 
 void BasicAIModule::onStart()
 {
-  BWAPI::Broodwar->sendText("Heya, Yokum\n");
+  BWAPI::Broodwar->sendText("Hello, CS638!");
 }
-
+void BasicAIModule::onEnd(bool isWinner)
+{
+}
 void BasicAIModule::onFrame()
 {
 }
@@ -42,3 +44,8 @@ void BasicAIModule::showPlayers()
 void BasicAIModule::showForces()
 {
 }
+
+
+
+
+
