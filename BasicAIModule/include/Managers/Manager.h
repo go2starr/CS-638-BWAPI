@@ -7,7 +7,7 @@
 #include "Tasks/Task.h"
 #include "queue"
 
-typedef priority_queue<Priority> TaskQueue;
+typedef std::priority_queue<Priority> TaskQueue;
 
 class Manager
 {
@@ -47,3 +47,6 @@ public:
   /*  estimateCost  -  best estimate at the cost of completing this task */
   virtual int estimateCost(Task &t);
 };
+
+
+

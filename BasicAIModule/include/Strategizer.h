@@ -3,8 +3,17 @@
  */
 #pragma once
 #include "Managers/Manager.h"
-#include "GameStateDB.h"
-#include "EventProducer/Event.h"
+#include "Event.h"
+// #include "GameStateDB.h"
+
+// Managers
+#include "BuildManager.h"
+#include "ResourceManager.h"
+#include "CombatManager.h"
+#include "ScoutManager.h"
+#include "ConstructionManager.h"
+#include "SupplyManager.h"
+#include "ProductionManager.h"
 
 class Strategizer
 {
@@ -18,7 +27,7 @@ class Strategizer
   SupplyManager supplyManager;
 
   // Game State analysis
-  GameStateDB gsdb;
+  // GameStateDB gsdb;
 
 public:
   
@@ -34,5 +43,7 @@ private:
   Strategizer();
   Strategizer(const Strategizer& other);
   void operator=(const Strategizer& other);
-
 };
+
+
+
