@@ -14,8 +14,6 @@ public:
   virtual void onUnitRenegade(BWAPI::Unit* unit);
   virtual void onUnitDestroy(BWAPI::Unit* unit);
   virtual void onSendText(std::string text);
-  ~BasicAIModule(); //not part of BWAPI::AIModule
-  void showStats(); //not part of BWAPI::AIModule
   void showPlayers();
   void showForces();
 };
