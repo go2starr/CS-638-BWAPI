@@ -16,6 +16,9 @@
 #include "SupplyManager.h"
 #include "ProductionManager.h"
 
+using namespace BWAPI;
+using namespace std;
+
 class Strategizer
 {
   // Managers
@@ -26,6 +29,9 @@ class Strategizer
   ResourceManager resourceManager;
   ScoutManager scoutManager;
   SupplyManager supplyManager;
+
+  // Agents
+  map<Unit*, Agent> agents;
 
   // Game State analysis
   // GameStateDB gsdb;
