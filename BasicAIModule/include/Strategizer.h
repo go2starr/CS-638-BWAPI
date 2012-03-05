@@ -2,6 +2,7 @@
  * Strategizer.h
  */
 #pragma once
+#include <BWAPI.h>
 #include "Managers/Manager.h"
 #include "Event.h"
 // #include "GameStateDB.h"
@@ -35,15 +36,14 @@ public:
   static Strategizer& instance() { static Strategizer s; return s; }
 
   /* onEvent - Called by EventProducer when a new event is detected */
-  void onEvent(Event e);
+  void onEvent(JohnConnor::Event &e);
   
 private:
   
   // Strategizer is singleton, hence private ctors/assignment
-  Strategizer();
+  Strategizer() {}
   Strategizer(const Strategizer& other);
   void operator=(const Strategizer& other);
 };
-
 
 

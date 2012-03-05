@@ -4,7 +4,7 @@
 #pragma once
 #include "Manager.h"
 
-class ProductionManager: public Manager
+class ProductionManager : public Manager
 {
 
 

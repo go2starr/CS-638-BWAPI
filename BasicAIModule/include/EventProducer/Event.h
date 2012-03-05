@@ -2,6 +2,10 @@
  *  Event.h - 
  */
 #pragma once
-class Event
-{
-};
+
+namespace JohnConnor {
+	class Event
+	{
+	};
+}
+

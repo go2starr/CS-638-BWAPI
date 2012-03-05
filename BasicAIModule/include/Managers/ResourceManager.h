@@ -4,7 +4,7 @@
 #pragma once
 #include "Manager.h"
 
-class ResourceManager: public Manager
+class ResourceManager : public Manager
 {
   int getGasRate();
   int getMineralRate();

@@ -2,14 +2,16 @@
  *  Agent.h 
  */
 #pragma once
-#include "BasicAIModule.h"
+#include <BWAPI.h>
 #include "States/State.h"
+
+using namespace BWAPI;
 
 class Agent 
 {
 protected:
-  BWAPI::Unit &unit;            // The Unit this Agent controls
-  State state;                  // The State this Agent is in
+  Unit &unit;					// The Unit this Agent controls
+  State state;					// The State this Agent is in
 
   // D'tor
   ~Agent();

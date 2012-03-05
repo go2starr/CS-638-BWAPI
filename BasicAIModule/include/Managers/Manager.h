@@ -5,13 +5,17 @@
 #include "Agent.h"
 #include "States/State.h"
 #include "Tasks/Task.h"
-#include "queue"
+#include <queue>
+#include <set>
 
-typedef std::priority_queue<Priority> TaskQueue;
+using namespace std;
+using namespace BWAPI;
+
+typedef priority_queue<Priority> TaskQueue;
 
 class Manager
 {
-  std::set<Agent*> agents;
+  set<Agent*> agents;
   TaskQueue tasks;
   
 public:
@@ -27,7 +31,7 @@ public:
   /* addAgent - Add an Agent to the Managers Agent set */
   virtual void addAgent(Agent &t);
   /* removeAgent - Remove an Agent of @type from the Managers Agent set */
-  virtual Agent& removeAgent(BWAPI::UnitType &ut);
+  virtual void removeAgent(Agent &t);
 
   /********************************************************************************
    *  Control Managers through tasks
@@ -41,9 +45,9 @@ public:
    *  Cost benefit analysis used by the Arbitrator and Strategizer
    ********************************************************************************/
   /* mwtpNext  -  Value currently placed on accepting one more of this unit type */
-  virtual int mwtpNext(BWAPI::UnitType &ut);
+  virtual int mwtpNext(UnitType &ut);
   /* mwtpLast  - Value currently placed on the last of this unit type */
-  virtual int mwtpLast(BWAPI::UnitType &ut);
+  virtual int mwtpLast(UnitType &ut);
   /*  estimateCost  -  best estimate at the cost of completing this task */
   virtual int estimateCost(Task &t);
 };

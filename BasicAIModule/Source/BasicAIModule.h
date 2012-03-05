@@ -3,8 +3,12 @@
 #include <BWTA.h>
 #include <Strategizer.h>
 
+using namespace std;
+using namespace BWAPI;
+
 class BasicAIModule : public BWAPI::AIModule
 {
+
 public:
   virtual void onStart();
   virtual void onEnd(bool isWinner);

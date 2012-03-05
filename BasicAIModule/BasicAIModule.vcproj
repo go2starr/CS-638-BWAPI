@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="./include/EventProducer;./include/Managers;./include/Agents;./include;../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA"
+				AdditionalIncludeDirectories=".;./include/EventProducer;./include/Managers;./include/Agents;./include;../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_SECURE_SCL 0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -184,6 +184,18 @@
 				RelativePath=".\Source\Dll.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Source\BasicAIModule\Strategizer.cpp"
+				>
+			</File>
+			<Filter
+				Name="Managers"
+				>
+				<File
+					RelativePath=".\Source\BasicAIModule\Managers\Manager.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -383,6 +395,18 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="EventProducer"
+				>
+				<File
+					RelativePath=".\include\EventProducer\Event.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\EventProducer\EventProducer.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
