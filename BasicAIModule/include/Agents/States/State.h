@@ -7,11 +7,11 @@
 class State
 {
 protected:
-  Target &target;               // Current target
+  Target target;               // Current target
   
 public:
-  // D'tor
-  virtual ~State(){}
+	// D'tor
+	virtual ~State(){}
   
   // State entry
   virtual void onEnter();

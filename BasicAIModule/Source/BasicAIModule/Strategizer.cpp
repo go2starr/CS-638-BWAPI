@@ -18,11 +18,11 @@ void Strategizer::update()
 	for (i = units.begin(); i != units.end(); i++)
 	{
 		Broodwar->sendText("%s", (*i)->getType().getName().c_str());
-		::SCVAgent(*i);
+		SCVAgent a(*(*i));
 	}
 }
 
-void Strategizer::onEvent(JohnConnor::Event &e)
+void Strategizer::onEvent(JohnConnorBot::Event &e)
 {
 }
 

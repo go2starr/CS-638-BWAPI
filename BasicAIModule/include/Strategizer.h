@@ -36,7 +36,7 @@ public:
   static Strategizer& instance() { static Strategizer s; return s; }
 
   /* onEvent - Called by EventProducer when a new event is detected */
-  void onEvent(JohnConnor::Event &e);
+  void onEvent(JohnConnorBot::Event &e);
   
 private:
   

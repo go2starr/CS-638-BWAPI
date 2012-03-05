@@ -196,6 +196,30 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Agents"
+				>
+				<File
+					RelativePath=".\Source\BasicAIModule\Agents\ActorAgent.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\BasicAIModule\Agents\Agent.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\BasicAIModule\Agents\GroundAgent.cpp"
+					>
+				</File>
+				<Filter
+					Name="UnitAgents"
+					>
+					<File
+						RelativePath=".\Source\BasicAIModule\Agents\UnitAgents\SCVAgent.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"

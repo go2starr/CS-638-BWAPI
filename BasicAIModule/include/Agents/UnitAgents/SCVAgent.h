@@ -6,5 +6,6 @@
 
 class SCVAgent : public GroundAgent
 {
+public:
 	SCVAgent(Unit &u);
 };

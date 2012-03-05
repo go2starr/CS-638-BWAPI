@@ -3,11 +3,11 @@
  */
 #pragma once
 #include "Agent.h"
-#include "Agents/States/ActorState.h"
+#include "States/ActorState.h"
 
-class ActorAgent: public Agent
+class ActorAgent : public Agent
 {
-public:
+protected:
+  ActorAgent(Unit &u);
   virtual void setState(ActorState &s);
-  virtual ActorState& getState();
 };

@@ -13,15 +13,17 @@ protected:
   Unit &unit;					// The Unit this Agent controls
   State state;					// The State this Agent is in
 
-  // D'tor
-  ~Agent();
-  
-public:
-  /*
-   * update - Called on each frame to update this agent's state and unit.
-   */
-  virtual void update();
+public:  
+	/*
+	 * update - Called on each frame to update this agent's state and unit.
+	 */
+	virtual void update();
+ 
 
-  // attr_accessors
-  State& getState();
+	// attr_accessors
+	State& getState();
+
+protected:
+	// C'tor (must be called from subclass)
+	Agent(Unit &u);
 };

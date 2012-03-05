@@ -3,7 +3,7 @@
  */
 #pragma once
 
-namespace JohnConnor {
+namespace JohnConnorBot {
 	class Event
 	{
 	};
