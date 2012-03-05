@@ -4,14 +4,15 @@
 #pragma once
 #include "Target.h"
 
-class UnitTarget: public Target
+
+class UnitTarget : public Target
 {
-  BWAPI::Unit &target;
+  Unit &target;
 public:
-  UnitTarget(BWAPI::Unit &target);
+  UnitTarget(Unit &target);
   ~UnitTarget();
 
-  BWAPI::Unit getTarget();
-}
+  Unit& getTarget();
+};
 
 

@@ -16,6 +16,9 @@
 #include "SupplyManager.h"
 #include "ProductionManager.h"
 
+// States
+#include "States/GatherState.h"
+
 using namespace BWAPI;
 using namespace std;
 

@@ -7,3 +7,8 @@
 SCVAgent::SCVAgent(Unit &u) 
 	: GroundAgent(u)
 {}
+
+void SCVAgent::setState(ActorState &s) 
+{
+	this->state = s;
+}

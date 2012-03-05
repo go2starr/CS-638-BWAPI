@@ -224,7 +224,15 @@
 				Name="States"
 				>
 				<File
-					RelativePath=".\source\States\State.cpp"
+					RelativePath=".\source\Agents\States\ActorState.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Agents\States\GatherState.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Agents\States\State.cpp"
 					>
 				</File>
 			</Filter>
@@ -234,10 +242,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\include\BasicAIModule.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -250,6 +254,10 @@
 			>
 			<File
 				RelativePath=".\include\Arbitrator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\BasicAIModule.h"
 				>
 			</File>
 			<File
@@ -312,6 +320,10 @@
 					</File>
 					<File
 						RelativePath=".\include\Agents\States\EvadeState.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\States\GatherState.h"
 						>
 					</File>
 					<File

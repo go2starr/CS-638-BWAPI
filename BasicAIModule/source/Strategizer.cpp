@@ -25,6 +25,7 @@ void Strategizer::onMatchStart()
 	{
 		Broodwar->sendText("%s", (*i)->getType().getName().c_str());
 		SCVAgent a(*(*i));
+		a.setState(GatherState());
 	}
 }
 
