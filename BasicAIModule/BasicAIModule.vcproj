@@ -185,14 +185,14 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Source\BasicAIModule\Strategizer.cpp"
+				RelativePath=".\source\Strategizer.cpp"
 				>
 			</File>
 			<Filter
 				Name="Managers"
 				>
 				<File
-					RelativePath=".\Source\BasicAIModule\Managers\Manager.cpp"
+					RelativePath=".\source\Managers\Manager.cpp"
 					>
 				</File>
 			</Filter>
