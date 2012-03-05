@@ -323,6 +323,14 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="UnitAgents"
+					>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\SCVAgent.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Managers"

@@ -9,15 +9,16 @@ using namespace std;
 
 void Strategizer::update()
 {
-	::Broodwar->sendText("Hello!");
+	Broodwar->sendText("Hello!");
  
-	set<Unit*> units = ::Broodwar->self()->getUnits();
+	set<Unit*> units = Broodwar->self()->getUnits();
 	set<Unit*>::iterator i;
 
 	::Broodwar->sendText("Units include: ");
 	for (i = units.begin(); i != units.end(); i++)
 	{
-		::Broodwar->sendText("%s", (*i)->getType().getName().c_str());
+		Broodwar->sendText("%s", (*i)->getType().getName().c_str());
+		::SCVAgent(*i);
 	}
 }
 

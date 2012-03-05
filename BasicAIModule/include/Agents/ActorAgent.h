@@ -3,6 +3,7 @@
  */
 #pragma once
 #include "Agent.h"
+#include "Agents/States/ActorState.h"
 
 class ActorAgent: public Agent
 {

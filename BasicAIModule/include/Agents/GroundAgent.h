@@ -6,4 +6,4 @@
 
 class GroundAgent: public ActorAgent
 {
-}
+};

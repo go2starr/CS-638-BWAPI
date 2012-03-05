@@ -8,6 +8,9 @@
 #include <queue>
 #include <set>
 
+// Agents
+#include "UnitAgents/SCVAgent.h"
+
 using namespace std;
 using namespace BWAPI;
 

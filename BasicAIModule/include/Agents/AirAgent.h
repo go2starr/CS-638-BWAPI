@@ -6,4 +6,4 @@
 
 class AirAgent: public ActorAgent
 {
-}
+};
