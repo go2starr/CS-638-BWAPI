@@ -10,6 +10,10 @@ ActorAgent::ActorAgent(Unit &u)
 	: Agent(u)
 { }
 
+void ActorAgent::update()
+{
+}
+
 void ActorAgent::setState(ActorState &s)
 {
 	// TODO : this split between subclasses of 

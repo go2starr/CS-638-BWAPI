@@ -242,6 +242,14 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\include\BWAPI.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\BWTA.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

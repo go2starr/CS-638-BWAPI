@@ -34,7 +34,7 @@ class Strategizer
 	SupplyManager        supplyManager;
 
 	// Agents
-	std::map<BWAPI::Unit*, Agent> agents;
+	std::map<BWAPI::Unit*, Agent*> agents;
 
 	// Game State analysis
 	// GameStateDB gsdb;

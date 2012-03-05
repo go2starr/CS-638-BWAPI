@@ -10,24 +10,34 @@ using namespace std;
 
 void Strategizer::update()
 {
+	// Create agents for newly found, friendly units
+	set<Unit*> units = Broodwar->self()->getUnits();
+	set<Unit*>::iterator i;
+	for (i = units.begin(); i != units.end(); i++)
+	{
+		Unit *u = *i;
+		if (agents.find(u) == agents.end())
+		{
+			// Insert a new Agent
+			if (u->getType().isWorker()) {
+				SCVAgent *a = new SCVAgent(*u);
+				a->setState(GatherState());
+				agents.insert(pair<Unit*, Agent*>(u, a));
+			}
+		}
+	}
 
+	// Tell agents to update
+	map<Unit*, Agent*>::iterator j;
+	for (j = agents.begin(); j != agents.end(); j++)
+	{
+		(*j).second->update();
+	}
 }
 
 void Strategizer::onMatchStart()
 {
 	Broodwar->sendText("Hello!");
- 
-	set<Unit*> units = Broodwar->self()->getUnits();
-	set<Unit*>::iterator i = units.begin();
-
-	Broodwar->sendText("Units include: ");
-	for (; i != units.end(); ++i)
-	{
-		Broodwar->sendText("%s", (*i)->getType().getName().c_str());
-		SCVAgent a(*(*i));
-		a.setState(GatherState());
-		a.update();
-	}
 }
 
 void Strategizer::onEvent(JohnConnorBot::Event &e)

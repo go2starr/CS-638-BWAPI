@@ -10,6 +10,10 @@ GroundAgent::GroundAgent(Unit &u)
 	: ActorAgent(u)
 { }
 
+void GroundAgent::update()
+{
+}
+
 void GroundAgent::setState(ActorState &s)
 {
 	state = s;
