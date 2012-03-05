@@ -177,11 +177,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Source\BasicAIModule.cpp"
+				RelativePath=".\source\BasicAIModule.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source\Dll.cpp"
+				RelativePath=".\source\Dll.cpp"
 				>
 			</File>
 			<File
@@ -235,7 +235,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Source\BasicAIModule.h"
+				RelativePath=".\include\BasicAIModule.h"
 				>
 			</File>
 		</Filter>
