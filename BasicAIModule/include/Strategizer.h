@@ -41,6 +41,9 @@ public:
   void update();
   static Strategizer& instance() { static Strategizer s; return s; }
 
+	/* onMatchStart - Called by AI Module when a new match begins */
+	void onMatchStart();
+
   /* onEvent - Called by EventProducer when a new event is detected */
   void onEvent(JohnConnorBot::Event &e);
   

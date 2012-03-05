@@ -6,7 +6,8 @@
 
 void BasicAIModule::onStart()
 {
-  Broodwar->sendText("Hello, CS638!");
+	Broodwar->sendText("Hello, CS638!");
+	Strategizer::instance().onMatchStart();
 }
 void BasicAIModule::onEnd(bool isWinner)
 {
@@ -18,7 +19,7 @@ void BasicAIModule::onFrame()
 
 void BasicAIModule::onUnitDiscover(BWAPI::Unit* unit)
 {
-  Broodwar->sendText("Unit discovered: %s", unit->getType().getName());
+	Broodwar->sendText("Unit discovered: %s", unit->getType().getName());
 }
 
 void BasicAIModule::onUnitEvade(BWAPI::Unit* unit)
