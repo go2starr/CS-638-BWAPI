@@ -10,6 +10,11 @@ using namespace std;
 
 void Strategizer::update()
 {
+
+}
+
+void Strategizer::onMatchStart()
+{
 	Broodwar->sendText("Hello!");
  
 	set<Unit*> units = Broodwar->self()->getUnits();
@@ -25,6 +30,7 @@ void Strategizer::update()
 
 void Strategizer::onEvent(JohnConnorBot::Event &e)
 {
+
 }
 
 
