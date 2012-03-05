@@ -19,6 +19,7 @@ public:
 	 */
 	virtual void update();
  
+	bool operator==(const Agent& other);
 
 	// attr_accessors
 	inline const State& getState() const { return state; }
