@@ -200,25 +200,33 @@
 				Name="Agents"
 				>
 				<File
-					RelativePath=".\Source\BasicAIModule\Agents\ActorAgent.cpp"
+					RelativePath=".\source\Agents\ActorAgent.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source\BasicAIModule\Agents\Agent.cpp"
+					RelativePath=".\source\Agents\Agent.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source\BasicAIModule\Agents\GroundAgent.cpp"
+					RelativePath=".\source\Agents\GroundAgent.cpp"
 					>
 				</File>
 				<Filter
 					Name="UnitAgents"
 					>
 					<File
-						RelativePath=".\Source\BasicAIModule\Agents\UnitAgents\SCVAgent.cpp"
+						RelativePath=".\source\Agents\UnitAgents\SCVAgent.cpp"
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="States"
+				>
+				<File
+					RelativePath=".\source\States\State.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

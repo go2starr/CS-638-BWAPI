@@ -2,6 +2,7 @@
  *  Strategizer.cpp
  */
 #include "Strategizer.h"
+#include "UnitAgents/SCVAgent.h"
 #include "BWAPI.h"
 
 using namespace BWAPI;
@@ -18,11 +19,7 @@ void Strategizer::update()
 	for (; i != units.end(); ++i)
 	{
 		Broodwar->sendText("%s", (*i)->getType().getName().c_str());
-<<<<<<< HEAD:BasicAIModule/Source/BasicAIModule/Strategizer.cpp
 		SCVAgent a(*(*i));
-=======
-		SCVAgent(*i);
->>>>>>> e48dc40d6fe58cad96c27f81df724f3e75afa764:BasicAIModule/source/Strategizer.cpp
 	}
 }
 

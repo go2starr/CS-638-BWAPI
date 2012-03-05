@@ -7,22 +7,22 @@
 class State
 {
 protected:
-  Target target;               // Current target
+	Target target;      // Current target
   
 public:
 	// D'tor
 	virtual ~State(){}
-  
-  // State entry
-  virtual void onEnter();
-  // State update
-  virtual void onUpdate();
-  // State exit
-  virtual void onExit();
 
-  // attr_accessor
-  virtual Target& getTarget();
+	// State entry
+	virtual void onEnter();
+	// State update
+	virtual void onUpdate();
+	// State exit
+	virtual void onExit();
+	
+	// attr_accessor
+	inline const Target& getTarget() const { return target; }
 
-  // Enumeration
-  int getId();
+	// Enumeration
+	int getId();
 };

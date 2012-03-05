@@ -21,7 +21,7 @@ public:
  
 
 	// attr_accessors
-	State& getState();
+	inline const State& getState() const { return state; }
 
 protected:
 	// C'tor (must be called from subclass)
