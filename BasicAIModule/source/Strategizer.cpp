@@ -8,11 +8,14 @@
 using namespace BWAPI;
 using namespace std;
 
+
+/* update - Called by AI Module for each frame */
 void Strategizer::update()
 {
 
 }
 
+/* onMatchStart - Called by AI Module when a new match begins */
 void Strategizer::onMatchStart()
 {
 	Broodwar->sendText("Hello!");
@@ -28,6 +31,7 @@ void Strategizer::onMatchStart()
 	}
 }
 
+/* onEvent - Called by EventProducer when a new event is detected */
 void Strategizer::onEvent(JohnConnorBot::Event &e)
 {
 
