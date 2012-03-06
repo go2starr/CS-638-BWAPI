@@ -86,6 +86,11 @@ namespace BWAPI
 
       // TODO: Add Doxygen documentation
       virtual void onSaveGame(std::string gameName);
+
+      /** */
+      virtual void onUnitComplete(Unit *unit);
+
+      virtual void onPlayerDropped(Player *player);
   };
   class TournamentModule
   {

@@ -19,6 +19,7 @@ namespace BWTA
 
   Region* getRegion(int x, int y);
   Region* getRegion(BWAPI::TilePosition tileposition);
+  Region* getRegion(BWAPI::Position position);
 
   Chokepoint* getNearestChokepoint(int x, int y);
   Chokepoint* getNearestChokepoint(BWAPI::TilePosition tileposition);

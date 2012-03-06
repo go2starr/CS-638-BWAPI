@@ -22,14 +22,15 @@ namespace BWAPIC
       LeaveGame,
       RestartGame,
       SetLocalSpeed,
-      SetTextSize,
       SetLatCom,
       SetGui,
       SetFrameSkip,
       SetMap,
       SetAllies,
       SetVision,
-      SetCommandOptimizerLevel
+      SetCommandOptimizerLevel,
+      SetReplayVision,
+      SetRevealAll
     };
   }
 }

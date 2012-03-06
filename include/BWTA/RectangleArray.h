@@ -35,7 +35,8 @@ namespace BWTA
         * @param y vertical index of the array position.
         * @return item on the specified position.
         */
-       Type* getItem(unsigned int x, unsigned int y);
+       Type getItem(unsigned int x, unsigned int y);
+       Type getItemSafe(unsigned int x, unsigned int y);
        inline Type* operator[](int i) { return this->getColumn(i); }
        inline Type const * const operator[](int i) const {return this->getColumn(i); }
        /**
@@ -155,8 +156,18 @@ namespace BWTA
   }
   //------------------------------------------------ GET ITEM ------------------------------------------------
   template <class Type>
-  Type* RectangleArray<Type>::getItem(unsigned int x, unsigned int y)
+  Type RectangleArray<Type>::getItem(unsigned int x, unsigned int y)
   {
+    return this->getColumn(x)[y];
+  }
+  //------------------------------------------------ GET ITEM ------------------------------------------------
+  template <class Type>
+  Type RectangleArray<Type>::getItemSafe(unsigned int x, unsigned int y)
+  {
+    if (x<0 || y<0 || x>=this->width || y>=this->height)
+    {
+      return (Type)NULL;
+    }
     return this->getColumn(x)[y];
   }
   //------------------------------------------------ SET ITEM ------------------------------------------------

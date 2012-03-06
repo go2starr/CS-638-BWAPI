@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA;"
+				AdditionalIncludeDirectories=".;./include/EventProducer;./include/Managers;./include/Agents;./include;../Util/Source;../include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories=".;./include/EventProducer;./include/Managers;./include/Agents;./include;../Util/Source;../include;../../../vendors_external/BWAPI;../../../vendors_external/BWTA"
+				AdditionalIncludeDirectories=".;./include/EventProducer;./include/Managers;./include/Agents;./include;../Util/Source;../include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_SECURE_SCL 0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

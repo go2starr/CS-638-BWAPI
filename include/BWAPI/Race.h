@@ -1,24 +1,20 @@
 #pragma once
 #include <string>
 #include <set>
+#include "Type.h"
 namespace BWAPI
 {
   class UnitType;
-  class Race
+  class Race : public Type
   {
     public:
       Race();
       Race(int id);
-      Race(const Race& other);
-      Race& operator=(const Race& other);
-      operator int() const;
-
-      /** Returns a unique ID for this race. */
-      int getID() const;
 
       /** Returns the name of the race. For example Races::Terran.getName() will return a std::string object
        * containing "Terran". */
-      std::string getName() const;
+      const std::string &getName() const;
+      const char *c_str() const;
 
       /** Returns the worker unit type for the given race. For example Races::Protoss.getWorker() will return
        * a pointer to UnitTypes::Protoss_Probe. */
@@ -41,8 +37,6 @@ namespace BWAPI
       /** Returns the main supply provider unit type for the given race. For example:
        * Races::Terran.getSupplyProvider() will return a pointer to UnitTypes::Terran_Supply_Depot?. */
       UnitType getSupplyProvider() const;
-    private:
-      int id;
   };
   namespace Races
   {
@@ -51,7 +45,7 @@ namespace BWAPI
     Race getRace(std::string name);
 
     /** Returns the set of all the races, which are listed below. */
-    std::set<Race>& allRaces();
+    const std::set<Race>& allRaces();
     void init();
     extern const Race Zerg;
     extern const Race Terran;

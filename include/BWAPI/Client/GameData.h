@@ -3,6 +3,7 @@
 #include "UnitCommand.h"
 #include "ForceData.h"
 #include "PlayerData.h"
+#include "RegionData.h"
 #include "UnitData.h"
 #include "BulletData.h"
 #include "Event.h"
@@ -26,7 +27,6 @@ namespace BWAPI
   };
   struct GameData
   {
-    GameData() {}
     //revision and debug will stay at the top of struct so they don't move in memory from revision to revision.
     int revision;
     bool isDebug;
@@ -64,21 +64,23 @@ namespace BWAPI
     int remainingLatencyFrames;
     int remainingLatencyTime;
     bool hasLatCom;
+    bool hasGUI;
     int replayFrameCount;
     int frameCount;
     int elapsedTime;
+    int countdownTimer;
     int fps;
     double averageFPS;
 
     // user input
     int mouseX;
     int mouseY;
-    bool mouseState[3];
-    bool keyState[256];
+    bool mouseState[M_MAX];
+    bool keyState[K_MAX];
     int screenX;
     int screenY;
 
-    bool flags[2];
+    bool flags[BWAPI::Flag::Max];
 
     // map
     int mapWidth;
@@ -89,7 +91,7 @@ namespace BWAPI
     char mapHash[41];
 
     //tile data
-    int getGroundHeight[256][256];
+    int  getGroundHeight[256][256];
     bool isWalkable[1024][1024]; 
     bool isBuildable[256][256];
     bool isVisible[256][256];
@@ -101,7 +103,9 @@ namespace BWAPI
     unsigned short mapSplitTilesMiniTileMask[5000];
     unsigned short mapSplitTilesRegion1[5000];
     unsigned short mapSplitTilesRegion2[5000];
-    unsigned short regionGroupIndex[5000];
+
+    int regionCount;
+    RegionData regions[5000];
 
     // start locations
     int startLocationCount;
@@ -124,6 +128,7 @@ namespace BWAPI
     int neutral;
 
     static const int MAX_EVENTS         = 10000;
+    static const int MAX_EVENT_STRINGS  =  1000;
     static const int MAX_STRINGS        = 20000;
     static const int MAX_SHAPES         = 20000;
     static const int MAX_COMMANDS       = 20000;
@@ -133,7 +138,11 @@ namespace BWAPI
     int eventCount;
     BWAPIC::Event events[MAX_EVENTS];
 
-    //strings (used in events, shapes, and commands)
+    //strings used in events
+    int eventStringCount;
+    char eventStrings[MAX_EVENT_STRINGS][256];
+
+    //strings (used in shapes and commands)
     int stringCount;
     char strings[MAX_STRINGS][256];
 
