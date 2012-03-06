@@ -1,10 +1,13 @@
 #pragma once
 #include <BWAPI.h>
 #include <BWTA.h>
+#include <BWSAL.h>
+#include <EnhancedUI.h>
 #include <Strategizer.h>
 
 using namespace std;
 using namespace BWAPI;
+using namespace BWSAL;
 
 class BasicAIModule : public BWAPI::AIModule
 {
@@ -21,4 +24,7 @@ public:
   virtual void onSendText(std::string text);
   void showPlayers();
   void showForces();
+
+private:
+  EnhancedUI*                m_enhancedUI;
 };

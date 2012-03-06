@@ -6,14 +6,21 @@
 
 void BasicAIModule::onStart()
 {
+    BWTA::readMap();
+    BWTA::analyze();
+//    BWSAL::resetLog();
+
 	Broodwar->sendText("Hello, CS638!");
 	Strategizer::instance().onMatchStart();
+
+	m_enhancedUI = new EnhancedUI();
 }
 void BasicAIModule::onEnd(bool isWinner)
 {
 }
 void BasicAIModule::onFrame()
 {
+	m_enhancedUI->update();
 	Strategizer::instance().update();
 }
 
