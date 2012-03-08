@@ -4,6 +4,9 @@
 #include <BWSAL.h>
 #include <EnhancedUI.h>
 #include <Strategizer.h>
+#include <iterator>
+#include <vector>
+#include <set>
 
 using namespace std;
 using namespace BWAPI;

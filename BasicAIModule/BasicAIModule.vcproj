@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EnhancedChokepoint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\EnhancedUI.cpp"
 				>
 			</File>
@@ -256,6 +260,10 @@
 			</File>
 			<File
 				RelativePath="..\include\BWTA.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EnhancedChokepoint.h"
 				>
 			</File>
 		</Filter>

@@ -1,26 +1,63 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include <Strategizer.h>
-#include "BasicAIModule.h"
+#include <BasicAIModule.h>
+#include <EnhancedChokepoint.h>
 
+vector<EnhancedChokepoint> ecPoints;
 
 void BasicAIModule::onStart()
 {
-    BWTA::readMap();
-    BWTA::analyze();
-//    BWSAL::resetLog();
+
+	BWTA::BaseLocation * baseLoc;
+	BWTA::Region * region;
+	set<BWTA::Chokepoint *> startLocChokepoints;
+	set<BWTA::Chokepoint *>::iterator cpi;
+
+	/* set up BWTA */
+	BWTA::readMap();
+	BWTA::analyze();
+	//    BWSAL::resetLog();
 
 	Broodwar->sendText("Hello, CS638!");
 	Strategizer::instance().onMatchStart();
 
 	m_enhancedUI = new EnhancedUI();
+
+	/* get enhanced chokepoints for start location */
+	baseLoc = BWTA::getStartLocation(Broodwar->self());
+	region = baseLoc->getRegion();
+	startLocChokepoints = region->getChokepoints();
+	for (cpi = startLocChokepoints.begin(); cpi != startLocChokepoints.end(); ++cpi) {
+		EnhancedChokepoint ecPoint(*cpi);
+		ecPoints.push_back(ecPoint);
+	}
 }
+
 void BasicAIModule::onEnd(bool isWinner)
 {
 }
+
 void BasicAIModule::onFrame()
 {
+	BWTA::BaseLocation * baseLoc;
+	BWTA::Region * region;
+
+	baseLoc = BWTA::getStartLocation(Broodwar->self());
+	region = baseLoc->getRegion();
+
 	m_enhancedUI->update();
+
+	/* additional UI */
+	/* draw for enhanced chokepoints */
+	for (int x = 0; x < (int) ecPoints.size(); ++x) {
+		ecPoints[x].drawTilePositions();
+		ecPoints[x].drawBoundingBox();
+	}
+	/* for show */
+	m_enhancedUI->drawRegionBoundingBox(region);
+
+	/* update the Strategizer */
 	Strategizer::instance().update();
 }
 
