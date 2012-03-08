@@ -1,59 +1,124 @@
-#include <BWAPI.h>
-#include <BWTA.h>
-#include <Strategizer.h>
 #include "BasicAIModule.h"
+#include "Strategizer.h"
 
+#include <BWAPI.h>
+#include <BWSAL.h>
+#include <BWTA.h>
 
+#include <string>
+
+using namespace BWAPI;
+using std::string;
+
+/* 
+ * onStart()
+ *
+ * Called by the game when a new match using this AI module begins
+ */
 void BasicAIModule::onStart()
 {
     BWTA::readMap();
     BWTA::analyze();
-//    BWSAL::resetLog();
+//	BWSAL::resetLog();
 
-	Broodwar->sendText("Hello, CS638!");
+	Broodwar->sendText("UW-Madison : CS638 Software Engineering - Brood War AI");
+
 	Strategizer::instance().onMatchStart();
 
-	m_enhancedUI = new EnhancedUI();
+	enhancedUI = new EnhancedUI();
 }
+
+/* 
+ * onEnd()
+ *
+ * Called by the game when a match using this AI module ends
+ */
 void BasicAIModule::onEnd(bool isWinner)
 {
+
 }
+
+/* 
+ * onFrame()
+ *
+ * Called by the game on each frames
+ */
 void BasicAIModule::onFrame()
 {
-	m_enhancedUI->update();
+	enhancedUI->update();
+
 	Strategizer::instance().update();
 }
 
-void BasicAIModule::onUnitDiscover(BWAPI::Unit* unit)
+/* 
+ * onUnitDiscover()
+ *
+ */
+void BasicAIModule::onUnitDiscover(Unit* unit)
 {
 	Broodwar->sendText("Unit discovered: %s", unit->getType().getName());
 }
 
-void BasicAIModule::onUnitEvade(BWAPI::Unit* unit)
+/* 
+ * onUnitEvade()
+ *
+ */
+void BasicAIModule::onUnitEvade(Unit* unit)
 {
+
 }
 
-void BasicAIModule::onUnitMorph(BWAPI::Unit* unit)
+/* 
+ * onUnitMorph()
+ *
+ */
+void BasicAIModule::onUnitMorph(Unit* unit)
 {
+
 }
 
-void BasicAIModule::onUnitRenegade(BWAPI::Unit* unit)
+/* 
+ * onUnitRenegade()
+ *
+ */
+void BasicAIModule::onUnitRenegade(Unit* unit)
 {
+
 }
 
-void BasicAIModule::onUnitDestroy(BWAPI::Unit* unit)
+/* 
+ * onUnitDestroy()
+ *
+ */
+void BasicAIModule::onUnitDestroy(Unit* unit)
 {
+
 }
 
-void BasicAIModule::onSendText(std::string text)
+/* 
+ * onSendText()
+ *
+ */
+void BasicAIModule::onSendText(string text)
 {
+
 }
 
+/* 
+ * showPlayers()
+ *
+ */
 void BasicAIModule::showPlayers()
 {
+
 }
 
+/* 
+ * showForces()
+ *
+ */
 void BasicAIModule::showForces()
 {
+
 }
 

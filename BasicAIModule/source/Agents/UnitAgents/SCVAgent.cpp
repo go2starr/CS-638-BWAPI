@@ -1,17 +1,17 @@
 /*
  * SCVAgent.cpp
  */
-#include "Agent.h"
 #include "UnitAgents/SCVAgent.h"
+#include "GroundAgent.h"
+
+#include <BWAPI.h>
+
+using BWAPI::Unit;
+
 
 SCVAgent::SCVAgent(Unit &u) 
 	: GroundAgent(u)
 {}
-
-void SCVAgent::setState(ActorState &s) 
-{
-	this->state = s;
-}
 
 void SCVAgent::update()
 {
@@ -39,4 +39,9 @@ void SCVAgent::update()
 	{
 		unit.gather(closest);
 	}
+}
+
+void SCVAgent::setState(ActorState &s) 
+{
+	state = s;
 }

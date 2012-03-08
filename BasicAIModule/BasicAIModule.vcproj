@@ -138,6 +138,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="../lib/BWAPI.lib ../lib/BWTA.lib ../lib/BWSAL.lib  ../lib/tinyxml.lib ../lib/CGAL-vc90-mt.lib ../lib/libboost_thread-vc90-mt-1_40.lib ../lib/gmp-vc90-mt.lib ../lib/mpfr-vc90-mt.lib"
 				LinkIncremental="1"
+				IgnoreDefaultLibraryNames="LIBCMT"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -196,7 +197,35 @@
 				Name="Managers"
 				>
 				<File
+					RelativePath=".\source\Managers\BuildManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Managers\CombatManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Managers\ConstructionManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\source\Managers\Manager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Managers\ProductionManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Managers\ResourceManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Managers\ScoutManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Managers\SupplyManager.cpp"
 					>
 				</File>
 			</Filter>
@@ -219,7 +248,19 @@
 					Name="UnitAgents"
 					>
 					<File
+						RelativePath=".\source\Agents\UnitAgents\MarineAgent.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\source\Agents\UnitAgents\MedicAgent.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\source\Agents\UnitAgents\SCVAgent.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\source\Agents\UnitAgents\SiegeTankAgent.cpp"
 						>
 					</File>
 				</Filter>
@@ -391,7 +432,19 @@
 					Name="UnitAgents"
 					>
 					<File
+						RelativePath=".\include\Agents\UnitAgents\MarineAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\MedicAgent.h"
+						>
+					</File>
+					<File
 						RelativePath=".\include\Agents\UnitAgents\SCVAgent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\SiegeTankAgent.h"
 						>
 					</File>
 				</Filter>
@@ -472,11 +525,11 @@
 				Name="EventProducer"
 				>
 				<File
-					RelativePath=".\include\EventProducer\Event.h"
+					RelativePath=".\include\EventProducer\EventProducer.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\EventProducer\EventProducer.h"
+					RelativePath=".\include\EventProducer\GameEvent.h"
 					>
 				</File>
 			</Filter>

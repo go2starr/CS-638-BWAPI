@@ -2,25 +2,22 @@
  * Strategizer.h
  */
 #pragma once
-#include <BWAPI.h>
 #include "Managers/Manager.h"
-#include "Event.h"
+#include "GameEvent.h"
 // #include "GameStateDB.h"
 
-// Managers
 #include "BuildManager.h"
-#include "ResourceManager.h"
 #include "CombatManager.h"
-#include "ScoutManager.h"
 #include "ConstructionManager.h"
-#include "SupplyManager.h"
 #include "ProductionManager.h"
+#include "ResourceManager.h"
+#include "ScoutManager.h"
+#include "SupplyManager.h"
 
-// States
-#include "States/GatherState.h"
+#include <BWAPI.h>
 
-using namespace BWAPI;
-using namespace std;
+#include <map>
+
 
 class Strategizer
 {
@@ -51,7 +48,7 @@ public:
 	void onMatchStart();
 
 	/* onEvent - Called by EventProducer when a new event is detected */
-	void onEvent(JohnConnorBot::Event &e);
+	void onEvent(GameEvent& e);
   
 private:
   

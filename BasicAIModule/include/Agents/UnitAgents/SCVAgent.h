@@ -1,13 +1,16 @@
-/*
- *
- */
 #pragma once
-#include "../GroundAgent.h"
+/*
+ * SCVAgent.h
+ */
+#include "GroundAgent.h"
+
+#include <BWAPI.h>
+
 
 class SCVAgent : public GroundAgent
 {
 public:
-	SCVAgent(Unit &u);
+	SCVAgent(BWAPI::Unit& u);
 	virtual void update();
-	void setState(ActorState &s);
+	void setState(ActorState& s);
 };
