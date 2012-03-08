@@ -9,7 +9,10 @@
 #include <BWTA.h>
 #include <EnhancedUI.h>
 
+#include <iterator>
+#include <vector>
 #include <string>
+#include <set>
 
 
 class BasicAIModule : public BWAPI::AIModule

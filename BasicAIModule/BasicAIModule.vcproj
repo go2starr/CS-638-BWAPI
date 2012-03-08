@@ -186,6 +186,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\EnhancedChokepoint.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\EnhancedUI.cpp"
 				>
 			</File>
@@ -315,6 +319,10 @@
 			</File>
 			<File
 				RelativePath=".\include\BasicAIModule.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\EnhancedChokepoint.h"
 				>
 			</File>
 			<File
