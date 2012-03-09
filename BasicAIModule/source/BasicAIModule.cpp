@@ -97,7 +97,12 @@ void BasicAIModule::onFrame()
  */
 void BasicAIModule::onUnitDiscover(Unit* unit)
 {
-	Broodwar->sendText("Unit discovered: %s", unit->getType().getName());
+	const string& name = unit->getType().getName();
+
+	// This conditional is temporary to filter out all the 
+	// resource and building units that BWTA finds.
+	if( name == "Terran SCV" )
+		Broodwar->sendText("Unit discovered: %s", name.c_str());
 }
 
 /* 
