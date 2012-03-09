@@ -12,6 +12,8 @@ class Agent
 protected:
   Unit &unit;					// The Unit this Agent controls
   State state;					// The State this Agent is in
+  Unit *unitTarget;             // Targeted unit (for gather, attack, etc.)
+  Position *positionTarget;     // Targeted position (for moving, evade, etc.)
 
 public:  
 	/*
