@@ -10,7 +10,8 @@ class GatherState : public ActorState
 {
 public:
 	GatherState();
-	UnitTarget& getTarget();
+	UnitTarget* getTarget() { return static_cast<UnitTarget*>(target); }
+	void setTarget(UnitTarget *target) { this->target = target; }
 
 	StateId getId() { return State::GatherState; }
 };

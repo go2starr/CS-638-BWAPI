@@ -17,6 +17,7 @@ typedef std::priority_queue<Task*> TaskQueue;
 
 class Manager
 {
+protected:
 	AgentSet  agents;
 	TaskQueue tasks;
   

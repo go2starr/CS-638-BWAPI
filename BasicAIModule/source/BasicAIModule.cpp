@@ -61,7 +61,6 @@ void BasicAIModule::onStart()
  */
 void BasicAIModule::onEnd(bool isWinner)
 {
-
 }
 
 /* 

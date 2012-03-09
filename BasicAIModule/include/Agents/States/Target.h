@@ -10,3 +10,6 @@ using namespace BWAPI;
 class Target
 {
 };
+
+#include "UnitTarget.h"
+#include "PositionTarget.h"

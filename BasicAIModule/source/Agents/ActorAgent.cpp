@@ -12,6 +12,7 @@ ActorAgent::ActorAgent(Unit &u)
 
 void ActorAgent::update()
 {
+	Agent::update();
 }
 
 void ActorAgent::setState(ActorState &s)

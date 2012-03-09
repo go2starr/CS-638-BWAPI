@@ -12,4 +12,4 @@ public:
   ~PositionTarget();
 
   BWAPI::Position getTarget();
-}
+};

@@ -7,12 +7,12 @@
 
 class UnitTarget : public Target
 {
-  Unit &target;
+  Unit *unit;
 public:
-  UnitTarget(Unit &target);
+	UnitTarget(Unit *unit) { this->unit = unit; }
   ~UnitTarget();
 
-  Unit& getTarget();
+  Unit* getUnit() { return unit; }
 };
 
 

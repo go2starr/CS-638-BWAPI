@@ -18,5 +18,5 @@ bool Agent::operator==(const Agent& other)
 
 void Agent::update()
 {
-	Broodwar->sendText("In Agent update");
+
 }
