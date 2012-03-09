@@ -10,5 +10,4 @@ public:
 	virtual void update();
 protected:
   GroundAgent(Unit &u);
-  virtual void setState(ActorState &s);
 };

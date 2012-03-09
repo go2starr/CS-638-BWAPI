@@ -29,9 +29,7 @@ void ResourceManager::update()
 			}
 			if (closest)
 			{
-				GatherState *gs = new GatherState();
-				gs->setTarget(new UnitTarget(closest));
-				(*agent)->setState(*gs);
+
 			}
 		}
 	}

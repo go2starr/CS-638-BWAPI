@@ -19,8 +19,4 @@ void MarineAgent::update()
 		return;
 }
 
-void MarineAgent::setState(ActorState& s)
-{
-	state = &s;
-}
 

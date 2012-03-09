@@ -2,8 +2,8 @@
  *  Manager.h  - Managers control Agents.
  */
 #pragma once
-#include "Agent.h"
-#include "States/State.h"
+#include <Agent.h>
+#include <State.h>
 #include "Tasks/Task.h"
 
 #include <BWAPI.h>

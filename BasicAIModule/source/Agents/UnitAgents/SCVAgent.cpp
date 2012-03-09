@@ -16,21 +16,12 @@ SCVAgent::SCVAgent(Unit &u)
 void SCVAgent::update()
 {
 	if (state) {
-		GatherState *gatherState;
-
-		switch (state->getId()) {
-			case State::GatherState:
-				gatherState = static_cast<GatherState*>(state);
-				unit.gather(gatherState->getTarget()->getUnit());
+		switch (state) {
+			case GatherState:
 				break;
 
 			default:
 				GroundAgent::update();
 		}
 	}
-}
-
-void SCVAgent::setState(ActorState &s) 
-{
-	state = &s;
 }

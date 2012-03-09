@@ -14,10 +14,3 @@ void ActorAgent::update()
 {
 	Agent::update();
 }
-
-void ActorAgent::setState(ActorState &s)
-{
-	// TODO : this split between subclasses of 
-	// State might come back to bite us...
-	state = &s;
-}

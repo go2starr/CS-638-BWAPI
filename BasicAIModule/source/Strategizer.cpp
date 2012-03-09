@@ -15,8 +15,6 @@
 
 #include "UnitAgents/SCVAgent.h"
 
-#include "States/GatherState.h"
-
 #include <BWAPI.h>
 
 #include <set>
@@ -25,6 +23,7 @@
 using namespace BWAPI;
 using std::set;
 using std::map;
+using std::pair;
 
 
 /* 
@@ -47,7 +46,6 @@ void Strategizer::update()
 			// Insert a new Agent
 			if (u->getType().isWorker()) {
 				SCVAgent *a = new SCVAgent(*u);
-				a->setState(GatherState());
 				agents.insert(pair<Unit*, Agent*>(u, a));
 			}
 		}

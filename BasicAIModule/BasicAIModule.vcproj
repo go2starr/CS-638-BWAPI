@@ -269,22 +269,6 @@
 					</File>
 				</Filter>
 			</Filter>
-			<Filter
-				Name="States"
-				>
-				<File
-					RelativePath=".\source\Agents\States\ActorState.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\source\Agents\States\GatherState.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\source\Agents\States\State.cpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -361,81 +345,13 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Agents\States\State.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Agents\StructureAgent.h"
 					>
 				</File>
-				<Filter
-					Name="States"
-					>
-					<File
-						RelativePath=".\include\Agents\States\ActorState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\AddonState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\AttackState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\BuildingState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\DefendState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\EvadeState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\GatherState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\IdleState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\PositionTarget.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\ResearchState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\ScoutState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\State.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\StructureState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\Target.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\TrainingState.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\UnitTarget.h"
-						>
-					</File>
-					<File
-						RelativePath=".\include\Agents\States\UpgradeState.h"
-						>
-					</File>
-				</Filter>
 				<Filter
 					Name="UnitAgents"
 					>
