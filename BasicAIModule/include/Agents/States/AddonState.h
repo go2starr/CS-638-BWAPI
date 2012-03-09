@@ -6,4 +6,6 @@
 
 class AddonState: public State
 {
+public:
+	StateId getId() { return State::AddonState; }
 };

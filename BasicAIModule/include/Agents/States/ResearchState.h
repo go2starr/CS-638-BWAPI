@@ -6,4 +6,6 @@
 
 class ResearchState: public StructureState
 {
+
+	StateId getId() { return State::ResearchState; }
 };

@@ -6,4 +6,5 @@
 
 class UpgradeState: public StructureState
 {
+	StateId getId() { return State::UpgradeState; }
 };

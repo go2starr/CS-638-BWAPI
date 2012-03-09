@@ -7,7 +7,8 @@
 class DefendState: public ActorState
 {
 public:
-  DefendState(UnitTarget &t);
-  virtual void setTarget(UnitTarget &t);
-  virtual UnitTarget& getTarget();
+	DefendState(UnitTarget &t);
+	virtual void setTarget(UnitTarget &t);
+	virtual UnitTarget& getTarget();
+	StateId getId() { return State::DefendState; }
 };

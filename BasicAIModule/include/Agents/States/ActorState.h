@@ -6,5 +6,7 @@
 
 class ActorState: public State
 {
+public:
+	virtual StateId getId()=0;
 };
   

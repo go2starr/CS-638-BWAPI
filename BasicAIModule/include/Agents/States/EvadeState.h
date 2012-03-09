@@ -7,6 +7,8 @@
 class EvadeState: public ActorState
 {
 public:
-  EvadeState();
-  virtual PositionTarget& getTarget(); // Evading to
+	EvadeState();
+	 virtual PositionTarget& getTarget(); // Evading to
+
+  	StateId getId() { return State::EvadeState; }
 };

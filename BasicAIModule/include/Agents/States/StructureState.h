@@ -6,4 +6,5 @@
 
 class StructureState: public State
 {
+	virtual StateId getId()=0;
 };

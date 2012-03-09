@@ -9,6 +9,8 @@
 class GatherState : public ActorState
 {
 public:
-  GatherState();
-  UnitTarget& getTarget();
+	GatherState();
+	UnitTarget& getTarget();
+
+	StateId getId() { return State::GatherState; }
 };

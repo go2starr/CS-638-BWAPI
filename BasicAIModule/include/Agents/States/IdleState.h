@@ -8,4 +8,6 @@
 class IdleState: public State
 {
 	IdleState() : State() { } 
+
+	StateId getId() { return State::IdleState; }
 };

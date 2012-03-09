@@ -21,6 +21,6 @@ void MarineAgent::update()
 
 void MarineAgent::setState(ActorState& s)
 {
-	state = s;
+	state = &s;
 }
 

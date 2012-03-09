@@ -6,8 +6,8 @@
 
 class ResourceManager : public Manager
 {
+public:
 	void update();
-
 	int getGasRate();
 	int getMineralRate();
 };

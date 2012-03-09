@@ -6,6 +6,24 @@
 
 class State
 {
+public:
+	enum StateId
+	{
+		ActorState,
+		AddonState,
+		AttackState,
+		BuildingState,
+		DefendState,
+		EvadeState,
+		GatherState,
+		IdleState,
+		ResearchState,
+		ScoutState,
+		StructureState,
+		TrainingState,
+		UpgradeState
+	};
+
 protected:
 	Target target;      // Current target
   
@@ -33,5 +51,5 @@ public:
 	inline const Target& getTarget() const { return target; }
 
 	// Enumeration
-	int getId();
+	virtual StateId getId()=0;
 };

@@ -21,6 +21,6 @@ void SiegeTankAgent::update()
 
 void SiegeTankAgent::setState(ActorState& s)
 {
-	state = s;
+	state = &s;
 }
 

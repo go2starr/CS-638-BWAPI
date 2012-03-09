@@ -3,6 +3,4 @@
 void ResourceManager::update()
 {
 	Manager::update();
-
-
 }

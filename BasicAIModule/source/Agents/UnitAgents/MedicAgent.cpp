@@ -21,6 +21,6 @@ void MedicAgent::update()
 
 void MedicAgent::setState(ActorState& s)
 {
-	state = s;
+	state = &s;
 }
 

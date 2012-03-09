@@ -6,4 +6,6 @@
 
 class BuildingState: public StructureState
 {
+public:
+	StateId getId() { return State::BuildingState; }
 };

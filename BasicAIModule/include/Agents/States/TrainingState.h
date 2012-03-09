@@ -5,4 +5,5 @@
 
 class TrainingState: public StructureState
 {
+	StateId getId() { return State::TrainingState; }
 };

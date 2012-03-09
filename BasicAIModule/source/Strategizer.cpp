@@ -63,6 +63,15 @@ void Strategizer::update()
 			resourceManager.addAgent(*a);
 		}
 	}
+
+	// Let Managers update
+	buildManager.update();
+	combatManager.update();
+	constructionManager.update();
+	productionManager.update();
+	resourceManager.update();
+	scoutManager.update();
+	supplyManager.update();
 }
 
 /* 
@@ -72,7 +81,7 @@ void Strategizer::update()
  */
 void Strategizer::onMatchStart()
 {
-	Broodwar->sendText("Hello!");
+	Broodwar->sendText("Strategizer active.");
 }
 
 /* 
@@ -81,7 +90,6 @@ void Strategizer::onMatchStart()
  */
 void Strategizer::onEvent(GameEvent &e)
 {
-
 }
 
 

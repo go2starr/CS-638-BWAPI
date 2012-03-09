@@ -16,7 +16,7 @@ SCVAgent::SCVAgent(Unit &u)
 void SCVAgent::update()
 {
 	// Let them gather resources if not idle
-        if (!unit.isIdle())
+    if (!unit.isIdle())
 		return;
         
 	// Just hard-coded to gather closest unoccupied minerals for now..
@@ -43,5 +43,5 @@ void SCVAgent::update()
 
 void SCVAgent::setState(ActorState &s) 
 {
-	state = s;
+	state = &s;
 }

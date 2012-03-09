@@ -7,7 +7,9 @@
 class ScoutState: public ActorState
 {
 public:
-  ScoutState(PositionTarget &t);
-  virtual void setTarget(PositionTarget &t);
-  virtual PositionTarget& getTarget(); 
+	ScoutState(PositionTarget &t);
+	virtual void setTarget(PositionTarget &t);
+	virtual PositionTarget& getTarget(); 
+
+  	StateId getId() { return State::ScoutState; }
 };
