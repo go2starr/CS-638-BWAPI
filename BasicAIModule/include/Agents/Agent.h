@@ -22,7 +22,8 @@ public:
 	bool operator==(const Agent& other);
 
 	// attr_accessors
-	inline const State& getState() const { return state; }
+	inline const State* getState() const { return &state; }
+	inline const Unit& getUnit() const { return unit; }
 
 protected:
 	// C'tor (must be called from subclass)

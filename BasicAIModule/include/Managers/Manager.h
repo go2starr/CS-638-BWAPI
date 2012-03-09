@@ -12,15 +12,8 @@
 #include <list>
 #include <set>
 
-// Note: set is conceptually more appropriate, 
-// but it needs a < comparator to function correctly
-// how could we compare two Agents like that?
-typedef std::list<Agent> AgentSet;
-
-// I need to double check usage of stl pqueue
-//typedef std::priority_queue<Priority> TaskQueue;
-typedef std::queue<Task> TaskQueue;
-
+typedef std::set<Agent*> AgentSet;
+typedef std::priority_queue<Task*> TaskQueue;
 
 class Manager
 {

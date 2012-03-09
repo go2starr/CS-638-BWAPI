@@ -34,11 +34,12 @@ using std::map;
  */
 void Strategizer::update()
 {
-	// Create agents for newly found, friendly units
 	set<Unit*> units = Broodwar->self()->getUnits();
-	set<Unit*>::iterator unit = units.begin();
-	set<Unit*>::iterator uend = units.end();
-	for (; unit != uend; ++unit)
+	set<Unit*>::iterator unit;
+	map<Unit*, Agent*>::iterator agent;
+
+	// Create agents for newly found, friendly units
+	for (unit = units.begin(); unit != units.end(); ++unit)
 	{
 		Unit *u = *unit;
 		if (agents.find(u) == agents.end())
@@ -52,11 +53,16 @@ void Strategizer::update()
 		}
 	}
 
-	// Tell agents to update
-	map<Unit*, Agent*>::iterator it  = agents.begin();
-	map<Unit*, Agent*>::iterator end = agents.end();
-	for (; it != end; ++it)
-		it->second->update();
+	// Normally, we would shuffle Units around by bid here..
+	// Let's just give them to the ResourceManager
+	for (agent = agents.begin(); agent != agents.end(); agent++)
+	{
+		Agent *a = (*agent).second;
+		if (a->getUnit().getType().isWorker())
+		{
+			resourceManager.addAgent(*a);
+		}
+	}
 }
 
 /* 
