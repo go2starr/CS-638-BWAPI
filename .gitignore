@@ -1,6 +1,9 @@
 docs
 .tmp
 
+# Tags
+TAGS
+
 #Emacs files
 \#*
 ~*
