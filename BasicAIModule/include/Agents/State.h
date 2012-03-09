@@ -3,6 +3,7 @@
  */
 #pragma once
 
+
 enum State
 {
 	AttackState,

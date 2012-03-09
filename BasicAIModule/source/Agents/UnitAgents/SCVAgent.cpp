@@ -18,6 +18,15 @@ void SCVAgent::update()
 	if (state) {
 		switch (state) {
 			case GatherState:
+				// Gather minerals
+				if (unitTarget->getType().isMineralField()) {
+					if (!unit.isGatheringMinerals())
+						unit.gather(unitTarget);
+				// Gather gas
+				} else if (unitTarget->getType().isRefinery()) {
+					if (!unit.isGatheringGas())
+						unit.gather(unitTarget);
+				}
 				break;
 
 			default:

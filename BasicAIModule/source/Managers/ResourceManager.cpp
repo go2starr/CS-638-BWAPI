@@ -15,7 +15,7 @@ void ResourceManager::update()
 	for (agent = agents.begin(); agent != agents.end(); agent++)
 	{
 		if ((*agent)->getUnit().getType().isWorker() &&
-			(*agent)->getUnit().isIdle()) 
+			!(*agent)->getUnit().isGatheringGas())
 		{
 			int minDist = 9999999;
 			Unit* closest = 0;
@@ -29,7 +29,8 @@ void ResourceManager::update()
 			}
 			if (closest)
 			{
-
+				(*agent)->setUnitTarget(closest);
+				(*agent)->setState(GatherState);
 			}
 		}
 	}
