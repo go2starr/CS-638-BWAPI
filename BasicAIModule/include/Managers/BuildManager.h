@@ -8,5 +8,7 @@
 
 class BuildManager : public Manager
 {
+public: 
+	void update();
 
 };

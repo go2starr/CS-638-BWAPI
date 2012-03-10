@@ -14,6 +14,6 @@ enum State
 	IdleState,
 	ResearchState,
 	ScoutState,
-	TrainingState,
+	TrainState,
 	UpgradeState
 };

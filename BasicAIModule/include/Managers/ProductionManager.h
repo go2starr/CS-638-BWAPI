@@ -6,6 +6,8 @@
 
 class ProductionManager : public Manager
 {
+public:
+	void update();
 
 
 };

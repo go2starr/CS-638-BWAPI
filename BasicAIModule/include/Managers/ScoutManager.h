@@ -6,5 +6,6 @@
 
 class ScoutManager : public Manager
 {
-
+public: 
+	void update();
 };

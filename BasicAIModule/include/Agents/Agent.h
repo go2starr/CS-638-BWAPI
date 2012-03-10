@@ -14,6 +14,7 @@ protected:
   State state;					// The State this Agent is in
   Unit *unitTarget;             // Targeted unit (for gather, attack, etc.)
   Position *positionTarget;     // Targeted position (for moving, evade, etc.)
+  UnitType unitTypeTarget;		// Targeted unit type (for production of units, buildings, etc.)
 
 public:  
 	/*
@@ -26,6 +27,7 @@ public:
 	// attr_accessors
 	inline void setUnitTarget(Unit *target) { unitTarget = target; }
 	inline void setPositionTarget(Position *target) { positionTarget = target; }
+	inline void setUnitTypeTarget(UnitType target) { unitTypeTarget = target; }
 	inline void setState(State state) { this->state = state; }
 	inline const State getState() const { return state; }
 	inline const Unit& getUnit() const { return unit; }

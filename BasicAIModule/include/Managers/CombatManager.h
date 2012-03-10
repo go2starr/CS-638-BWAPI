@@ -6,5 +6,6 @@
 
 class CombatManager : public Manager
 {
-
+public: 
+	void update();
 };

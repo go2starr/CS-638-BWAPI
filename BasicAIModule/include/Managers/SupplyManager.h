@@ -6,5 +6,6 @@
 
 class SupplyManager : public Manager
 {
-
+public: 
+	void update();
 };

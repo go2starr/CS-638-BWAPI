@@ -7,4 +7,7 @@
 class StructureAgent: public Agent
 {
 public:
-}
+	virtual void update() { Agent::update(); }
+protected:
+	StructureAgent(Unit &u) : Agent(u) {}
+};

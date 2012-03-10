@@ -14,6 +14,7 @@
 #include "EventProducer/GameEvent.h"
 
 #include "UnitAgents/SCVAgent.h"
+#include "UnitAgents/CommandCenterAgent.h"
 
 #include <BWAPI.h>
 
@@ -43,33 +44,44 @@ void Strategizer::update()
 		Unit *u = *unit;
 		if (agents.find(u) == agents.end())
 		{
+			UnitType ut = u->getType();
 			// Insert a new Agent
-			if (u->getType().isWorker()) {
+			if (ut.isWorker()) {
 				SCVAgent *a = new SCVAgent(*u);
+				agents.insert(pair<Unit*, Agent*>(u, a));
+			} else if (ut.isResourceDepot()) {
+				CommandCenterAgent *a = new CommandCenterAgent(*u);
 				agents.insert(pair<Unit*, Agent*>(u, a));
 			}
 		}
 	}
 
 	// Normally, we would shuffle Units around by bid here..
-	// Let's just give them to the ResourceManager
 	for (agent = agents.begin(); agent != agents.end(); agent++)
 	{
 		Agent *a = (*agent).second;
+
+		// Give SCVs to resource gatherer
 		if (a->getUnit().getType().isWorker())
 		{
 			resourceManager.addAgent(*a);
 		}
+
+		// Give command center to production manager
+		else if (a->getUnit().getType().isResourceDepot())
+		{
+			productionManager.addAgent(*a);
+		}
 	}
 
 	// Let Managers update
-	buildManager.update();
-	combatManager.update();
-	constructionManager.update();
+	//buildManager.update();
+	//combatManager.update();
+	//constructionManager.update();
 	productionManager.update();
 	resourceManager.update();
-	scoutManager.update();
-	supplyManager.update();
+	//scoutManager.update();
+	//supplyManager.update();
 }
 
 /* 

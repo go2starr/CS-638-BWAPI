@@ -252,6 +252,10 @@
 					Name="UnitAgents"
 					>
 					<File
+						RelativePath=".\source\Agents\UnitAgents\CommandCenterAgent.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\source\Agents\UnitAgents\MarineAgent.cpp"
 						>
 					</File>
@@ -355,6 +359,10 @@
 				<Filter
 					Name="UnitAgents"
 					>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\CommandCenterAgent.h"
+						>
+					</File>
 					<File
 						RelativePath=".\include\Agents\UnitAgents\MarineAgent.h"
 						>
