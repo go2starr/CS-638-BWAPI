@@ -6,7 +6,6 @@
 
 
 #include <BWAPI.h>
-#include <BWSAL.h>
 #include <BWTA.h>
 
 #include <string>

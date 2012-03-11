@@ -7,7 +7,7 @@
 // #include "GameStateDB.h"
 
 #include "BuildManager.h"
-	#include "CombatManager.h"
+#include "CombatManager.h"
 #include "ConstructionManager.h"
 #include "ProductionManager.h"
 #include "ResourceManager.h"
@@ -15,6 +15,7 @@
 #include "SupplyManager.h"
 
 #include <BWAPI.h>
+#include <BWSAL.h>
 
 #include <map>
 
@@ -32,6 +33,9 @@ class Strategizer
 
 	// Agents
 	std::map<BWAPI::Unit*, Agent*> agents;
+
+	// Building placement
+	BWSAL::BFSBuildingPlacer buildingPlacer;
 
 	// Game State analysis
 	// GameStateDB gsdb;
