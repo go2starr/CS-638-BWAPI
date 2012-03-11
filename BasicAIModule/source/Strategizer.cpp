@@ -14,8 +14,7 @@
 #include "EventProducer/GameEvent.h"
 
 #include "UnitAgents/SCVAgent.h"
-
-#include "States/GatherState.h"
+#include "UnitAgents/CommandCenterAgent.h"
 
 #include <BWAPI.h>
 
@@ -25,6 +24,7 @@
 using namespace BWAPI;
 using std::set;
 using std::map;
+using std::pair;
 
 
 /* 
@@ -34,29 +34,54 @@ using std::map;
  */
 void Strategizer::update()
 {
-	// Create agents for newly found, friendly units
 	set<Unit*> units = Broodwar->self()->getUnits();
-	set<Unit*>::iterator unit = units.begin();
-	set<Unit*>::iterator uend = units.end();
-	for (; unit != uend; ++unit)
+	set<Unit*>::iterator unit;
+	map<Unit*, Agent*>::iterator agent;
+
+	// Create agents for newly found, friendly units
+	for (unit = units.begin(); unit != units.end(); ++unit)
 	{
 		Unit *u = *unit;
 		if (agents.find(u) == agents.end())
 		{
+			UnitType ut = u->getType();
 			// Insert a new Agent
-			if (u->getType().isWorker()) {
+			if (ut.isWorker()) {
 				SCVAgent *a = new SCVAgent(*u);
-				a->setState(GatherState());
+				agents.insert(pair<Unit*, Agent*>(u, a));
+			} else if (ut.isResourceDepot()) {
+				CommandCenterAgent *a = new CommandCenterAgent(*u);
 				agents.insert(pair<Unit*, Agent*>(u, a));
 			}
 		}
 	}
 
-	// Tell agents to update
-	map<Unit*, Agent*>::iterator it  = agents.begin();
-	map<Unit*, Agent*>::iterator end = agents.end();
-	for (; it != end; ++it)
-		it->second->update();
+	// Normally, we would shuffle Units around by bid here..
+	for (agent = agents.begin(); agent != agents.end(); agent++)
+	{
+		Agent *a = (*agent).second;
+
+		// Give SCVs to resource gatherer
+		if (a->getUnit().getType().isWorker())
+		{
+			resourceManager.addAgent(*a);
+		}
+
+		// Give command center to production manager
+		else if (a->getUnit().getType().isResourceDepot())
+		{
+			productionManager.addAgent(*a);
+		}
+	}
+
+	// Let Managers update
+	//buildManager.update();
+	//combatManager.update();
+	//constructionManager.update();
+	productionManager.update();
+	resourceManager.update();
+	//scoutManager.update();
+	//supplyManager.update();
 }
 
 /* 
@@ -66,7 +91,7 @@ void Strategizer::update()
  */
 void Strategizer::onMatchStart()
 {
-	Broodwar->sendText("Hello!");
+	Broodwar->sendText("Strategizer active.");
 }
 
 /* 
@@ -75,7 +100,6 @@ void Strategizer::onMatchStart()
  */
 void Strategizer::onEvent(GameEvent &e)
 {
-
 }
 
 

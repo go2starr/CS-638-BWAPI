@@ -6,5 +6,6 @@
 
 class ConstructionManager : public Manager
 {
-
+public: 
+	void update();
 };

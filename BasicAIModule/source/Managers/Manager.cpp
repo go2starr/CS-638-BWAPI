@@ -2,14 +2,13 @@
  *  Manager.cpp - Managers
  */
 #include "Manager.h"
-#include "Agent.h"
-#include "States/State.h"
+#include <Agent.h>
+#include <State.h>
 #include "Tasks/Task.h"
 
 #include <BWAPI.h>
 
 #include <queue>
-#include <list>
 #include <set>
 
 
@@ -18,21 +17,28 @@ using namespace BWAPI;
 
 
 void Manager::update()
-{ }
+{ 
+	// Tell agents to update
+	set<Agent*>::iterator agent;
+	for (agent = agents.begin(); agent != agents.end(); agent++)
+	{
+		(*agent)->update();
+	}
+}
 
 void Manager::addAgent(Agent &t)
 {
-	agents.push_back(t);
+	agents.insert(&t);
 }
 
 void Manager::removeAgent(Agent &t)
 {
-	agents.remove(t);
+	agents.erase(agents.find(&t));
 }
 
 void Manager::addTask(Task &t)
 {
-	tasks.push(t);
+	tasks.push(&t);
 }
 
 void Manager::doTask(Task &t)

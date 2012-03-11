@@ -6,7 +6,9 @@
 
 class ResourceManager : public Manager
 {
-  int getGasRate();
-  int getMineralRate();
+public:
+	void update();
+	int getGasRate();
+	int getMineralRate();
 };
 

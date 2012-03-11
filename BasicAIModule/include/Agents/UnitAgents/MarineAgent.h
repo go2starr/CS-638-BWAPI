@@ -12,5 +12,4 @@ class MarineAgent :	public GroundAgent
 public:
 	MarineAgent(BWAPI::Unit& u);
 	virtual void update();
-	void setState(ActorState& s);
 };

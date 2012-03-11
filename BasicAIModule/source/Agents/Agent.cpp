@@ -4,7 +4,7 @@
 #include "Agent.h"
 
 Agent::Agent(Unit& u)
-	: unit(u), state()
+: unit(u), state(IdleState)
 { }
 
 bool Agent::operator==(const Agent& other)
@@ -18,5 +18,5 @@ bool Agent::operator==(const Agent& other)
 
 void Agent::update()
 {
-	Broodwar->sendText("In Agent update");
+
 }

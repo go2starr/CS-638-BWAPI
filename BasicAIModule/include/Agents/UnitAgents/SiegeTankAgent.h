@@ -12,5 +12,4 @@ class SiegeTankAgent : public GroundAgent
 public:
 	SiegeTankAgent(BWAPI::Unit& u);
 	virtual void update();
-	void setState(ActorState& s);
 };

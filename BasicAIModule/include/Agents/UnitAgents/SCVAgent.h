@@ -12,5 +12,4 @@ class SCVAgent : public GroundAgent
 public:
 	SCVAgent(BWAPI::Unit& u);
 	virtual void update();
-	void setState(ActorState& s);
 };

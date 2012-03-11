@@ -18,9 +18,3 @@ void MedicAgent::update()
 	if( !unit.isIdle() )
 		return;
 }
-
-void MedicAgent::setState(ActorState& s)
-{
-	state = s;
-}
-
