@@ -75,32 +75,32 @@ EnhancedChokepoint::EnhancedChokepoint(BWTA::Chokepoint * chokepoint)
 	/* search for sides in region A */
 	regionASides.first = regions.first;
 	if (isSideInRegion(leftSide, regions.first)) {
-		regionASides.second.push_back(EnhancedSide(leftSide));
+		regionASides.second.push_back(EnhancedSide(leftSide, EnhancedSide::left));
 	}
 	if (isSideInRegion(topSide, regions.first)) {
-		regionASides.second.push_back(EnhancedSide(topSide));
+		regionASides.second.push_back(EnhancedSide(topSide, EnhancedSide::top));
 	}
 	if (isSideInRegion(rightSide, regions.first)) {
-		regionASides.second.push_back(EnhancedSide(rightSide));
+		regionASides.second.push_back(EnhancedSide(rightSide, EnhancedSide::right));
 	}
 	if (isSideInRegion(bottomSide, regions.first)) {
-		regionASides.second.push_back(EnhancedSide(bottomSide));
+		regionASides.second.push_back(EnhancedSide(bottomSide, EnhancedSide::bottom));
 	}
 
 	
 	/* serach for sides in region B */
 	regionBSides.first = regions.second;
 	if (isSideInRegion(leftSide, regions.second)) {
-		regionBSides.second.push_back(EnhancedSide(leftSide));
+		regionBSides.second.push_back(EnhancedSide(leftSide, EnhancedSide::left));
 	}
 	if (isSideInRegion(topSide, regions.second)) {
-		regionBSides.second.push_back(EnhancedSide(topSide));
+		regionBSides.second.push_back(EnhancedSide(topSide, EnhancedSide::top));
 	}
 	if (isSideInRegion(rightSide, regions.second)) {
-		regionBSides.second.push_back(EnhancedSide(rightSide));
+		regionBSides.second.push_back(EnhancedSide(rightSide, EnhancedSide::right));
 	}
 	if (isSideInRegion(bottomSide, regions.second)) {
-		regionBSides.second.push_back(EnhancedSide(bottomSide));
+		regionBSides.second.push_back(EnhancedSide(bottomSide, EnhancedSide::bottom));
 	}
 }
 
