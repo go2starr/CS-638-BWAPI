@@ -12,7 +12,7 @@
 using std::pair;
 using std::vector;
 
-EnhancedSide::EnhancedSide(pair<BWAPI::Position, BWAPI::Position> endPoints)
+EnhancedSide::EnhancedSide(pair<BWAPI::Position, BWAPI::Position> endPoints, Orientation orientation)
 {
 	bool xMatch, yMatch;
 	bool down, right;
@@ -29,6 +29,7 @@ EnhancedSide::EnhancedSide(pair<BWAPI::Position, BWAPI::Position> endPoints)
 
 	/* set our endPoints */
 	this->endPoints = endPoints;
+	this->orientation = orientation;
 
 	/* get the end point tile positions */
 	endTilePositions.first = BWAPI::TilePosition(endPoints.first);
@@ -98,6 +99,10 @@ pair<BWAPI::Position, BWAPI::Position> EnhancedSide::getEndPoints()
 vector<BWAPI::TilePosition> EnhancedSide::getTilePositions()
 {
 	return tilePositions;
+}
+EnhancedSide::Orientation EnhancedSide::getOrientation(void)
+{
+	return orientation;
 }
 /* draws a line */
 void EnhancedSide::drawSide(BWAPI::Color color)
