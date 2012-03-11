@@ -14,8 +14,9 @@
 #include "ScoutManager.h"
 #include "SupplyManager.h"
 
+#include "TacticalBuildingPlacer.h"
+
 #include <BWAPI.h>
-#include <BWSAL.h>
 
 #include <map>
 
@@ -35,7 +36,7 @@ class Strategizer
 	std::map<BWAPI::Unit*, Agent*> agents;
 
 	// Building placement
-	BWSAL::BFSBuildingPlacer buildingPlacer;
+	TacticalBuildingPlacer buildingPlacer;
 
 	// Game State analysis
 	// GameStateDB gsdb;

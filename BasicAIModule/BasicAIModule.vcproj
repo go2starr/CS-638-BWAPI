@@ -330,6 +330,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\EnhancedSide.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\EnhancedUI.h"
 				>
 			</File>
@@ -339,6 +343,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Strategizer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\TacticalBuildingPlacer.h"
 				>
 			</File>
 			<Filter

@@ -4,6 +4,7 @@
 */
 
 #include <TacticalBuildingPlacer.h>
+#include <BWSAL/BFSBuildingPlacer.h>
 
 TacticalBuildingPlacer::TacticalBuildingPlacer()
 {
@@ -65,4 +66,15 @@ void TacticalBuildingPlacer::draw(void)
 
 void TacticalBuildingPlacer::update(void)
 {
+}
+
+BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType unitType, BWAPI::TilePosition seedLocation, BWAPI::Unit *builder)
+{
+	BWAPI::TilePosition loc;
+
+	loc = buildingPlacer.findBuildLocation(BWSAL::ReservedMap::getInstance(), unitType, seedLocation, builder);
+
+	// TODO: Add Tiles to reserve map
+
+	return loc;
 }

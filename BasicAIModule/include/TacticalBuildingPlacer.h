@@ -4,6 +4,7 @@
  */
 #include <BWAPI.h>
 #include <BWTA.h>
+#include <BWSAL.h>
 
 #include <EnhancedUI.h>
 #include <EnhancedSide.h>
@@ -23,7 +24,9 @@ public:
 	void analyze(void);
 	void draw(void);
 	void update(void);
+	BWAPI::TilePosition reserveBuildLocation(BWAPI::UnitType unitType, BWAPI::TilePosition seedLocation, BWAPI::Unit *builder = NULL);
 
 private:
 	vector<pair<BWTA::Region *, vector<EnhancedChokepoint>>> regionsToChokepoints;
+	BWSAL::BFSBuildingPlacer buildingPlacer;
 };
