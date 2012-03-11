@@ -19,7 +19,8 @@ void SCVAgent::update()
 		switch (state) {
 			case GatherState:
 				// Gather minerals
-				if (unitTarget->getType().isMineralField()) {
+				if (unitTarget->getType().isMineralField()) 
+				{
 					if (!unit.isGatheringMinerals())
 						unit.gather(unitTarget);
 				// Gather gas
@@ -28,6 +29,13 @@ void SCVAgent::update()
 						unit.gather(unitTarget);
 				}
 				break;
+
+			case BuildState:
+				if (!unit.isConstructing())
+				{
+					//BWAPI::UnitTypes::Terran_Supply_Depot.tileHeight;
+					//unit.build(unitTypeTarget);
+				}
 
 			default:
 				GroundAgent::update();

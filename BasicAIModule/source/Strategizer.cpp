@@ -81,7 +81,7 @@ void Strategizer::update()
 	productionManager.update();
 	resourceManager.update();
 	//scoutManager.update();
-	//supplyManager.update();
+	supplyManager.update();
 }
 
 /* 

@@ -7,6 +7,7 @@
 enum State
 {
 	AttackState,
+	BuildState,
 	BuildingState,
 	DefendState,
 	EvadeState,
