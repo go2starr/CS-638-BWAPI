@@ -2,7 +2,7 @@
 #include <vector>
 #include <BWAPI.h>
 #include <BWTA.h>
-#include <BWSAL.h>
+//#include <BWSAL.h>
 
 using namespace std;
 
@@ -19,6 +19,7 @@ public:
 		BWAPI::TilePosition & topRightTP, 
 		BWAPI::TilePosition & bottomRightTP, 
 		BWAPI::TilePosition & bottomLeftTP);
+	void drawPolygonFromRegion(BWTA::Region * region, BWAPI::Color color);
 /*
 	void addFoundTilePositionsToSize(vector<BWAPI::TilePosition> & tPositions, 
 											 BWAPI::TilePosition upperLeftTPos, 

@@ -7,7 +7,9 @@
 #include <BWAPI.h>
 #include <BWSAL.h>
 #include <BWTA.h>
+
 #include <EnhancedUI.h>
+#include <TacticalBuildingPlacer.h>
 
 #include <iterator>
 #include <vector>
@@ -19,6 +21,7 @@ class BasicAIModule : public BWAPI::AIModule
 {
 private:
 	EnhancedUI* enhancedUI;
+	TacticalBuildingPlacer * tacticalBuildingPlacer;
 
 public:
 	virtual void onStart();

@@ -190,11 +190,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\EnhancedSide.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\EnhancedUI.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\source\Strategizer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\TacticalBuildingPlacer.cpp"
 				>
 			</File>
 			<Filter
@@ -314,6 +322,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\EnhancedSide.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\EnhancedUI.h"
 				>
 			</File>
@@ -323,6 +335,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Strategizer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\TacticalBuildingPlacer.h"
 				>
 			</File>
 			<Filter
