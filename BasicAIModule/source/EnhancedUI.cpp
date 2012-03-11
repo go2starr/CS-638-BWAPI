@@ -4,7 +4,7 @@
 #include "EnhancedUI.h"
 
 using namespace BWAPI;
-using namespace BWSAL;
+//using namespace BWSAL;
 
 
 void EnhancedUI::update() const
@@ -16,8 +16,8 @@ void EnhancedUI::update() const
 
 void EnhancedUI::drawTilePosition(BWAPI::TilePosition tPos, BWAPI::Color color) 
 {
-	Broodwar->drawBoxMap(tPos.x() * 32, tPos.y() * 32, (tPos.x() + 1) * 32, 
-		(tPos.y() + 1) * 32, color, false);
+	Broodwar->drawBoxMap(tPos.x() * 32, tPos.y() * 32, tPos.x() * 32 + 31, 
+		tPos.y() * 32 + 31, color, false);
 }
 
 void EnhancedUI::drawBases() const
@@ -79,29 +79,29 @@ void EnhancedUI::drawTerrain() const
 	}
 }
 
-/*
-*
-* works
-*/
-void EnhancedUI::drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height)
+/* draw region's polygon */
+void EnhancedUI::drawPolygonFromRegion(BWTA::Region * region, BWAPI::Color color)
 {
-	Broodwar->drawBoxMap(tpos.x() * 32, tpos.y() * 32, (tpos.x() + width) * 32, 
-		(tpos.y() + height) * 32, Colors::Purple, false);
+		BWTA::Polygon p = region->getPolygon();
+		for (int j = 0; j < (int)p.size(); j++) {
+			Position point1=p[j];
+			Position point2=p[(j+1) % p.size()];
+			Broodwar->drawLine(CoordinateType::Map,point1.x(),point1.y(),point2.x(),point2.y(),color);
+		}
 }
 
-/*
-*
-*
-*/
+/* given top left tile position, draw box for width and height */
+void EnhancedUI::drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height)
+{
+	Broodwar->drawBoxMap(tpos.x() * 32, tpos.y() * 32, ((tpos.x() + width) * 32) - 1, 
+		((tpos.y() + height) * 32) - 1, Colors::Purple, false);
+}
+
 int EnhancedUI::getMinTileSize(int pixels){
 
 	return  pixels / TILE_SIZE;
 }
 
-/*
-*
-*
-*/
 int EnhancedUI::getMaxTileSize(int pixels){
 
 	if(pixels % TILE_SIZE){
@@ -110,10 +110,7 @@ int EnhancedUI::getMaxTileSize(int pixels){
 	return  pixels / TILE_SIZE;
 }
 
-/*
-*
-*
-*/
+/* for a given BWTA region, finds corner tile positions for max width and height */
 void EnhancedUI::getRegionBoundingTilePositions(const BWTA::Region * region, BWAPI::TilePosition & topLeftTP, 
 												BWAPI::TilePosition & topRightTP, BWAPI::TilePosition & bottomRightTP, 
 												BWAPI::TilePosition & bottomLeftTP)
@@ -229,10 +226,8 @@ void EnhancedUI::getRegionBoundingTilePositions(const BWTA::Region * region, BWA
 //	}
 //}
 
-/*
-*
-*
-*/
+
+/* for a given BWTA region, draws bounding box for max width and height */
 void EnhancedUI::drawRegionBoundingBox(const BWTA::Region * region)
 {
 	BWTA::Polygon poly;
@@ -258,9 +253,6 @@ void EnhancedUI::drawRegionBoundingBox(const BWTA::Region * region)
 			pBottom = poly[j];
 		}
 	}
-
-	// void drawBox(CoordinateType::Enum ctype, int left, int top, int right, 
-	//              int bottom, Color color = Color(Colors::Green), bool isSolid = false);
 
 	Broodwar->drawBoxMap(pLeft.x(), pTop.y(), pRight.x(), pBottom.y(), Colors::Purple, false);
 

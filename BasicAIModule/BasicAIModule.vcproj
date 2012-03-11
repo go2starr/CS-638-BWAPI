@@ -190,6 +190,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\EnhancedSide.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\EnhancedUI.cpp"
 				>
 			</File>
@@ -323,6 +327,10 @@
 			</File>
 			<File
 				RelativePath=".\include\EnhancedChokepoint.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\EnhancedSide.h"
 				>
 			</File>
 			<File

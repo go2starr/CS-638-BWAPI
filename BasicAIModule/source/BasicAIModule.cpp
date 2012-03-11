@@ -17,7 +17,7 @@ using namespace BWAPI;
 using std::string;
 using std::vector;
 
-
+/* chokepoint analysis */
 vector<EnhancedChokepoint> ecPoints;
 
 
@@ -74,18 +74,25 @@ void BasicAIModule::onFrame()
 	BWTA::BaseLocation * baseLoc;
 	BWTA::Region * region;
 
+	/* where we live */
 	baseLoc = BWTA::getStartLocation(Broodwar->self());
+	/* get base region */
 	region = baseLoc->getRegion();
-
+	/* draw for all terrain */
 	enhancedUI->update();
+	/* base region get's a different color, easier to see */
+	enhancedUI->drawPolygonFromRegion(region, BWAPI::Colors::Teal);
 
 	/* additional UI */
 	/* draw for enhanced chokepoints */
 	for (int x = 0; x < (int) ecPoints.size(); ++x) {
+		/* draw tiles for the sides and center of chokepoint line */
 		ecPoints[x].drawTilePositions();
-		ecPoints[x].drawBoundingBox();
+		/* leave out for now, sides can be hard to see with this on */
+		//ecPoints[x].drawBoundingBox();
+		ecPoints[x].drawBoundingBoxSidesForRegion(region, BWAPI::Colors::Red);
 	}
-	/* for show */
+	/* shows max width and height of base region */
 	enhancedUI->drawRegionBoundingBox(region);
 
 	/* update the Strategizer */
