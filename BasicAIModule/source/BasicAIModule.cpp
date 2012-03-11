@@ -4,11 +4,10 @@
 #include "BasicAIModule.h"
 #include "Strategizer.h"
 
+
 #include <BWAPI.h>
 #include <BWSAL.h>
 #include <BWTA.h>
-
-#include <EnhancedChokepoint.h>
 
 #include <string>
 #include <vector>
@@ -17,10 +16,6 @@ using namespace BWAPI;
 using std::string;
 using std::vector;
 
-/* chokepoint analysis */
-vector<EnhancedChokepoint> ecPoints;
-
-
 /* 
  * onStart()
  *
@@ -28,11 +23,6 @@ vector<EnhancedChokepoint> ecPoints;
  */
 void BasicAIModule::onStart()
 {
-	BWTA::BaseLocation * baseLoc;
-	BWTA::Region * region;
-	set<BWTA::Chokepoint *> startLocChokepoints;
-	set<BWTA::Chokepoint *>::iterator cpi;
-
 	/* set up BWTA */
 	BWTA::readMap();
 	BWTA::analyze();
@@ -42,16 +32,10 @@ void BasicAIModule::onStart()
 
 	Strategizer::instance().onMatchStart();
 
+	/* requires BTWA::analyze(); */
 	enhancedUI = new EnhancedUI();
-
-	/* get enhanced chokepoints for start location */
-	baseLoc = BWTA::getStartLocation(Broodwar->self());
-	region = baseLoc->getRegion();
-	startLocChokepoints = region->getChokepoints();
-	for (cpi = startLocChokepoints.begin(); cpi != startLocChokepoints.end(); ++cpi) {
-		EnhancedChokepoint ecPoint(*cpi);
-		ecPoints.push_back(ecPoint);
-	}
+	/* requires BTWA::analyze(); */
+	tacticalBuildingPlacer = new TacticalBuildingPlacer();
 }
 
 /* 
@@ -70,30 +54,11 @@ void BasicAIModule::onEnd(bool isWinner)
  */
 void BasicAIModule::onFrame()
 {
-	BWTA::BaseLocation * baseLoc;
-	BWTA::Region * region;
-
-	/* where we live */
-	baseLoc = BWTA::getStartLocation(Broodwar->self());
-	/* get base region */
-	region = baseLoc->getRegion();
 	/* draw for all terrain */
 	enhancedUI->update();
-	/* base region get's a different color, easier to see */
-	enhancedUI->drawPolygonFromRegion(region, BWAPI::Colors::Teal);
 
-	/* additional UI */
-	/* draw for enhanced chokepoints */
-	for (int x = 0; x < (int) ecPoints.size(); ++x) {
-		/* draw tiles for the sides and center of chokepoint line */
-		ecPoints[x].drawTilePositions();
-		/* leave out for now, sides can be hard to see with this on */
-		//ecPoints[x].drawBoundingBox();
-		ecPoints[x].drawBoundingBoxSidesForRegion(region, BWAPI::Colors::Red);
-	}
-	/* shows max width and height of base region */
-	enhancedUI->drawRegionBoundingBox(region);
-
+	tacticalBuildingPlacer->draw();
+	
 	/* update the Strategizer */
 	Strategizer::instance().update();
 }

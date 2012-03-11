@@ -21,7 +21,7 @@ void CommandCenterAgent::update()
 		case TrainState:
 			if (!unit.isTraining()) 
 			{
-				Broodwar->sendText("CC: Training SCV");
+				//Broodwar->sendText("CC: Training SCV");
 				unit.train(BWAPI::UnitTypes::Terran_SCV);
 			}
 			break;

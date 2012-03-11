@@ -201,6 +201,10 @@
 				RelativePath=".\source\Strategizer.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\source\TacticalBuildingPlacer.cpp"
+				>
+			</File>
 			<Filter
 				Name="Managers"
 				>
@@ -331,6 +335,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Strategizer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\TacticalBuildingPlacer.h"
 				>
 			</File>
 			<Filter
