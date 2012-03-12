@@ -20,8 +20,12 @@ class Manager
 protected:
 	AgentSet  agents;
 	TaskQueue tasks;
+	unsigned int frames;
   
 public:
+	/* C'tor */
+	Manager();
+
 	/* update - Called on each frame */
 	virtual void update();
 
