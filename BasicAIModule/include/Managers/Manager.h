@@ -29,6 +29,8 @@ public:
 	virtual void addAgent(Agent &t);
 	/* removeAgent - Remove an Agent of @ut from the Managers Agent set */
 	virtual Agent* removeAgent(BWAPI::UnitType ut);
+	/* removeAllAgents - Remove all agents */
+	void removeAllAgents();
 
 	/* numAgents - Find out how many Agents of any unit type this Manager owns */
 	int Manager::numAgents() const;
