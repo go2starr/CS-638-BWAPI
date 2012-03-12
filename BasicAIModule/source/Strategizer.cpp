@@ -38,62 +38,94 @@ void Strategizer::update()
 
 	set<Unit*> units = Broodwar->self()->getUnits();
 	set<Unit*>::iterator unit;
-	map<Unit*, Agent*>::iterator agent;
 
 	// Create agents for newly found, friendly units
 	for (unit = units.begin(); unit != units.end(); ++unit)
 	{
 		Unit *u = *unit;
-		if (agents.find(u) == agents.end())
+		if (unitAgentMap.find(u) == unitAgentMap.end())
 		{
 			UnitType ut = u->getType();
 			// Insert a new Agent
 			if (ut.isWorker()) {
 				SCVAgent *a = new SCVAgent(*u);
-				agents.insert(pair<Unit*, Agent*>(u, a));
+				unitAgentMap.insert(pair<Unit*, Agent*>(u, a));
 			} else if (ut.isResourceDepot()) {
 				CommandCenterAgent *a = new CommandCenterAgent(*u);
-				agents.insert(pair<Unit*, Agent*>(u, a));
+				unitAgentMap.insert(pair<Unit*, Agent*>(u, a));
 			}
 		}
 	}
 
 	// Normally, we would shuffle Units around by bid here..
-	for (agent = agents.begin(); agent != agents.end(); agent++)
+	map<Unit*, Agent*>::iterator agent;
+	for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 	{
 		Agent *a = (*agent).second;
 
-		// Give SCVs to resource gatherer (unless we are low on supply)
+		// Assign SCVs to resource gatherer
 		if (a->getUnit().getType().isWorker())
 		{
-			resourceManager.addAgent(*a);
+			agentManagerMap[a] = &resourceManager;
 		}
 
 		// Give command center to production manager
 		else if (a->getUnit().getType().isResourceDepot())
 		{
-			productionManager.addAgent(*a);
+			agentManagerMap[a] = &productionManager;
+		}
+
+		// Give Barracks to combat manager
+		else if (a->getUnit().getType().getID() == BWAPI::UnitTypes::Terran_Barracks.getID())
+		{
 		}
 	}
 
 	// If we are running low on supply, give an SCV to the SupplyManager
 	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 6)
 	{
-		Agent *a = resourceManager.removeAgent(BWAPI::UnitTypes::Terran_SCV);
-		if (a != NULL)
-			supplyManager.addAgent(*a);
+		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
+		{
+			Agent *a = (*agent).second;
+			if (a->getUnit().getType().isWorker() && agentManagerMap[a] == &resourceManager)
+			{
+				agentManagerMap[a] = &supplyManager;
+				break;
+			}
+		}
 	}
 
 	// If we have enough SCVs, let's try creating a Barracks/Marines
-	if (Broodwar->self()->supplyUsed() > 10)
+	if (Broodwar->self()->supplyUsed() > 20)
 	{
-		Agent *a = resourceManager.removeAgent(BWAPI::UnitTypes::Terran_SCV);
-		if (a != NULL)
-			combatManager.addAgent(*a);
+		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
+		{
+			Agent *a = (*agent).second;
+			if (a->getUnit().getType().isWorker() && agentManagerMap[a] == &resourceManager)
+			{
+				agentManagerMap[a] = &combatManager;
+				break;
+			}
+		}
 	}
 
+	// Revoke all agents from managers
+	buildManager.removeAllAgents();
+	combatManager.removeAllAgents();
+	constructionManager.removeAllAgents();
+	productionManager.removeAllAgents();
+	resourceManager.removeAllAgents();
+	scoutManager.removeAllAgents();
+	supplyManager.removeAllAgents();
 
-	// TODO: Enforce that exactly 1 manager owns each agent.
+	// Redistribute agents
+	map<Agent*, Manager*>::iterator agentManager;
+	for (agentManager = agentManagerMap.begin(); agentManager != agentManagerMap.end(); agentManager++)
+	{
+		Agent *a = (*agentManager).first;
+		Manager *m = (*agentManager).second;
+		m->addAgent(*a);
+	}	
 
 	// Let Managers update
 	//buildManager.update();
