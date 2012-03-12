@@ -47,6 +47,21 @@ Agent* Manager::removeAgent(BWAPI::UnitType ut)
 	return agent;
 }
 
+int Manager::numAgents() const { return agents.size(); }
+
+int Manager::numAgents(BWAPI::UnitType ut) const
+{
+	int count = 0;
+	set<Agent*>::const_iterator it  = agents.begin();
+	set<Agent*>::const_iterator end = agents.end();
+	for(; it != end; ++it)
+	{
+		if( (*it)->getUnit().getType() == ut )
+			++count;
+	}
+	return count;
+}
+
 void Manager::removeAllAgents()
 {
 	agents.clear();

@@ -24,8 +24,11 @@ void SCVAgent::update()
 				{
 					if (!unit.isGatheringMinerals())
 						unit.gather(unitTarget);
+				}
+
 				// Gather gas
-				} else if (unitTarget->getType().isRefinery()) {
+				else if (unitTarget->getType().isRefinery()) 
+				{
 					if (!unit.isGatheringGas())
 						unit.gather(unitTarget);
 				}
@@ -37,14 +40,12 @@ void SCVAgent::update()
 				if (unit.isCarryingGas() ||
 					unit.isCarryingMinerals())
 				{
-					Broodwar->sendText("Returning cargo");
 					unit.returnCargo();
 				}
 
 				// Reserve a build location
 				else if (!buildingReserved)
 				{
-					Broodwar->sendText("Reserving");
 					TacticalBuildingPlacer &tbp = TacticalBuildingPlacer::instance();
 					buildingLocation = tbp.reserveBuildLocation(unitTypeTarget, 
 																BWAPI::Broodwar->self()->getStartLocation(), 
@@ -66,6 +67,7 @@ void SCVAgent::update()
 				break;
 			default:
 				GroundAgent::update();
+		
 		}
 	}
 }

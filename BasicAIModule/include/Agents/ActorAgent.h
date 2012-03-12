@@ -9,5 +9,5 @@ class ActorAgent : public Agent
 public:
 	virtual void update();
 protected:
-  ActorAgent(Unit &u);
+	ActorAgent(BWAPI::Unit &u);
 };

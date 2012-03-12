@@ -6,7 +6,7 @@
 
 enum State
 {
-	AttackState,
+	AttackState = 0,
 	BuildState,
 	BuildingState,
 	DefendState,
@@ -18,3 +18,5 @@ enum State
 	TrainState,
 	UpgradeState
 };
+
+extern const char* StateStrings[];

@@ -14,7 +14,9 @@
 #include "EventProducer/GameEvent.h"
 
 #include "UnitAgents/SCVAgent.h"
+#include "UnitAgents/MarineAgent.h"
 #include "UnitAgents/CommandCenterAgent.h"
+#include "UnitAgents/BarracksAgent.h"
 
 #include <BWAPI.h>
 
@@ -34,6 +36,8 @@ using std::pair;
  */
 void Strategizer::update()
 {
+	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
+
 	set<Unit*> units = Broodwar->self()->getUnits();
 	set<Unit*>::iterator unit;
 
@@ -48,17 +52,23 @@ void Strategizer::update()
 		{
 			continue;
 		}
+		// New agent
 		if (unitAgentMap.find(u) == unitAgentMap.end())
 		{
 			UnitType ut = u->getType();
-			// Insert a new Agent
+			Agent *a = NULL;
 			if (ut.isWorker()) {
-				SCVAgent *a = new SCVAgent(*u);
-				unitAgentMap[u] = a;
+				a = new SCVAgent(*u);
 			} else if (ut.isResourceDepot()) {
-				CommandCenterAgent *a = new CommandCenterAgent(*u);
-				unitAgentMap[u] = a;
+				a = new CommandCenterAgent(*u);
+			} else if (ut == UnitTypes::Terran_Barracks) { 
+				a = new BarracksAgent(*u);
+			} else if (ut == UnitTypes::Terran_Marine) { 
+				a = new MarineAgent(*u);
 			}
+
+			if (a != NULL)
+				unitAgentMap[u] = a;
 		}
 	}
 
@@ -81,8 +91,15 @@ void Strategizer::update()
 		}
 
 		// Give Barracks to combat manager
-		else if (a->getUnit().getType().getID() == BWAPI::UnitTypes::Terran_Barracks.getID())
+		else if (a->getUnit().getType().getID() == UnitTypes::Terran_Barracks.getID())
 		{
+			agentManagerMap[a] = &combatManager;
+		}
+
+		// Give Marines to combat manager
+		else if (a->getUnit().getType().getID() == UnitTypes::Terran_Marine.getID())
+		{
+			agentManagerMap[a] = &combatManager;
 		}
 	}
 

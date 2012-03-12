@@ -7,6 +7,8 @@ using namespace std;
 
 void ResourceManager::update()
 {
+	Broodwar->drawTextScreen(2, 0, "\x1F RM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
+
 	// Send workers to mine minerals near our base
 	set<Unit*> minerals = Broodwar->getMinerals();
 	set<Unit*>::iterator mineral;
