@@ -6,7 +6,8 @@ using namespace std;
 
 void SupplyManager::update()
 {
-	Broodwar->sendText("SM: I have %d agents", agents.size());
+	if( frames % 240 == 0 )
+		Broodwar->sendText("SM: I have %d agents", agents.size());
 
 	/* Build supply depots if we are running low */
 	for (set<Agent*>::iterator it = agents.begin(); it != agents.end(); it++)
