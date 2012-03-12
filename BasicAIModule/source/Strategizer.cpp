@@ -61,7 +61,7 @@ void Strategizer::update()
 	{
 		Agent *a = (*agent).second;
 
-		// Give SCVs to resource gatherer
+		// Give SCVs to resource gatherer (unless we are low on supply)
 		if (a->getUnit().getType().isWorker())
 		{
 			resourceManager.addAgent(*a);
@@ -73,6 +73,17 @@ void Strategizer::update()
 			productionManager.addAgent(*a);
 		}
 	}
+
+	// If we are running low on supply, give an SCV to the SupplyManager
+	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 6)
+	{
+		Agent *a = resourceManager.removeAgent(BWAPI::UnitTypes::Terran_SCV);
+		if (a != NULL)
+			supplyManager.addAgent(*a);
+	}
+
+
+	// TODO: Enforce that exactly 1 manager owns each agent.
 
 	// Let Managers update
 	//buildManager.update();

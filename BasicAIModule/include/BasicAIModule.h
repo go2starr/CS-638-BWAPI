@@ -21,7 +21,6 @@ class BasicAIModule : public BWAPI::AIModule
 {
 private:
 	EnhancedUI* enhancedUI;
-	TacticalBuildingPlacer * tacticalBuildingPlacer;
 
 public:
 	virtual void onStart();

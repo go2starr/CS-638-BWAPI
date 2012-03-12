@@ -33,8 +33,6 @@ void BasicAIModule::onStart()
 
 	/* requires BTWA::analyze(); */
 	enhancedUI = new EnhancedUI();
-	/* requires BTWA::analyze(); */
-	tacticalBuildingPlacer = new TacticalBuildingPlacer();
 }
 
 /* 
@@ -56,8 +54,8 @@ void BasicAIModule::onFrame()
 	/* draw for all terrain */
 	enhancedUI->update();
 
-	tacticalBuildingPlacer->draw();
-	
+	TacticalBuildingPlacer::instance().draw();
+
 	/* update the Strategizer */
 	Strategizer::instance().update();
 }

@@ -35,9 +35,6 @@ class Strategizer
 	// Agents
 	std::map<BWAPI::Unit*, Agent*> agents;
 
-	// Building placement
-	TacticalBuildingPlacer buildingPlacer;
-
 	// Game State analysis
 	// GameStateDB gsdb;
 

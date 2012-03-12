@@ -31,9 +31,20 @@ void Manager::addAgent(Agent &t)
 	agents.insert(&t);
 }
 
-void Manager::removeAgent(Agent &t)
+Agent* Manager::removeAgent(BWAPI::UnitType ut)
 {
-	agents.erase(agents.find(&t));
+	Agent *agent = NULL;
+	set<Agent*>::iterator it;
+	for (it = agents.begin(); it != agents.end(); it++)
+	{
+		if ((*it)->getUnit().getType().getID() == ut.getID())
+		{
+			agent = *it;
+			agents.erase(agents.find(agent));
+			break;
+		}
+	}
+	return agent;
 }
 
 void Manager::addTask(Task &t)

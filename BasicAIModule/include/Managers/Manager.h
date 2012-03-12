@@ -27,8 +27,8 @@ public:
 
 	/* addAgent - Add an Agent to the Managers Agent set */
 	virtual void addAgent(Agent &t);
-	/* removeAgent - Remove an Agent of @type from the Managers Agent set */
-	virtual void removeAgent(Agent &t);
+	/* removeAgent - Remove an Agent of @ut from the Managers Agent set */
+	virtual Agent* removeAgent(BWAPI::UnitType ut);
 
 	/* addTask  -  Add this task to the task queue */
 	virtual void addTask(Task &t);

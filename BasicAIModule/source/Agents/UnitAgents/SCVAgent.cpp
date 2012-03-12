@@ -3,6 +3,7 @@
  */
 #include "UnitAgents/SCVAgent.h"
 #include "GroundAgent.h"
+#include <TacticalBuildingPlacer.h>
 
 #include <BWAPI.h>
 
@@ -33,8 +34,11 @@ void SCVAgent::update()
 			case BuildState:
 				if (!unit.isConstructing())
 				{
-					//BWAPI::UnitTypes::Terran_Supply_Depot.tileHeight;
-					//unit.build(unitTypeTarget);
+					BWAPI::TilePosition loc = TacticalBuildingPlacer::instance().reserveBuildLocation(unitTypeTarget, BWAPI::Broodwar->self()->getStartLocation(), &unit);
+					if (loc != BWAPI::TilePositions::None)
+					{
+						unit.build(loc, unitTypeTarget);
+					}
 				}
 
 			default:
