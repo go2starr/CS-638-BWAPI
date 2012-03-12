@@ -41,16 +41,23 @@ void Strategizer::update()
 	for (unit = units.begin(); unit != units.end(); ++unit)
 	{
 		Unit *u = *unit;
+
+		// Only construct active units
+		if (!u->isCompleted() ||
+			u->getHitPoints() <= 0)
+		{
+			continue;
+		}
 		if (unitAgentMap.find(u) == unitAgentMap.end())
 		{
 			UnitType ut = u->getType();
 			// Insert a new Agent
 			if (ut.isWorker()) {
 				SCVAgent *a = new SCVAgent(*u);
-				unitAgentMap.insert(pair<Unit*, Agent*>(u, a));
+				unitAgentMap[u] = a;
 			} else if (ut.isResourceDepot()) {
 				CommandCenterAgent *a = new CommandCenterAgent(*u);
-				unitAgentMap.insert(pair<Unit*, Agent*>(u, a));
+				unitAgentMap[u] = a;
 			}
 		}
 	}
@@ -80,7 +87,7 @@ void Strategizer::update()
 	}
 
 	// If we are running low on supply, give an SCV to the SupplyManager
-	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 6)
+	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 8)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 		{
@@ -142,7 +149,6 @@ void Strategizer::update()
  */
 void Strategizer::onMatchStart()
 {
-	Broodwar->sendText("Strategizer active.");
 }
 
 /* 

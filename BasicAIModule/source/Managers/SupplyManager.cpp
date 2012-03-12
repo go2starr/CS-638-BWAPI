@@ -10,8 +10,12 @@ void SupplyManager::update()
 	for (set<Agent*>::iterator it = agents.begin(); it != agents.end(); it++)
 	{
 		Agent *agent = *it;
-		agent->setState(BuildState);
-		agent->setUnitTypeTarget(BWAPI::UnitTypes::Terran_Supply_Depot);
+
+		if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 8)
+		{
+			agent->setState(BuildState);
+			agent->setUnitTypeTarget(BWAPI::UnitTypes::Terran_Supply_Depot);
+		}
 	}
 	
 	/* Base class updates Agents */

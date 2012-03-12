@@ -32,23 +32,38 @@ void SCVAgent::update()
 				break;
 
 			case BuildState:
-				if (!unit.isConstructing())
+
+				// Return cargo
+				if (unit.isCarryingGas() ||
+					unit.isCarryingMinerals())
 				{
-					if (!buildingReserved)
-					{
-						Broodwar->sendText("%d:: Reserving space for: %s", unit.getID(), unitTypeTarget.getName().c_str());
-						buildingLocation = TacticalBuildingPlacer::instance().reserveBuildLocation(unitTypeTarget, 
-																									BWAPI::Broodwar->self()->getStartLocation(), 
-																									&unit);
+					Broodwar->sendText("Returning cargo");
+					unit.returnCargo();
+				}
+
+				// Reserve a build location
+				else if (!buildingReserved)
+				{
+					Broodwar->sendText("Reserving");
+					TacticalBuildingPlacer &tbp = TacticalBuildingPlacer::instance();
+					buildingLocation = tbp.reserveBuildLocation(unitTypeTarget, 
+																BWAPI::Broodwar->self()->getStartLocation(), 
+																&unit);
 						if (buildingLocation != BWAPI::TilePositions::None)
 						{
 							// TODO: Need to reset this to false eventually
+							// TODO: Pass off/cancel reservations on build fails
 							buildingReserved = true;
 						}
-					}
+				}
+
+				// Start building
+				else if (!unit.isConstructing())
+				{
 					unit.build(buildingLocation, unitTypeTarget);
 				}
 
+				break;
 			default:
 				GroundAgent::update();
 		}
