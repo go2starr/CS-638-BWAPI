@@ -6,6 +6,10 @@ using namespace std;
 
 void CombatManager::update()
 {
+	Broodwar->drawTextScreen(2, 20, "\x11 CM : (SCV=%d) (Marine=%d)", 
+		numAgents(UnitTypes::Terran_SCV), 
+		numAgents(UnitTypes::Terran_Marine));
+
 	/* Produce an army */
 	for (set<Agent*>::iterator it = agents.begin(); it != agents.end(); it++)
 	{

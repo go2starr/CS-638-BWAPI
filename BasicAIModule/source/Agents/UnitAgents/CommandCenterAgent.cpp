@@ -6,7 +6,14 @@
 
 #include <BWAPI.h>
 
+#include <sstream>
+#include <string>
+
 using BWAPI::Unit;
+using BWAPI::Broodwar;
+
+using std::stringstream;
+using std::string;
 
 
 CommandCenterAgent::CommandCenterAgent(Unit &u) 
@@ -15,18 +22,15 @@ CommandCenterAgent::CommandCenterAgent(Unit &u)
 
 void CommandCenterAgent::update()
 {
-	if (state) {
-		switch (state)
+	switch (state)
+	{
+	case TrainState:
+		if (!unit.isTraining()) 
 		{
-		case TrainState:
-			if (!unit.isTraining()) 
-			{
-				//Broodwar->sendText("CC: Training SCV");
-				unit.train(BWAPI::UnitTypes::Terran_SCV);
-			}
-			break;
-
-		default: StructureAgent::update();
+			unit.train(BWAPI::UnitTypes::Terran_SCV);
 		}
+		break;
 	}
+
+	StructureAgent::update();
 }

@@ -27,6 +27,8 @@ void BasicAIModule::onStart()
 	BWTA::analyze();
 //	BWSAL::resetLog();
 
+	Broodwar->enableFlag(Flag::UserInput);
+
 	Broodwar->sendText("UW-Madison : CS638 Software Engineering - Brood War AI");
 
 	Strategizer::instance().onMatchStart();
@@ -42,6 +44,7 @@ void BasicAIModule::onStart()
  */
 void BasicAIModule::onEnd(bool isWinner)
 {
+
 }
 
 /* 
@@ -80,7 +83,7 @@ void BasicAIModule::onUnitDiscover(Unit* unit)
  */
 void BasicAIModule::onUnitEvade(Unit* unit)
 {
-
+	
 }
 
 /* 
@@ -89,7 +92,7 @@ void BasicAIModule::onUnitEvade(Unit* unit)
  */
 void BasicAIModule::onUnitMorph(Unit* unit)
 {
-
+	
 }
 
 /* 
@@ -98,7 +101,7 @@ void BasicAIModule::onUnitMorph(Unit* unit)
  */
 void BasicAIModule::onUnitRenegade(Unit* unit)
 {
-
+	
 }
 
 /* 
@@ -107,7 +110,7 @@ void BasicAIModule::onUnitRenegade(Unit* unit)
  */
 void BasicAIModule::onUnitDestroy(Unit* unit)
 {
-
+	Broodwar->sendText("Unit destroyed: %s", unit->getType().getName().c_str());
 }
 
 /* 

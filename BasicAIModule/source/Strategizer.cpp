@@ -34,6 +34,8 @@ using std::pair;
  */
 void Strategizer::update()
 {
+	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
+
 	set<Unit*> units = Broodwar->self()->getUnits();
 	set<Unit*>::iterator unit;
 	map<Unit*, Agent*>::iterator agent;

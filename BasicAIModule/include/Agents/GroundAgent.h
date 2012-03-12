@@ -9,5 +9,5 @@ class GroundAgent : public ActorAgent
 public:
 	virtual void update();
 protected:
-  GroundAgent(Unit &u);
+	GroundAgent(BWAPI::Unit &u);
 };

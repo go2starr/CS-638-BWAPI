@@ -264,6 +264,10 @@
 					RelativePath=".\source\Agents\GroundAgent.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\source\Agents\State.cpp"
+					>
+				</File>
 				<Filter
 					Name="UnitAgents"
 					>
