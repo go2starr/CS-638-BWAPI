@@ -40,11 +40,16 @@ Agent* Manager::removeAgent(BWAPI::UnitType ut)
 		if ((*it)->getUnit().getType().getID() == ut.getID())
 		{
 			agent = *it;
-			agents.erase(agents.find(agent));
+			agents.erase(agent);
 			break;
 		}
 	}
 	return agent;
+}
+
+void Manager::removeAllAgents()
+{
+	agents.clear();
 }
 
 void Manager::addTask(Task &t)
