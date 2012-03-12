@@ -272,6 +272,10 @@
 					Name="UnitAgents"
 					>
 					<File
+						RelativePath=".\source\Agents\UnitAgents\BarracksAgent.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\source\Agents\UnitAgents\CommandCenterAgent.cpp"
 						>
 					</File>
@@ -387,6 +391,10 @@
 				<Filter
 					Name="UnitAgents"
 					>
+					<File
+						RelativePath=".\include\Agents\UnitAgents\BarracksAgent.h"
+						>
+					</File>
 					<File
 						RelativePath=".\include\Agents\UnitAgents\CommandCenterAgent.h"
 						>

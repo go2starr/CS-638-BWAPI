@@ -14,7 +14,9 @@
 #include "EventProducer/GameEvent.h"
 
 #include "UnitAgents/SCVAgent.h"
+#include "UnitAgents/MarineAgent.h"
 #include "UnitAgents/CommandCenterAgent.h"
+#include "UnitAgents/BarracksAgent.h"
 
 #include <BWAPI.h>
 
@@ -53,6 +55,12 @@ void Strategizer::update()
 			} else if (ut.isResourceDepot()) {
 				CommandCenterAgent *a = new CommandCenterAgent(*u);
 				unitAgentMap.insert(pair<Unit*, Agent*>(u, a));
+			} else if (ut == UnitTypes::Terran_Barracks) { 
+				BarracksAgent *a = new BarracksAgent(*u);
+				unitAgentMap.insert(pair<Unit*, Agent*>(u, a));
+			} else if (ut == UnitTypes::Terran_Marine) { 
+				MarineAgent *a = new MarineAgent(*u);
+				unitAgentMap.insert(pair<Unit*, Agent*>(u, a));
 			}
 		}
 	}
@@ -76,8 +84,15 @@ void Strategizer::update()
 		}
 
 		// Give Barracks to combat manager
-		else if (a->getUnit().getType().getID() == BWAPI::UnitTypes::Terran_Barracks.getID())
+		else if (a->getUnit().getType().getID() == UnitTypes::Terran_Barracks.getID())
 		{
+			agentManagerMap[a] = &combatManager;
+		}
+
+		// Give Marines to combat manager
+		else if (a->getUnit().getType().getID() == UnitTypes::Terran_Marine.getID())
+		{
+			agentManagerMap[a] = &combatManager;
 		}
 	}
 
