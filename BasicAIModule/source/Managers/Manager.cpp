@@ -16,14 +16,8 @@ using namespace std;
 using namespace BWAPI;
 
 
-Manager::Manager()
-	: agents(), tasks(), frames(0)
-{ }
-
 void Manager::update()
 { 
-	++frames;
-
 	// Tell agents to update
 	set<Agent*>::iterator agent;
 	for (agent = agents.begin(); agent != agents.end(); agent++)
