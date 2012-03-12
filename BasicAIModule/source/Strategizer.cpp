@@ -82,12 +82,20 @@ void Strategizer::update()
 			supplyManager.addAgent(*a);
 	}
 
+	// If we have enough SCVs, let's try creating a Barracks/Marines
+	if (Broodwar->self()->supplyUsed() > 10)
+	{
+		Agent *a = resourceManager.removeAgent(BWAPI::UnitTypes::Terran_SCV);
+		if (a != NULL)
+			combatManager.addAgent(*a);
+	}
+
 
 	// TODO: Enforce that exactly 1 manager owns each agent.
 
 	// Let Managers update
 	//buildManager.update();
-	//combatManager.update();
+	combatManager.update();
 	//constructionManager.update();
 	productionManager.update();
 	resourceManager.update();

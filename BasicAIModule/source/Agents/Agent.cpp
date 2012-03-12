@@ -4,7 +4,7 @@
 #include "Agent.h"
 
 Agent::Agent(Unit& u)
-: unit(u), state(IdleState)
+: unit(u), state(IdleState), buildingReserved(false)
 { }
 
 bool Agent::operator==(const Agent& other)

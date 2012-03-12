@@ -12,9 +12,13 @@ class Agent
 protected:
   Unit &unit;					// The Unit this Agent controls
   State state;					// The State this Agent is in
+
   Unit *unitTarget;             // Targeted unit (for gather, attack, etc.)
   Position *positionTarget;     // Targeted position (for moving, evade, etc.)
   UnitType unitTypeTarget;		// Targeted unit type (for production of units, buildings, etc.)
+
+  bool buildingReserved;			// Have we reserved space for a building yet?
+  TilePosition buildingLocation;	// Location to build target building at
 
 public:  
 	/*

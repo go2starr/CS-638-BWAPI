@@ -34,11 +34,19 @@ void SCVAgent::update()
 			case BuildState:
 				if (!unit.isConstructing())
 				{
-					BWAPI::TilePosition loc = TacticalBuildingPlacer::instance().reserveBuildLocation(unitTypeTarget, BWAPI::Broodwar->self()->getStartLocation(), &unit);
-					if (loc != BWAPI::TilePositions::None)
+					if (!buildingReserved)
 					{
-						unit.build(loc, unitTypeTarget);
+						Broodwar->sendText("%d:: Reserving space for: %s", unit.getID(), unitTypeTarget.getName().c_str());
+						buildingLocation = TacticalBuildingPlacer::instance().reserveBuildLocation(unitTypeTarget, 
+																									BWAPI::Broodwar->self()->getStartLocation(), 
+																									&unit);
+						if (buildingLocation != BWAPI::TilePositions::None)
+						{
+							// TODO: Need to reset this to false eventually
+							buildingReserved = true;
+						}
 					}
+					unit.build(buildingLocation, unitTypeTarget);
 				}
 
 			default:
