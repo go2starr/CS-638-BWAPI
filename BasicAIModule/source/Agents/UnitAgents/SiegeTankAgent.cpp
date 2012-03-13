@@ -1,7 +1,7 @@
 /*
  * SiegeTankAgent.cpp
  */
-#include "UnitAgents/SiegeTankAgent.h"
+#include "SiegeTankAgent.h"
 #include "GroundAgent.h"
 
 #include <BWAPI.h>

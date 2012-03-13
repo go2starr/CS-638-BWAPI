@@ -14,19 +14,19 @@ Agent::Agent(Unit& u)
 
 void Agent::printState() const
 {
+	const int px = unit.getPosition().x();
+	const int py = unit.getPosition().y();
+	const int radius = unit.getRight() - px;
+
+	Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);
+
+	// FIXME: when an agent changes states, 
+	// the new state string draws over the 
+	// old one for some reason...
+	Broodwar->drawTextMap(px, py, "State: %s", StateStrings[state] );
+
 	if( unit.isSelected() )
-	{
-		const int px = unit.getPosition().x();
-		const int py = unit.getPosition().y();
-		const int radius = unit.getRight() - px;
-
-		Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);
-
-		// FIXME: when an agent changes states, 
-		// the new state string draws over the 
-		// old one for some reason...
-		Broodwar->drawTextMap(px, py, "State: %s", StateStrings[state] );
-	}
+        Broodwar->drawTextMap(px, py + 10, "id: %x", &unit);
 }
 
 bool Agent::operator==(const Agent& other)

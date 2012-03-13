@@ -1,7 +1,7 @@
 /*
  * MedicAgent.cpp
  */
-#include "UnitAgents/MedicAgent.h"
+#include "MedicAgent.h"
 #include "GroundAgent.h"
 
 #include <BWAPI.h>

@@ -1,7 +1,7 @@
 /*
  * BarracksAgent.cpp
  */
-#include "UnitAgents/BarracksAgent.h"
+#include "BarracksAgent.h"
 #include "StructureAgent.h"
 
 #include <BWAPI.h>

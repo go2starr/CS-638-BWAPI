@@ -2,8 +2,8 @@
  *  Manager.cpp - Managers
  */
 #include "Manager.h"
-#include <Agent.h>
-#include <State.h>
+#include "Agent.h"
+#include "State.h"
 #include "Tasks/Task.h"
 
 #include <BWAPI.h>

@@ -1,7 +1,7 @@
 /*
- * MarineAgent.cpp
+ * FirebatAgent.cpp
  */
-#include "MarineAgent.h"
+#include "FirebatAgent.h"
 #include "GroundAgent.h"
 
 #include <BWAPI.h>
@@ -9,11 +9,11 @@
 using BWAPI::Unit;
 
 
-MarineAgent::MarineAgent(Unit& u)
+FirebatAgent::FirebatAgent(Unit& u)
 	: GroundAgent(u)
 { }
 
-void MarineAgent::update()
+void FirebatAgent::update()
 {
 	if( !unit.isIdle() )
 		return;

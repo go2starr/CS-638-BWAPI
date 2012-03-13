@@ -2,21 +2,9 @@
  *  Strategizer.cpp
  */
 #include "Strategizer.h"
-
-#include "BuildManager.h"
-#include "CombatManager.h"
-#include "ConstructionManager.h"
-#include "ProductionManager.h"
-#include "ResourceManager.h"
-#include "ScoutManager.h"
-#include "SupplyManager.h"
-
-#include "EventProducer/GameEvent.h"
-
-#include "UnitAgents/SCVAgent.h"
-#include "UnitAgents/MarineAgent.h"
-#include "UnitAgents/CommandCenterAgent.h"
-#include "UnitAgents/BarracksAgent.h"
+#include "IncludeAllManagers.h"
+#include "IncludeAllUnitAgents.h"
+#include "GameEvent.h"
 
 #include <BWAPI.h>
 
@@ -116,15 +104,19 @@ void Strategizer::updateUnitAgentMap()
 		{
 			UnitType ut = u->getType();
 			Agent *a = NULL;
-			if (ut.isWorker()) {
-				a = new SCVAgent(*u);
-			} else if (ut.isResourceDepot()) {
-				a = new CommandCenterAgent(*u);
-			} else if (ut == UnitTypes::Terran_Barracks) { 
+
+			if (ut.isWorker()) 				a = new SCVAgent(*u);
+			else if (ut.isResourceDepot())	a = new CommandCenterAgent(*u);
+            else if (ut == UnitTypes::Terran_Refinery)
+                a = new RefineryAgent(*u);
+			else if (ut == UnitTypes::Terran_Barracks) 
 				a = new BarracksAgent(*u);
-			} else if (ut == UnitTypes::Terran_Marine) { 
+			else if (ut == UnitTypes::Terran_Marine) 
 				a = new MarineAgent(*u);
-			}
+            else if (ut == UnitTypes::Terran_Firebat) 
+                a = new FirebatAgent(*u);
+            else if (ut == UnitTypes::Terran_Medic)
+                a = new MedicAgent(*u);
 
 			if (a != NULL)
 				unitAgentMap[u] = a;
@@ -144,41 +136,40 @@ void Strategizer::updateAgentManagerMap()
 	map<Unit*, Agent*>::iterator agent;
 	for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 	{
-		Agent *a = (*agent).second;
+		Agent   *a  = (*agent).second;
+        UnitType ut = a->getUnit().getType();
 
 		// Assign SCVs to resource gatherer
 		if (a->getUnit().getType().isWorker())
-		{
 			agentManagerMap[a] = &resourceManager;
-		}
-
+        // Give refinery to resource manager
+        else if (ut.isRefinery())
+            agentManagerMap[a] = &resourceManager;
 		// Give command center to production manager
-		else if (a->getUnit().getType().isResourceDepot())
-		{
+		else if (ut.isResourceDepot())
 			agentManagerMap[a] = &productionManager;
-		}
-
 		// Give Barracks to combat manager
-		else if (a->getUnit().getType().getID() == UnitTypes::Terran_Barracks.getID())
-		{
+		else if (ut == UnitTypes::Terran_Barracks)
 			agentManagerMap[a] = &combatManager;
-		}
-
 		// Give Marines to combat manager
-		else if (a->getUnit().getType().getID() == UnitTypes::Terran_Marine.getID())
-		{
+		else if (ut == UnitTypes::Terran_Marine)
 			agentManagerMap[a] = &combatManager;
-		}
+        // Give Firebats to combat manager
+        else if (ut == UnitTypes::Terran_Firebat)
+			agentManagerMap[a] = &combatManager;
 	}
 
 	// If we are running low on supply, give an SCV to the SupplyManager
-	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 6 && 
-		supplyManager.numAgents(BWAPI::UnitTypes::Terran_SCV) <= 1)
+    const int remainingSupply = Broodwar->self()->supplyTotal() 
+                              - Broodwar->self()->supplyUsed();
+	if (remainingSupply < 8)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 		{
-			Agent *a = (*agent).second;
-			if (a->getUnit().getType().isWorker() && agentManagerMap[a] == &resourceManager)
+			Agent   *a  = (*agent).second;
+            UnitType ut = a->getUnit().getType();
+
+			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
 			{
 				agentManagerMap[a] = &supplyManager;
 				break;
@@ -186,14 +177,15 @@ void Strategizer::updateAgentManagerMap()
 		}
 	}
 
-	// If we have enough SCVs, let's try creating a Barracks/Marines
+	// If we have enough SCVs, let's try creating a Barracks/Army
 	if (Broodwar->self()->supplyUsed() > 20 &&
 		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) <= 1)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 		{
-			Agent *a = (*agent).second;
-			if (a->getUnit().getType().isWorker() && agentManagerMap[a] == &resourceManager)
+			Agent   *a  = (*agent).second;
+            UnitType ut = a->getUnit().getType();
+			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
 			{
 				agentManagerMap[a] = &combatManager;
 				break;
@@ -220,7 +212,7 @@ void Strategizer::redistributeAgents()
 	map<Agent*, Manager*>::iterator agentManager;
 	for (agentManager = agentManagerMap.begin(); agentManager != agentManagerMap.end(); agentManager++)
 	{
-		Agent *a = (*agentManager).first;
+		Agent   *a = (*agentManager).first;
 		Manager *m = (*agentManager).second;
 		m->addAgent(*a);
 	}

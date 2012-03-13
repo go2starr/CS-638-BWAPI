@@ -1,7 +1,7 @@
 /*
  * CommandCenterAgent.cpp
  */
-#include "UnitAgents/CommandCenterAgent.h"
+#include "CommandCenterAgent.h"
 #include "StructureAgent.h"
 
 #include <BWAPI.h>

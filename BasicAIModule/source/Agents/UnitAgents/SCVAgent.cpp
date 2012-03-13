@@ -1,13 +1,14 @@
 /*
  * SCVAgent.cpp
  */
-#include "UnitAgents/SCVAgent.h"
+#include "SCVAgent.h"
 #include "GroundAgent.h"
-#include <TacticalBuildingPlacer.h>
+
+#include "TacticalBuildingPlacer.h"
 
 #include <BWAPI.h>
 
-using BWAPI::Unit;
+using namespace BWAPI;
 
 
 SCVAgent::SCVAgent(Unit &u) 
@@ -34,29 +35,22 @@ void SCVAgent::update()
 			break;
 
 		case BuildState:
-
 			// Return cargo
-			if (unit.isCarryingGas() ||
-				unit.isCarryingMinerals())
-			{
+			if (unit.isCarryingGas() ||	unit.isCarryingMinerals())
 				unit.returnCargo();
-			}
-
 			// Reserve a build location
 			else if (!buildingReserved)
 			{
-				TacticalBuildingPlacer &tbp = TacticalBuildingPlacer::instance();
-				buildingLocation = tbp.reserveBuildLocation(unitTypeTarget, 
-															BWAPI::Broodwar->self()->getStartLocation(), 
-															&unit);
-					if (buildingLocation != BWAPI::TilePositions::None)
-					{
-						// TODO: Need to reset this to false eventually
-						// TODO: Pass off/cancel reservations on build fails
-						buildingReserved = true;
-					}
-			}
+				buildingLocation = TacticalBuildingPlacer::instance().reserveBuildLocation(
+                    unitTypeTarget, Broodwar->self()->getStartLocation(), &unit );
 
+				if (buildingLocation != TilePositions::None)
+				{
+					// TODO: Need to reset this to false eventually
+					// TODO: Pass off/cancel reservations on build fails
+					buildingReserved = true;
+				}
+			}
 			// Start building
 			else if (!unit.isConstructing())
 			{

@@ -16,14 +16,14 @@ void ResourceManager::update()
 
 	for (agent = agents.begin(); agent != agents.end(); agent++)
 	{
-		if ((*agent)->getUnit().getType().isWorker() &&
-			!(*agent)->getUnit().isGatheringGas())
+        const Unit& unit = (*agent)->getUnit();
+		if (unit.getType().isWorker() && !unit.isGatheringGas())
 		{
 			int minDist = 9999999;
 			Unit* closest = 0;
 			for (mineral = minerals.begin(); mineral != minerals.end(); mineral++)
 			{
-				int dist = (*agent)->getUnit().getDistance(*mineral);
+				int dist = unit.getDistance(*mineral);
 				if (dist < minDist)
 				{
 					closest = *mineral;

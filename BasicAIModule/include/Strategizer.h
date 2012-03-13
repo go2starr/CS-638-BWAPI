@@ -2,17 +2,9 @@
  * Strategizer.h
  */
 #pragma once
-#include "Managers/Manager.h"
 #include "GameEvent.h"
 // #include "GameStateDB.h"
-
-#include "BuildManager.h"
-#include "CombatManager.h"
-#include "ConstructionManager.h"
-#include "ProductionManager.h"
-#include "ResourceManager.h"
-#include "ScoutManager.h"
-#include "SupplyManager.h"
+#include "IncludeAllManagers.h"
 
 #include "TacticalBuildingPlacer.h"
 
