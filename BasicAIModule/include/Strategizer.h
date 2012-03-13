@@ -50,6 +50,9 @@ public:
 	/* onMatchStart - Called by AI Module when a new match begins */
 	void onMatchStart();
 
+    /* onMatchEnd - Called by AI Module whena  new match ends */
+    void onMatchEnd(bool isWinner);
+
 	/* onEvent - Called by EventProducer when a new event is detected */
 	void onEvent(GameEvent& e);
   

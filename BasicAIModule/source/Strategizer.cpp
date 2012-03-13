@@ -168,6 +168,30 @@ void Strategizer::onMatchStart()
 {
 }
 
+/*
+ * onMatchEnd()
+ *
+ * Called by the AI module when a match ends
+ */
+void Strategizer::onMatchEnd(bool isWinner)
+{
+    // Cleanup agents
+    // Note: this is the safe way to do this
+    // erasing by iterator invalidates the iterator, 
+    // so if we just use map.erase(it), the loop gets screwed up, 
+    // postfix increment inside the loop keeps the 
+    // iterator valid as it traverses the map
+    // Source: Effective STL (Scott Meyers - 2001)
+	map<Agent*, Manager*>::iterator it  = agentManagerMap.begin();
+    map<Agent*, Manager*>::iterator end = agentManagerMap.end();
+    for(; it != end;)
+    {
+        Agent* agent = it->first;
+        agentManagerMap.erase(it++);
+        delete agent;
+    }
+}
+
 /* 
  * onEvent()
  *
