@@ -27,14 +27,14 @@ void BasicAIModule::onStart()
 	BWTA::analyze();
 //	BWSAL::resetLog();
 
+	/* requires BTWA::analyze(); */
+	enhancedUI = new EnhancedUI();
+
 	Broodwar->enableFlag(Flag::UserInput);
 
 	Broodwar->sendText("UW-Madison : CS638 Software Engineering - Brood War AI");
 
 	Strategizer::instance().onMatchStart();
-
-	/* requires BTWA::analyze(); */
-	enhancedUI = new EnhancedUI();
 }
 
 /* 
@@ -44,7 +44,7 @@ void BasicAIModule::onStart()
  */
 void BasicAIModule::onEnd(bool isWinner)
 {
-
+    Strategizer::instance().onMatchEnd(isWinner);
 }
 
 /* 
