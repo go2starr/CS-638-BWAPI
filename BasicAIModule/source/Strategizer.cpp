@@ -172,7 +172,8 @@ void Strategizer::updateAgentManagerMap()
 	}
 
 	// If we are running low on supply, give an SCV to the SupplyManager
-	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 8)
+	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 6 && 
+		supplyManager.numAgents(BWAPI::UnitTypes::Terran_SCV) <= 1)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 		{
@@ -186,7 +187,8 @@ void Strategizer::updateAgentManagerMap()
 	}
 
 	// If we have enough SCVs, let's try creating a Barracks/Marines
-	if (Broodwar->self()->supplyUsed() > 20)
+	if (Broodwar->self()->supplyUsed() > 20 &&
+		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) <= 1)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 		{
