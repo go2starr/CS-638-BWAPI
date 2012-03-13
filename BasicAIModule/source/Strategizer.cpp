@@ -30,14 +30,50 @@ using std::pair;
 
 
 /* 
- * update()
+ *  update()
  *
- * Called by the AI module on each frame
+ *  Called by the AI module on each frame
  */
 void Strategizer::update()
 {
 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
 
+	// Find new units, remove inactive ones
+	updateUnitAgentMap();
+
+	// Remap Agents to Managers (bid war)
+	updateAgentManagerMap();	
+
+	// Give Agents to updated Managers
+	redistributeAgents();
+
+	// Let Managers manager
+	updateManagers();
+}
+
+/* 
+ *  onMatchStart()
+ *
+ *  Called by the AI module when a new match begins
+ */
+void Strategizer::onMatchStart()
+{
+}
+
+/* 
+ *  onEvent()
+ *
+ */
+void Strategizer::onEvent(GameEvent &e)
+{
+}
+
+
+/*
+ *  updateUnitAgentMap()
+ */
+void Strategizer::updateUnitAgentMap()
+{
 	set<Unit*> units = Broodwar->self()->getUnits();
 	set<Unit*>::iterator unit;
 
@@ -47,8 +83,7 @@ void Strategizer::update()
 		Unit *u = *unit;
 
 		// Only construct active units
-		if (!u->isCompleted() ||
-			u->getHitPoints() <= 0)
+		if (!u->isCompleted())  // TODO: Determine a more robust conditional
 		{
 			continue;
 		}
@@ -72,6 +107,15 @@ void Strategizer::update()
 		}
 	}
 
+	// TODO: Cleanup inactive agents
+}
+
+
+/*
+ *  updateAgentManagerMap()
+ */
+void Strategizer::updateAgentManagerMap()
+{
 	// Normally, we would shuffle Units around by bid here..
 	map<Unit*, Agent*>::iterator agent;
 	for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
@@ -130,7 +174,13 @@ void Strategizer::update()
 			}
 		}
 	}
+}
 
+/*
+ *  redistributeAgents()
+ */
+void Strategizer::redistributeAgents()
+{
 	// Revoke all agents from managers
 	buildManager.removeAllAgents();
 	combatManager.removeAllAgents();
@@ -147,9 +197,11 @@ void Strategizer::update()
 		Agent *a = (*agentManager).first;
 		Manager *m = (*agentManager).second;
 		m->addAgent(*a);
-	}	
+	}
+}
 
-	// Let Managers update
+void Strategizer::updateManagers()
+{
 	//buildManager.update();
 	combatManager.update();
 	//constructionManager.update();
@@ -158,22 +210,3 @@ void Strategizer::update()
 	//scoutManager.update();
 	supplyManager.update();
 }
-
-/* 
- * onMatchStart()
- *
- * Called by the AI module when a new match begins
- */
-void Strategizer::onMatchStart()
-{
-}
-
-/* 
- * onEvent()
- *
- */
-void Strategizer::onEvent(GameEvent &e)
-{
-}
-
-

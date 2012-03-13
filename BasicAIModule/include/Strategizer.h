@@ -59,6 +59,19 @@ private:
 	Strategizer() { }
 	Strategizer(const Strategizer& other);
 	void operator=(const Strategizer& other);
+
+	/* updateUnitAgentMap() - Gives an Agent to new Units, removes Agents of inactive Units */
+	void updateUnitAgentMap();
+
+	/* updateAgentManagerMap() - Reassigns Agents to Managers based on bid values */
+	void updateAgentManagerMap();
+
+	/* redistributeAgents() - Reallocate Agents to Managers, and make reassignments
+	   if they more efficiently reallocate */
+	void redistributeAgents();
+
+	/* updateManagers() - Calls each Manager's update() method */
+	void updateManagers();
 };
 
 
