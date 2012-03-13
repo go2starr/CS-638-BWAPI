@@ -5,6 +5,7 @@
 #include "StructureAgent.h"
 
 #include <BWAPI.h>
+#include <BWTA.h>
 
 using namespace BWAPI;
 
@@ -15,6 +16,9 @@ BarracksAgent::BarracksAgent(Unit &u)
 
 void BarracksAgent::update()
 {
+	// Send Units to nearest chokepoint
+	unit.setRallyPoint(BWTA::getNearestChokepoint(unit.getPosition())->getCenter());
+
 	switch (state)
 	{
 	case TrainState:
