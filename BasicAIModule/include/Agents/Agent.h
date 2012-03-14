@@ -35,6 +35,7 @@ public:
 	inline void setState(State state)                      { this->state = state; }
 	inline const State getState()       const { return state; }
 	inline const BWAPI::Unit& getUnit() const { return unit; }
+	inline BWAPI::Unit& getUnit() { return unit; }
 
 protected:
 	// C'tor (must be called from subclass)

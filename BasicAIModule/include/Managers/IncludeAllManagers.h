@@ -8,6 +8,7 @@
 #include "BuildManager.h"
 #include "CombatManager.h"
 #include "ConstructionManager.h"
+#include "GasManager.h"
 #include "ProductionManager.h"
 #include "ResourceManager.h"
 #include "ScoutManager.h"

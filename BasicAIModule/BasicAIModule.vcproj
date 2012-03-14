@@ -229,6 +229,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\source\Managers\GasManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\source\Managers\Manager.cpp"
 					>
 				</File>
@@ -450,6 +454,10 @@
 				</File>
 				<File
 					RelativePath=".\include\Managers\ConstructionManager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Managers\GasManager.h"
 					>
 				</File>
 				<File

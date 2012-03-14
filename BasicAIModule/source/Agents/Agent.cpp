@@ -24,6 +24,9 @@ void Agent::printState() const
 	// the new state string draws over the 
 	// old one for some reason...
 	Broodwar->drawTextMap(px, py, "State: %s", StateStrings[state] );
+	if (this->unitTypeTarget == BWAPI::UnitTypes::Terran_Refinery) {
+		Broodwar->drawTextMap(px, py + 20, "Target: Build Refinery");
+	}
 
 	if( unit.isSelected() )
         Broodwar->drawTextMap(px, py + 10, "id: %x", &unit);

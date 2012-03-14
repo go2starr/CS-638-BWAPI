@@ -7,5 +7,13 @@
 class SupplyManager : public Manager
 {
 public: 
+	SupplyManager();
 	void update();
+
+	private:
+
+	 int suppplyDepotCount;
+	int suppplyDepotConstructingCount;
+	int worksersConstructing;
+	int newSuppplyDepots;
 };

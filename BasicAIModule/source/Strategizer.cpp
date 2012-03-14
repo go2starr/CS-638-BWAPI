@@ -83,6 +83,8 @@ void Strategizer::onMatchEnd(bool isWinner)
 
 /*
  *  updateUnitAgentMap()
+ *
+ *  Maps new friendly units to agents
  */
 void Strategizer::updateUnitAgentMap()
 {
@@ -105,8 +107,10 @@ void Strategizer::updateUnitAgentMap()
 			UnitType ut = u->getType();
 			Agent *a = NULL;
 
-			if (ut.isWorker()) 				a = new SCVAgent(*u);
-			else if (ut.isResourceDepot())	a = new CommandCenterAgent(*u);
+			if (ut.isWorker()) 				
+				a = new SCVAgent(*u);
+			else if (ut.isResourceDepot())	
+				a = new CommandCenterAgent(*u);
             else if (ut == UnitTypes::Terran_Refinery)
                 a = new RefineryAgent(*u);
 			else if (ut == UnitTypes::Terran_Barracks) 
@@ -129,6 +133,9 @@ void Strategizer::updateUnitAgentMap()
 
 /*
  *  updateAgentManagerMap()
+ *
+ *  Maps agents to managers based upon which managers
+ *  need the agent
  */
 void Strategizer::updateAgentManagerMap()
 {
@@ -139,12 +146,17 @@ void Strategizer::updateAgentManagerMap()
 		Agent   *a  = (*agent).second;
         UnitType ut = a->getUnit().getType();
 
+		// if Agent hasn't been assigned a manager
+		if (agentManagerMap[a] == NULL) {
+
+		// Assign agents to managers based upon type
+
 		// Assign SCVs to resource gatherer
 		if (a->getUnit().getType().isWorker())
 			agentManagerMap[a] = &resourceManager;
-        // Give refinery to resource manager
+        // Give refinery to gas manager
         else if (ut.isRefinery())
-            agentManagerMap[a] = &resourceManager;
+            agentManagerMap[a] = &gasManager;
 		// Give command center to production manager
 		else if (ut.isResourceDepot())
 			agentManagerMap[a] = &productionManager;
@@ -157,12 +169,15 @@ void Strategizer::updateAgentManagerMap()
         // Give Firebats to combat manager
         else if (ut == UnitTypes::Terran_Firebat)
 			agentManagerMap[a] = &combatManager;
+
+		}
 	}
 
 	// If we are running low on supply, give an SCV to the SupplyManager
+	// if it doesn't already have one !
     const int remainingSupply = Broodwar->self()->supplyTotal() 
                               - Broodwar->self()->supplyUsed();
-	if (remainingSupply < 8)
+	if (remainingSupply < 8 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 		{
@@ -176,9 +191,10 @@ void Strategizer::updateAgentManagerMap()
 			}
 		}
 	}
-
+/*
 	// If we have enough SCVs, let's try creating a Barracks/Army
-	if (Broodwar->self()->supplyUsed() > 20 &&
+	// take one of the resourceManager SCV's and give it to the combatManager
+	if (Broodwar->self()->supplyUsed() > 10 &&
 		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) <= 1)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
@@ -192,7 +208,24 @@ void Strategizer::updateAgentManagerMap()
 			}
 		}
 	}
-}
+*/
+	// take one of the resourceManager SCV's and give it to the gas manager
+	if (Broodwar->self()->supplyUsed() > 15 &&
+		gasManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
+	{
+		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
+		{
+			Agent   *a  = (*agent).second;
+            UnitType ut = a->getUnit().getType();
+			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
+			{
+				agentManagerMap[a] = &gasManager;
+				break;
+			}
+		}
+	}
+
+} // end updateAgentManagerMap()
 
 /*
  *  redistributeAgents()
@@ -223,6 +256,7 @@ void Strategizer::updateManagers()
 	//buildManager.update();
 	combatManager.update();
 	//constructionManager.update();
+	gasManager.update();
 	productionManager.update();
 	resourceManager.update();
 	//scoutManager.update();

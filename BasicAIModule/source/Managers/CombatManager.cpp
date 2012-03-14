@@ -20,7 +20,7 @@ void CombatManager::update()
 		UnitType ut = agent->getUnit().getType();
 
 		/* Tell SCVs to build a barracks */
-		if (ut.isWorker())
+		if (ut.isWorker() && numAgents(UnitTypes::Terran_Barracks) < 2)
 		{
 			agent->setState(BuildState);
 			agent->setUnitTypeTarget(UnitTypes::Terran_Barracks);

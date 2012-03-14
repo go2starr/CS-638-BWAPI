@@ -72,6 +72,22 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 {
 	BWAPI::TilePosition loc;
 
+	// special build case for refineries
+	if (unitType == BWAPI::UnitTypes::Terran_Refinery) {
+		// hardcode for now, for start location
+		BWTA::BaseLocation * baseLoc;
+		baseLoc = BWTA::getStartLocation(BWAPI::Broodwar->self());
+		// geysers per base location
+		set<BWAPI::Unit*> geysers = baseLoc->getGeysers();
+		// should only be one ?
+		for(std::set<BWAPI::Unit*>::const_iterator j=geysers.begin(); j != geysers.end(); ++j) {
+			loc =(*j)->getTilePosition();
+			break;
+		}
+		BWSAL::ReservedMap::getInstance()->reserveTiles(loc, unitType, unitType.tileWidth(), unitType.tileHeight());
+		return loc;	
+	}
+
 	loc = buildingPlacer.findBuildLocation(BWSAL::ReservedMap::getInstance(), unitType, seedLocation, builder);
 
 	BWSAL::ReservedMap::getInstance()->reserveTiles(loc, unitType, unitType.tileWidth(), unitType.tileHeight());

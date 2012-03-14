@@ -9,14 +9,20 @@ using namespace std;
 void ProductionManager::update()
 {
 	set<Agent*>::iterator agent;
-	for (agent = agents.begin(); agent != agents.end(); agent++)
+
+	if (Broodwar->self()->supplyUsed() < 20)
 	{
-		// Tell command centers to produce SCVs
-		if ((*agent)->getUnit().getType().isResourceDepot())
+
+		for (agent = agents.begin(); agent != agents.end(); agent++)
 		{
-			(*agent)->setState(TrainState);
-			(*agent)->setUnitTypeTarget(UnitTypes::Terran_SCV);
+			// Tell command centers to produce SCVs
+			if ((*agent)->getUnit().getType().isResourceDepot())
+			{
+				(*agent)->setState(TrainState);
+				(*agent)->setUnitTypeTarget(UnitTypes::Terran_SCV);
+			}
 		}
+
 	}
 
 	// Update agents
