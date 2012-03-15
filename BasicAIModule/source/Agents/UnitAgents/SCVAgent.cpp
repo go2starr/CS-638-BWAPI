@@ -15,6 +15,7 @@ SCVAgent::SCVAgent(Unit &u)
 	: GroundAgent(u)
 {
 	wasConstructing = false;
+	constructingStructure = NULL;
 }
 
 void SCVAgent::update()
@@ -48,9 +49,11 @@ void SCVAgent::update()
 //			}
 			// go to idle state after finishing a building, so you can be re assigned
 			// otherwise worker will keep finding new loactions and keep building
-			if (!unit.isConstructing() && wasConstructing)
+			if (!unit.isConstructing() && wasConstructing && constructingStructure->isCompleted())
 			{
+				// reset
 				wasConstructing = false;
+				constructingStructure = NULL;
 				// go to default state, for now idle
 				setState(IdleState);
 			}
@@ -78,9 +81,18 @@ void SCVAgent::update()
 			}
 			// unit.build returned true
 			// once starting construction, don't worry about the build loacation
+			// apparently there can be a disconnect here, if it starts to construct
+			// but somehow there isn't the money when it gets there...
+			// isConstructing() isnt a very good conditional
+			// it would be better if you knew the building was completed
 			else if (unit.isConstructing() && buildingReserved) {
-				buildingReserved = false;
-				wasConstructing = true;
+				// get what we are building
+				Unit * structure = unit.getBuildUnit();
+				if (structure != NULL) {
+					constructingStructure = structure;
+					buildingReserved = false;
+					wasConstructing = true;
+				}
 			}
 
 			break;

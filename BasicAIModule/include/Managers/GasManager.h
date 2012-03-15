@@ -20,7 +20,7 @@ private:
 
 	 int refineryCount;
 	int refineryConstructingCount;
-	int worksersConstructing;
+	int workersConstructing;
 	int newRefineries;
 	
 };

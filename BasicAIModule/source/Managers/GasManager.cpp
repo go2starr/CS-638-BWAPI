@@ -11,7 +11,7 @@ GasManager::GasManager()
 {
 	refineryCount = 0;
 	refineryConstructingCount = 0;
-	worksersConstructing = 0;
+	workersConstructing = 0;
 	newRefineries = 0;
 }
 
@@ -42,25 +42,27 @@ void GasManager::update()
 	// workers done building refineries
 	if (newRefineries) {
 		refineryConstructingCount -= newRefineries;
-		worksersConstructing -= newRefineries;
+		workersConstructing -= newRefineries;
 	}
 
 	// check for refinery
 	// if not put one scv into build state
 	if (refineryCount == 0 && numAgents(UnitTypes::Terran_SCV) && 
-		refineryConstructingCount == 0) {
+		workersConstructing == 0) {
 			//Broodwar->sendText("Gas manager, search for agent out of %d\n", (int)agents.size());
 			// keep track
-			refineryConstructingCount++;
-			worksersConstructing++;
+			//refineryConstructingCount++;
 			// find a woker to do the work
 			// for now just grab first, don't care where, just can't be a refinery
 			for (agent = agents.begin(); agent != agents.end(); agent++) {
 				const Unit& unit = (*agent)->getUnit();
+				//if (unit.getType().isWorker() && (*agent)->getUn != BuildState) {
 				if (unit.getType().isWorker()) {
 					Broodwar->sendText("Gas manager, set agent to build");
 					(*agent)->setState(BuildState);
 					(*agent)->setUnitTypeTarget(BWAPI::UnitTypes::Terran_Refinery);
+//					(*agent)->setUnitTypeTarget(BWAPI::UnitTypes::Terran_Barracks);
+					workersConstructing++;
 					break;
 				}
 			}
@@ -74,9 +76,7 @@ void GasManager::update()
 		}
 	}
 
-	if (refineries.size() == 0) {
-		return;
-	}
+
 
 	for (agent = agents.begin(); agent != agents.end(); agent++)
 	{
@@ -89,6 +89,6 @@ void GasManager::update()
 		}
 	}
 
-	// Update all agents
+	// Update all agents, very important!
 	Manager::update();
 }

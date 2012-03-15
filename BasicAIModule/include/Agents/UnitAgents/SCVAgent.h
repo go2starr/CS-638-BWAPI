@@ -16,4 +16,6 @@ public:
 private:
 	BWAPI::TilePosition buildLocation;
 	bool wasConstructing;
+	// what we are building
+	BWAPI::Unit * constructingStructure;
 };
