@@ -24,18 +24,14 @@ void SupplyManager::update()
 	//	suppplyDepotCount = count;
 
 	// workers done building supply depots
-	if (newSuppplyDepots) {
+	//if (newSuppplyDepots) {
 		//suppplyDepotConstructingCount -= newSuppplyDepots;
 		//worksersConstructing -= newSuppplyDepots;
-	}
+	//}
 
 	// Build supply depots if we are running low aren't already building them
-
 	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 8)
 	{
-
-		//			Broodwar->sendText("Supply manager, search for agent out of %d\n", (int)agents.size());
-
 		for (set<Agent*>::iterator it = agents.begin(); it != agents.end(); it++)
 		{
 			Agent *agent = *it;

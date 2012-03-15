@@ -194,26 +194,26 @@ void Strategizer::updateAgentManagerMap()
 			}
 		}
 	}
-	/*
+
 	// If we have enough SCVs, let's try creating a Barracks/Army
 	// take one of the resourceManager SCV's and give it to the combatManager
-	if (Broodwar->self()->supplyUsed() > 10 &&
-	combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) <= 1)
-	{
-	for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
-	{
-	Agent   *a  = (*agent).second;
-	UnitType ut = a->getUnit().getType();
-	if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
-	{
-	agentManagerMap[a] = &combatManager;
-	break;
-	}
-	}
-	}
-	*/
-	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 18 &&
+		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1 )
+	{
+		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
+		{
+			Agent   *a  = (*agent).second;
+			UnitType ut = a->getUnit().getType();
+			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
+			{
+				agentManagerMap[a] = &combatManager;
+				break;
+			}
+		}
+	}
+
+	// take one of the resourceManager SCV's and give it to the gas manager
+	if (Broodwar->self()->supplyUsed() >= 30 &&
 		gasManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)

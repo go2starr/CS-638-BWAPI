@@ -41,7 +41,7 @@ void GasManager::update()
 
 	// workers done building refineries
 	if (newRefineries) {
-		refineryConstructingCount -= newRefineries;
+//		refineryConstructingCount -= newRefineries;
 		workersConstructing -= newRefineries;
 	}
 
