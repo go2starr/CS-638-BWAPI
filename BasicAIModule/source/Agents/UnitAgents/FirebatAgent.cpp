@@ -15,8 +15,7 @@ FirebatAgent::FirebatAgent(Unit& u)
 
 void FirebatAgent::update()
 {
-	if( !unit.isIdle() )
-		return;
+    GroundAgent::update();
 }
 
 

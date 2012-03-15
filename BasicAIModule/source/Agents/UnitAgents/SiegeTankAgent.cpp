@@ -15,7 +15,6 @@ SiegeTankAgent::SiegeTankAgent(Unit& u)
 
 void SiegeTankAgent::update()
 {
-	if( !unit.isIdle() )
-		return;
+    GroundAgent::update();
 }
 

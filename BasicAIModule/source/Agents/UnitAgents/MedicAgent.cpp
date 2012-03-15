@@ -15,6 +15,5 @@ MedicAgent::MedicAgent(Unit& u)
 
 void MedicAgent::update()
 {
-	if( !unit.isIdle() )
-		return;
+    GroundAgent::update();
 }

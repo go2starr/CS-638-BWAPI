@@ -15,8 +15,7 @@ MarineAgent::MarineAgent(Unit& u)
 
 void MarineAgent::update()
 {
-	if( !unit.isIdle() )
-		return;
+    GroundAgent::update();
 }
 
 
