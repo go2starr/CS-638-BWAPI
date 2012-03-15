@@ -51,7 +51,8 @@ void Strategizer::onMatchStart()
 {
 	buildManager.build(BWAPI::UnitTypes::Terran_SCV);
 	buildManager.build(BWAPI::UnitTypes::Terran_Supply_Depot);
-	buildManager.build(BWAPI::UnitTypes::Terran_Refinery);
+	//buildManager.build(BWAPI::UnitTypes::Terran_Refinery);
+	//buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
 	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
 }
 
@@ -319,4 +320,5 @@ void Strategizer::updateManagers()
 	*/
 	buildManager.update();
 }
+
 

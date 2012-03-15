@@ -2,7 +2,9 @@
 #include <BWTA.h>
 
 #include <set>
+#include <map>
 using std::set;
+using std::map;
 
 void BuildManager::update()
 {
@@ -38,30 +40,44 @@ void BuildManager::update()
 		int mineralsOwned = BWAPI::Broodwar->self()->minerals();
 		int gasOwned = BWAPI::Broodwar->self()->gas();
 
-		// Wait if we are short on resources
+		// Required resources?
 		if (mineralsOwned < mineralsNeeded ||
 			gasOwned < gasNeeded) 
 		{
 			//BWAPI::Broodwar->sendText("BM: %d/%d minerals %d/%d gas for %s",
 			//	mineralsOwned, mineralsNeeded, gasOwned, gasNeeded, type.c_str());
-			break;
+			return;
 		}
 
-		// TODO: Build dependencies if some are not resolved
+		// Required supply?
+		int supplyOwned = BWAPI::Broodwar->self()->supplyTotal() - BWAPI::Broodwar->self()->supplyUsed();
+		if (supplyOwned < type.supplyRequired())
+		{
+			BWAPI::Broodwar->sendText("!! Not enough supply (%d/%d) to build %s", 
+				supplyOwned, type.supplyRequired(), type.c_str());
+			return;
+		}
+
+		// Required units?
+		map<BWAPI::UnitType, int> requiredUnits = type.requiredUnits();
+		for (map<BWAPI::UnitType, int>::iterator i = requiredUnits.begin(); i != requiredUnits.end(); i++)
+		{
+			BWAPI::UnitType rt = (*i).first;
+			int rc = (*i).second;
+			if (BWAPI::Broodwar->self()->allUnitCount(rt) < rc)
+			{
+				BWAPI::Broodwar->sendText("!! Bad build order:  Need %dx%s to build %s", rc, rt.c_str(), type.c_str());
+				return;
+			}
+		}
+		
+		// Required builder?
 		BWAPI::UnitType builderType = type.whatBuilds().first;
-		set<BWAPI::Unit*> ownedUnits = BWAPI::Broodwar->self()->getUnits();
-		bool found = false;
-		for (set<BWAPI::Unit*>::const_iterator i = ownedUnits.begin(); i != ownedUnits.end(); i++)
+		if (BWAPI::Broodwar->self()->allUnitCount(builderType) < 1)
 		{
-			if ((*i)->getType().getID() == builderType.getID())
-				found = true;
+			BWAPI::Broodwar->sendText("!! Bad build order:  Need a %s to build %s", builderType.c_str(), type.c_str());
+			return;
 		}
-		if (!found)
-		{
-			BWAPI::Broodwar->sendText("!! Bad build order:  Dependency resolving not yet implemented");
-			break;
-		}
-
 		// OK - requirements met, let's build it!
 		if (!type.isAddon())
 		{

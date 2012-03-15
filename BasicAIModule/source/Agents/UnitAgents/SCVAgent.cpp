@@ -65,12 +65,10 @@ void SCVAgent::update()
 
 				if (buildingLocation != TilePositions::None)
 				{
-					// TODO: Need to reset this to false eventually
 					// TODO: Pass off/cancel reservations on build fails
 					buildingReserved = true;
 					// save our build location
 					buildLocation = buildingLocation;
-					
 				}
 			}
 			else if (!unit.isConstructing() && buildingReserved) {
@@ -89,8 +87,8 @@ void SCVAgent::update()
 				Unit * structure = unit.getBuildUnit();
 				if (structure != NULL) {
 					constructingStructure = structure;
-					buildingReserved = false;
 					wasConstructing = true;
+					buildingReserved = false;
 				}
 			}
 
