@@ -6,20 +6,32 @@ using std::set;
 
 void BuildManager::update()
 {
+	BWAPI::Broodwar->drawTextScreen(2, 30, "\x1F BM : (SCV=%d) (CC=%d)", 
+		numAgents(BWAPI::UnitTypes::Terran_SCV),
+		numAgents(BWAPI::UnitTypes::Terran_Command_Center));
+
 	/* 
 	 * TODO:  Normally, we would pass down orders to the specialized builders.
 	 *        However, to get things rolling I'm doing it here
 	 */
+
+	// Update Agents
+	Manager::update();
+
+	// Nothing to do if empty build queue
 	if (buildQueue.empty())
 		return;
 
-	BuildReq req = buildQueue.front();
+	BuildReq &req = buildQueue.front();
 	BWAPI::UnitType type = req.type;
 
 	switch (req.state)
 	{
 	case NEW: 
 	{
+		// DEBUG //
+		BWAPI::Broodwar->sendText("Trying to build: %s", type.c_str());
+
 		// Check reqs
 		int mineralsNeeded = type.mineralPrice();
 		int gasNeeded = type.gasPrice();
@@ -30,8 +42,8 @@ void BuildManager::update()
 		if (mineralsOwned < mineralsNeeded ||
 			gasOwned < gasNeeded) 
 		{
-			BWAPI::Broodwar->sendText("BM: %d/%d minerals %d/%d gas for %s",
-				mineralsOwned, mineralsNeeded, gasOwned, gasNeeded, type.c_str());
+			//BWAPI::Broodwar->sendText("BM: %d/%d minerals %d/%d gas for %s",
+			//	mineralsOwned, mineralsNeeded, gasOwned, gasNeeded, type.c_str());
 			break;
 		}
 
@@ -61,7 +73,7 @@ void BuildManager::update()
 				{
 					// Found one, build it
 					if (type.isBuilding())
-						(*i)->setState(BuildingState);
+						(*i)->setState(BuildState);
 					else
 						(*i)->setState(TrainState);
 					(*i)->setUnitTypeTarget(type);
@@ -76,7 +88,11 @@ void BuildManager::update()
 			}
 			// Wait if we didn't find a builder
 			if (req.builder == NULL)
+			{
+				//BWAPI::Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
+				//	type.c_str());
 				break;
+			}
 		}
 		else
 		{
@@ -87,6 +103,9 @@ void BuildManager::update()
 
 	case ISSUED:
 	{
+		// DEBUG //
+		BWAPI::Broodwar->sendText("BM: ===== ISSUED =====");
+
 		/* We need to determine if the order has been started (i.e. resources spent) */
 		BWAPI::Unit* builder = req.builder;
 
@@ -121,10 +140,12 @@ void BuildManager::update()
 		 *        In the case of a killed SCV doing a build, we may want to restart the
 		 *        order.
 		 */
-		buildQueue.pop();
-
+		// DEBUG //
+		BWAPI::Broodwar->sendText("BM: ===== STARTED =====");
 		// DEBUG //
 		BWAPI::Broodwar->sendText("BM: Order for %s started, popping", type.c_str());
+
+		buildQueue.pop();
 		break;
 
 	case COMPLETE:

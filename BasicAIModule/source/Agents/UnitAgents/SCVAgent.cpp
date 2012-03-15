@@ -43,13 +43,12 @@ void SCVAgent::update()
 
 		case BuildState:
 			// Return cargo
-		// don't do this in the build state, we are here to build only
-//			if (unit.isCarryingGas() ||	unit.isCarryingMinerals()) {
-//				unit.returnCargo();
-//			}
+			if (unit.isCarryingGas() ||	unit.isCarryingMinerals()) {
+				unit.returnCargo();
+			}
 			// go to idle state after finishing a building, so you can be re assigned
 			// otherwise worker will keep finding new loactions and keep building
-			if (!unit.isConstructing() && wasConstructing && constructingStructure->isCompleted())
+			else if (!unit.isConstructing() && wasConstructing && constructingStructure->isCompleted())
 			{
 				// reset
 				wasConstructing = false;
