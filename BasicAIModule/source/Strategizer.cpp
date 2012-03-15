@@ -4,6 +4,7 @@
 #include "Strategizer.h"
 #include "IncludeAllManagers.h"
 #include "IncludeAllUnitAgents.h"
+#include "TacticalBuildingPlacer.h"
 #include "GameEvent.h"
 
 #include <BWAPI.h>
@@ -24,7 +25,9 @@ using std::pair;
 */
 void Strategizer::update()
 {
+	// Draw "GUI"
 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
+	TacticalBuildingPlacer::instance().update(); // draw reserved map
 
 	// Find new units, remove inactive ones
 	updateUnitAgentMap();

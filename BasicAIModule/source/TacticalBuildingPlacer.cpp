@@ -5,6 +5,7 @@
 
 #include <TacticalBuildingPlacer.h>
 #include <BWSAL/BFSBuildingPlacer.h>
+#include <BWAPI.h>
 
 TacticalBuildingPlacer::TacticalBuildingPlacer()
 {
@@ -66,6 +67,10 @@ void TacticalBuildingPlacer::draw(void)
 
 void TacticalBuildingPlacer::update(void)
 {
+	for (int x = 0; x < BWAPI::Broodwar->mapWidth(); x++)
+		for (int y = 0; y < BWAPI::Broodwar->mapHeight(); y++)
+			if (BWSAL::ReservedMap::getInstance()->isReserved(x, y))
+				BWAPI::Broodwar->drawBoxMap(x*32, y*32, x*32+32, y*32+32, BWAPI::Colors::Red);
 }
 
 BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType unitType, BWAPI::TilePosition seedLocation, BWAPI::Unit *builder)
