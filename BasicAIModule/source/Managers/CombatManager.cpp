@@ -55,22 +55,43 @@ void CombatManager::update()
 		}
 	}
 
-    /* Note: this won't work until we've scouted the enemy base location
     // Setup a relatively small enemy base assault if we have a decent number of marines
+    // TODO - CombatManager should start putting it's Agents in Squads
+    // then when a Squad is full, and the CombatManager gets assigned the 
+    // 'Attack' task, it can send whole squads at a time 
+    // We could track two more sets of Agent*, 
+    // one would be currently unassigned Agent's, the other would be assigned
     const int numMarines = numAgents(UnitTypes::Terran_Marine);
-    const int threshold = 15;
+    const int threshold = 16;
     if( numMarines >= threshold )
     {
         Player* enemy = Broodwar->enemy();
         if( enemy != NULL )
         {
-            // Get the enemy base location and validate it
-            const BWTA::BaseLocation* enemyBase = BWTA::getStartLocation(enemy);
-            if( enemyBase != NULL )
+            // Get the likely enemy base location (furthest from myStart)
+            // TODO - this should probably be calculated only once, 
+            // maybe we should have a Manager::onMatchStart() method?
+            TilePosition myStart = Broodwar->self()->getStartLocation();
+            TilePosition target;
+            double maxDistance = 0.0;
+            set<TilePosition>& startPositions = Broodwar->getStartLocations();
+            set<TilePosition>::iterator pit  = startPositions.begin();
+            set<TilePosition>::iterator pend = startPositions.end();
+            for(; pit != pend; ++pit)
+            {
+                TilePosition pos = *pit;
+                const double distance = pos.getDistance(myStart);
+                if( distance > maxDistance )
+                {
+                    target = pos;
+                    maxDistance = distance;
+                }
+            }
+
+            if( target.isValid() )
             {
                 // Setup the attack force
                 const int attackNum = numMarines / 2;
-
                 set<Agent*>::iterator it  = agents.begin();
                 set<Agent*>::iterator end = agents.end();
                 for(int i = 0; i < attackNum && it != end; ++it)
@@ -78,17 +99,18 @@ void CombatManager::update()
                     Agent* agent = *it;
                     if( agent->getUnit().getType() == UnitTypes::Terran_Marine )
                     {
-                        agent->setPositionTarget(enemyBase->getPosition());
+                        const Position enemyBase(target);
+                        agent->setPositionTarget(enemyBase);
                         agent->setState(AttackState);
                         ++i;
                     }
                 }
             } else {
-                Broodwar->sendText("CombatMgr: unable to get enemy base location");
+                if( Broodwar->getFrameCount() % 60 == 0 )
+                    Broodwar->sendText("CombatMgr: unable to get enemy base location");
             }
         }
     }
-    */
 	
 	/* Base class updates Agents */
 	Manager::update();
