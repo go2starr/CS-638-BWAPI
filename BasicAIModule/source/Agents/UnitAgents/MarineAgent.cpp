@@ -15,6 +15,13 @@ MarineAgent::MarineAgent(Unit& u)
 
 void MarineAgent::update()
 {
+    switch(state)
+    {
+    case IdleState: break;
+    case AttackState: unit.attack(positionTarget); break;
+    case DefendState: unit.patrol(positionTarget); break;
+    }
+
     GroundAgent::update();
 }
 

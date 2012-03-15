@@ -8,7 +8,7 @@ using namespace std;
 
 void ProductionManager::update()
 {
-	set<Agent*>::iterator agent;
+	AgentSetIter agent;
 
 	// currently once you put the command center in train state
 	// it will never transition out of it

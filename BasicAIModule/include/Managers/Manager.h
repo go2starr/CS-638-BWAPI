@@ -12,17 +12,24 @@
 #include <list>
 #include <set>
 
-typedef std::set<Agent*> AgentSet;
+typedef std::set<Agent*>         AgentSet;
+typedef AgentSet::iterator       AgentSetIter;
+typedef AgentSet::const_iterator AgentSetConstIter;
+
 typedef std::priority_queue<Task*> TaskQueue;
+
 
 class Manager
 {
 protected:
 	AgentSet  agents;
 	TaskQueue tasks;
-  
-public:
-	/* update - Called on each frame */
+
+    /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type */
+    AgentSet getAgentsOfType(BWAPI::UnitType type); 
+
+public:    
+    /* update - Called on each frame */
 	virtual void update();
 
 	/* addAgent - Add an Agent to the Managers Agent set */
@@ -31,11 +38,6 @@ public:
 	virtual Agent* removeAgent(BWAPI::UnitType ut);
 	/* removeAllAgents - Remove all agents */
 	void removeAllAgents();
-
-	/* numAgents - Find out how many Agents of any unit type this Manager owns */
-	int Manager::numAgents() const;
-	/* numAgents - Find out how many Agents of @ut this Manager owns */
-	int numAgents(BWAPI::UnitType ut) const;
 
 	/* addTask  -  Add this task to the task queue */
 	virtual void addTask(Task &t);
@@ -48,6 +50,11 @@ public:
 	virtual int mwtpLast(BWAPI::UnitType &ut);
 	/*  estimateCost  -  best estimate at the cost of completing this task */
 	virtual int estimateCost(Task &t);
+
+    /* numAgents - Find out how many Agents of any unit type this Manager owns */
+    int Manager::numAgents() const;
+    /* numAgents - Find out how many Agents of @type this Manager owns */
+    int numAgents(BWAPI::UnitType type);
 };
 
 

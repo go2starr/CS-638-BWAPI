@@ -180,8 +180,7 @@ void Strategizer::updateAgentManagerMap()
 	// Note on supplyUsed(): Supply counts returned by BWAPI are double 
 	// what you would expect to see from playing the game.
 	// This is because zerglings take up 0.5 in-game supply.
-	const int remainingSupply = Broodwar->self()->supplyTotal() 
-		- Broodwar->self()->supplyUsed();
+	const int remainingSupply = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
 	if (remainingSupply < 8 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
 		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)

@@ -12,7 +12,7 @@ void ResourceManager::update()
 	// Send workers to mine minerals near our base
 	set<Unit*> minerals = Broodwar->getMinerals();
 	set<Unit*>::iterator mineral;
-	set<Agent*>::iterator agent;
+	AgentSetIter agent;
 
 	for (agent = agents.begin(); agent != agents.end(); agent++)
 	{

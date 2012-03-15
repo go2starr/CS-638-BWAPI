@@ -20,3 +20,6 @@ enum State
 };
 
 extern const char* StateStrings[];
+
+extern const char* UnitTypeStrings[];
+extern const unsigned char NUM_UNIT_TYPES;
