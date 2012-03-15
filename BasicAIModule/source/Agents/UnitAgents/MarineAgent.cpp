@@ -15,6 +15,13 @@ MarineAgent::MarineAgent(Unit& u)
 
 void MarineAgent::update()
 {
+    switch(state)
+    {
+    case AttackState:
+        unit.attack(positionTarget);
+        break;
+    }
+
     GroundAgent::update();
 }
 

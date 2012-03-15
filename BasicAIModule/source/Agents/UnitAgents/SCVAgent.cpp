@@ -13,10 +13,9 @@ using namespace BWAPI;
 
 SCVAgent::SCVAgent(Unit &u) 
 	: GroundAgent(u)
-{
-	wasConstructing = false;
-	constructingStructure = NULL;
-}
+    , wasConstructing(false)
+    , constructingStructure(NULL)
+{ }
 
 void SCVAgent::update()
 {

@@ -1,8 +1,10 @@
 #include "CombatManager.h"
 #include <BWAPI.h>
+#include <BWTA.h>
 
 using namespace BWAPI;
 using namespace std;
+
 
 void CombatManager::update()
 {
@@ -28,11 +30,11 @@ void CombatManager::update()
 			agent->setUnitTypeTarget(UnitTypes::Terran_Barracks);
 		}
 
-		/* Tell barracks to build marines and firebats*/
+		/* Tell barracks to build marines, firebats, and medics */
 		else if (ut == UnitTypes::Terran_Barracks
              && !agent->getUnit().isBeingConstructed())
 		{
-            /*
+            /* TODO : add this back in (or something like it) when we can build an Academy
             static int counter = 0;
             if( ++counter % 4 == 0 ) // every 4th unit is a medic
             {   
@@ -52,6 +54,41 @@ void CombatManager::update()
             //}
 		}
 	}
+
+    /* Note: this won't work until we've scouted the enemy base location
+    // Setup a relatively small enemy base assault if we have a decent number of marines
+    const int numMarines = numAgents(UnitTypes::Terran_Marine);
+    const int threshold = 15;
+    if( numMarines >= threshold )
+    {
+        Player* enemy = Broodwar->enemy();
+        if( enemy != NULL )
+        {
+            // Get the enemy base location and validate it
+            const BWTA::BaseLocation* enemyBase = BWTA::getStartLocation(enemy);
+            if( enemyBase != NULL )
+            {
+                // Setup the attack force
+                const int attackNum = numMarines / 2;
+
+                set<Agent*>::iterator it  = agents.begin();
+                set<Agent*>::iterator end = agents.end();
+                for(int i = 0; i < attackNum && it != end; ++it)
+                {
+                    Agent* agent = *it;
+                    if( agent->getUnit().getType() == UnitTypes::Terran_Marine )
+                    {
+                        agent->setPositionTarget(enemyBase->getPosition());
+                        agent->setState(AttackState);
+                        ++i;
+                    }
+                }
+            } else {
+                Broodwar->sendText("CombatMgr: unable to get enemy base location");
+            }
+        }
+    }
+    */
 	
 	/* Base class updates Agents */
 	Manager::update();
