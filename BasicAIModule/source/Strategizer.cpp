@@ -49,11 +49,6 @@ void Strategizer::update()
 */
 void Strategizer::onMatchStart()
 {
-	buildManager.build(BWAPI::UnitTypes::Terran_SCV);
-	buildManager.build(BWAPI::UnitTypes::Terran_Supply_Depot);
-	//buildManager.build(BWAPI::UnitTypes::Terran_Refinery);
-	//buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
 }
 
 /* 
@@ -234,44 +229,7 @@ void Strategizer::updateAgentManagerMap()
 			}
 		}
 	}
-
-
-	/*******************************************************************************
-	 *  TESTING BEGIN
-	 *******************************************************************************/
-	// **TESTING**: Give one of the resourceManagers SCVs to build manager
-	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
-	{
-		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
-		{
-			Agent   *a  = (*agent).second;
-			UnitType ut = a->getUnit().getType();
-			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
-			{
-				agentManagerMap[a] = &buildManager;
-				break;
-			}
-		}
-	}
-
-	for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
-	{
-		Agent   *a  = (*agent).second;
-		UnitType ut = a->getUnit().getType();
-
-		// Give command center to build manager
-		if (ut.isResourceDepot())
-			agentManagerMap[a] = &buildManager;
-		// Give Barracks to build manager
-		else if (ut == UnitTypes::Terran_Barracks)
-			agentManagerMap[a] = &buildManager;
-	}
-
-	 /*******************************************************************************
-	 *  TESTING END
-	 *******************************************************************************/
-
-} // end updateAgentManagerMap()
+}
 
 /*
 *  redistributeAgents()
@@ -304,21 +262,13 @@ void Strategizer::redistributeAgents()
 
 void Strategizer::updateManagers()
 {
-	/*
 	//buildManager.update();
 	combatManager.update();
 	//constructionManager.update();
-	*/
 	//gasManager.update();
-	/*
 	productionManager.update();
-	*/
 	resourceManager.update();
-	/*
 	//scoutManager.update();
 	supplyManager.update();
-	*/
-	buildManager.update();
 }
-
 

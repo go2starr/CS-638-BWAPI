@@ -31,8 +31,7 @@ void BuildManager::update()
 	{
 	case NEW: 
 	{
-		// DEBUG //
-		BWAPI::Broodwar->sendText("Trying to build: %s", type.c_str());
+		//BWAPI::Broodwar->sendText("Trying to build: %s", type.c_str());
 
 		// Check reqs
 		int mineralsNeeded = type.mineralPrice();
@@ -53,8 +52,8 @@ void BuildManager::update()
 		int supplyOwned = BWAPI::Broodwar->self()->supplyTotal() - BWAPI::Broodwar->self()->supplyUsed();
 		if (supplyOwned < type.supplyRequired())
 		{
-			BWAPI::Broodwar->sendText("!! Not enough supply (%d/%d) to build %s", 
-				supplyOwned, type.supplyRequired(), type.c_str());
+			//BWAPI::Broodwar->sendText("!! Not enough supply (%d/%d) to build %s", 
+			//	supplyOwned, type.supplyRequired(), type.c_str());
 			return;
 		}
 
@@ -119,8 +118,7 @@ void BuildManager::update()
 
 	case ISSUED:
 	{
-		// DEBUG //
-		BWAPI::Broodwar->sendText("BM: ===== ISSUED =====");
+		//BWAPI::Broodwar->sendText("BM: ===== ISSUED =====");
 
 		/* We need to determine if the order has been started (i.e. resources spent) */
 		BWAPI::Unit* builder = req.builder;
@@ -156,11 +154,6 @@ void BuildManager::update()
 		 *        In the case of a killed SCV doing a build, we may want to restart the
 		 *        order.
 		 */
-		// DEBUG //
-		BWAPI::Broodwar->sendText("BM: ===== STARTED =====");
-		// DEBUG //
-		BWAPI::Broodwar->sendText("BM: Order for %s started, popping", type.c_str());
-
 		buildQueue.pop();
 		break;
 
