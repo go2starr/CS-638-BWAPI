@@ -8,12 +8,11 @@ class SupplyManager : public Manager
 {
 public: 
 	SupplyManager();
-	void update();
+	virtual void update();
 
-	private:
-
-	 int suppplyDepotCount;
-	int suppplyDepotConstructingCount;
-	int worksersConstructing;
-	int newSuppplyDepots;
+private:
+    int supplyDepotCount;
+	int supplyDepotConstructingCount;
+	int workersConstructing;
+	int newSupplyDepots;
 };

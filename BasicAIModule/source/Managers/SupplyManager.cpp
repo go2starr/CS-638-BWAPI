@@ -4,13 +4,13 @@
 using namespace BWAPI;
 using namespace std;
 
+
 SupplyManager::SupplyManager()
-{
-	suppplyDepotCount = 0;
-	suppplyDepotConstructingCount = 0;
-	worksersConstructing = 0;
-	newSuppplyDepots = 0;
-}
+    : supplyDepotCount(0)
+    , supplyDepotConstructingCount(0)
+    , workersConstructing(0)
+    , newSupplyDepots(0)
+{ }
 
 void SupplyManager::update()
 {
@@ -18,37 +18,35 @@ void SupplyManager::update()
 
 	// how many supply depots do we own
 	// there are no supply depot agents currently :(
-	//int count = numAgents(UnitTypes::Terran_Supply_Depot);
+	//  int count = numAgents(UnitTypes::Terran_Supply_Depot);
 
-	//	newSuppplyDepots = count - suppplyDepotCount;
-	//	suppplyDepotCount = count;
+	//	newSupplyDepots = count - supplyDepotCount;
+	//	supplyDepotCount = count;
 
 	// workers done building supply depots
-	//if (newSuppplyDepots) {
-		//suppplyDepotConstructingCount -= newSuppplyDepots;
-		//worksersConstructing -= newSuppplyDepots;
+	//if (newSupplyDepots) {
+	//  supplyDepotConstructingCount -= newSupplyDepots;
+	//  workersConstructing -= newSupplyDepots;
 	//}
 
 	// Build supply depots if we are running low aren't already building them
 	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 8)
 	{
-		for (set<Agent*>::iterator it = agents.begin(); it != agents.end(); it++)
+		for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
 		{
 			Agent *agent = *it;
-			if(agent->getState() != BuildState) {
-
+			if(agent->getState() != BuildState) 
+            {
 				agent->setState(BuildState);
-				agent->setUnitTypeTarget(BWAPI::UnitTypes::Terran_Supply_Depot);
+				agent->setUnitTypeTarget(UnitTypes::Terran_Supply_Depot);
 				// not exactly true, we don't know if it's really being constructed
-				//suppplyDepotConstructingCount++;
-				//				worksersConstructing++;
+				// supplyDepotConstructingCount++;
+				// workersConstructing++;
 				Broodwar->sendText("Supply manager, set agent to build");
 				break;
-
 			}
 		}
 	}
-
 
 	/* Base class updates Agents */
 	Manager::update();

@@ -21,7 +21,6 @@ void Agent::printState() const
 	const int radius = unit.getRight() - px;
 
     // Always draw state 
-	Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);
 	Broodwar->drawTextMap(px, py, "State: %s", StateStrings[state] );
 
     // Draw UnitTypeTarget info if it is valid
@@ -33,6 +32,8 @@ void Agent::printState() const
     // TODO: look into adding a chat flag to toggle this stuff (/debuginfo or something)
     if( unit.isSelected() )
     {
+        Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);
+
         // Draw position target 
         const int posOffset = 20;
         Broodwar->drawTextMap(px, py + posOffset, "pos-target: (%d,%d)", 

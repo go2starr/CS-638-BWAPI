@@ -26,7 +26,7 @@ void GasManager::update()
 
 	vector<Agent*> refineries;
 	vector<Agent*>::iterator refinery;
-	set<Agent*>::iterator agent;
+	AgentSetIter agent;
 
 	// how many refineries do we own
 	int count = numAgents(UnitTypes::Terran_Refinery);

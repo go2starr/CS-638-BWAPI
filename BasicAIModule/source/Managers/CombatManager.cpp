@@ -88,26 +88,27 @@ void CombatManager::update()
                 }
             }
 
+            // If a valid target was found
             if( target.isValid() )
             {
-                // Setup the attack force
+                // Setup the attack force:
+                // set agents states to Attack until 
+                // - we reach the number we want, or
+                // - we run out of marines to assign
+                const Position enemyBase(target);
                 const int attackNum = numMarines / 2;
-                set<Agent*>::iterator it  = agents.begin();
-                set<Agent*>::iterator end = agents.end();
-                for(int i = 0; i < attackNum && it != end; ++it)
+                AgentSet marines(getAgentsOfType(UnitTypes::Terran_Marine));
+                AgentSetIter it  = marines.begin();
+                AgentSetIter end = marines.end();
+                for(int i = 0; i < attackNum && it != end; ++i, ++it)
                 {
-                    Agent* agent = *it;
-                    if( agent->getUnit().getType() == UnitTypes::Terran_Marine )
-                    {
-                        const Position enemyBase(target);
-                        agent->setPositionTarget(enemyBase);
-                        agent->setState(AttackState);
-                        ++i;
-                    }
+                    Agent* marine = *it;
+                    marine->setState(AttackState);
+                    marine->setPositionTarget(enemyBase);
                 }
-            } else {
+            } else { // complain about it
                 if( Broodwar->getFrameCount() % 60 == 0 )
-                    Broodwar->sendText("CombatMgr: unable to get enemy base location");
+                    Broodwar->sendText("CombatMgr: attack target is invalid");
             }
         }
     }

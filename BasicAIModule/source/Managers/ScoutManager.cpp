@@ -2,4 +2,5 @@
 
 void ScoutManager::update()
 {
+    Manager::update();
 }

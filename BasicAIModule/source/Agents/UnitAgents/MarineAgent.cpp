@@ -17,9 +17,9 @@ void MarineAgent::update()
 {
     switch(state)
     {
-    case AttackState:
-        unit.attack(positionTarget);
-        break;
+    case IdleState: break;
+    case AttackState: unit.attack(positionTarget); break;
+    case DefendState: unit.patrol(positionTarget); break;
     }
 
     GroundAgent::update();
