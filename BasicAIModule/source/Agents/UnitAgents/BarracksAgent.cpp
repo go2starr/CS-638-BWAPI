@@ -17,7 +17,9 @@ BarracksAgent::BarracksAgent(Unit &u)
 void BarracksAgent::update()
 {
 	// Send Units to nearest chokepoint
-	unit.setRallyPoint(BWTA::getNearestChokepoint(unit.getPosition())->getCenter());
+    BWTA::Chokepoint* chokepoint = BWTA::getNearestChokepoint(unit.getPosition());
+    if( chokepoint != NULL )
+        unit.setRallyPoint(chokepoint->getCenter());
 
 	switch (state)
 	{

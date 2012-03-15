@@ -32,6 +32,7 @@ void CombatManager::update()
 		else if (ut == UnitTypes::Terran_Barracks
              && !agent->getUnit().isBeingConstructed())
 		{
+            /*
             static int counter = 0;
             if( ++counter % 4 == 0 ) // every 4th unit is a medic
             {   
@@ -45,9 +46,10 @@ void CombatManager::update()
                         "Can't train Medic, need gas..." );
                 }
             } else { 
+            */
 			    agent->setState(TrainState);
 			    agent->setUnitTypeTarget(UnitTypes::Terran_Marine);
-            }
+            //}
 		}
 	}
 	
