@@ -110,6 +110,16 @@ int EnhancedUI::getMaxTileSize(int pixels){
 	return  pixels / TILE_SIZE;
 }
 
+BWAPI::Position EnhancedUI::getTilePositionCenter(BWAPI::TilePosition tPos) 
+{
+	BWAPI::Position pos;
+
+	pos.x() = tPos.x() * 32 + 15;
+	pos.y() = tPos.y() * 32 + 15;
+
+	return pos;
+}
+
 /* for a given BWTA region, finds corner tile positions for max width and height */
 void EnhancedUI::getRegionBoundingTilePositions(const BWTA::Region * region, BWAPI::TilePosition & topLeftTP, 
 												BWAPI::TilePosition & topRightTP, BWAPI::TilePosition & bottomRightTP, 

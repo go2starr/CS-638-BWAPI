@@ -13,6 +13,7 @@ public:
 	void drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height);
 	int getMinTileSize(int pixels);
 	int getMaxTileSize(int pixels);
+	BWAPI::Position getTilePositionCenter(BWAPI::TilePosition);
 	void drawRegionBoundingBox(const BWTA::Region * region);
 	void getRegionBoundingTilePositions(const BWTA::Region * region, 
 		BWAPI::TilePosition & topLeftTP, 

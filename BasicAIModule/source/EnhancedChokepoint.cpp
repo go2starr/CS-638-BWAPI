@@ -140,6 +140,8 @@ double EnhancedChokepoint::getWidth()
 	return cp->getWidth();
 }
 
+
+
 /* enhanced functions */
 
 // http://alienryderflex.com/polygon/
@@ -256,6 +258,8 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 	int currentSide;
 	// number of new build tiles for this side
 	int newSideLength;
+	EnhancedUI * eui = new EnhancedUI(); 
+	BWTA::Polygon poly = regionSides.first->getPolygon(); 
 
 	// old comment:
 	// sides are added from left to bottom in constructor
@@ -473,7 +477,8 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 				unbuildableStartTile = currentTile;
 			}		
 
-			if (BWAPI::Broodwar->isBuildable(currentTile, true)) {
+			if (BWAPI::Broodwar->isBuildable(currentTile, true) && 
+				isPositionInPolygon(eui->getTilePositionCenter(currentTile), poly)) {
 				buildableTiles.push_back(currentTile);
 				newSideLength++;
 				newTileTotalCount++;
