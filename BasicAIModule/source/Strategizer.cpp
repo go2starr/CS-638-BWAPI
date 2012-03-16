@@ -49,6 +49,63 @@ void Strategizer::update()
 */
 void Strategizer::onMatchStart()
 {
+	// Barracks do not ever leave idle state (for now), so 1 per unit type
+
+	// Marines
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Marine);
+
+	// Upgrade
+	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
+
+	// Firebat
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Firebat);
+
+	// Medic
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Medic);
+
+
+	/******** FOR GOOD MEASURE :-) ***********************/
+	// Marines
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Marine);
+
+	// Upgrade
+	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
+
+	// Firebat
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Firebat);
+
+	// Marines
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Marine);
+
+	// Upgrade
+	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
+
+	// Firebat
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Firebat);
+
+
+	/****************************************************
+	// Upgrade - Factory
+	buildManager.build(BWAPI::UnitTypes::Terran_Factory);
+
+	// Vulture
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Vulture);
+
+	// Upgrade
+	buildManager.build(BWAPI::UnitTypes::Terran_Armory);
+
+	// Goliaths
+	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
+	buildManager.build(BWAPI::UnitTypes::Terran_Goliath);
+	****************************************************/
 }
 
 /* 
@@ -151,22 +208,28 @@ void Strategizer::updateAgentManagerMap()
 
 		// if Agent hasn't been assigned a manager
 		if (agentManagerMap[a] == NULL) {
-			// Assign SCVs to resource gatherer
+
+			// Resources:
+			// SCV -> ResourceManager
 			if (a->getUnit().getType().isWorker())
 				agentManagerMap[a] = &resourceManager;
-			// Give refinery to gas manager
+			// Refinery -> Gas Manager
 			else if (ut.isRefinery())
 				agentManagerMap[a] = &gasManager;
-			// Give command center to production manager
+			// Command Center -> Production Manager
 			else if (ut.isResourceDepot())
 				agentManagerMap[a] = &productionManager;
-			// Give Barracks to combat manager
+
+			// Army:
+			// Barracks -> BuildManager
 			else if (ut == UnitTypes::Terran_Barracks)
-				agentManagerMap[a] = &combatManager;
-			// Give Marines to combat manager
+				agentManagerMap[a] = &buildManager;
+
+			// Combat:
+			// Marines -> CombatManager
 			else if (ut == UnitTypes::Terran_Marine)
 				agentManagerMap[a] = &combatManager;
-			// Give Firebats to combat manager
+			// Firebat -> CombatManager
 			else if (ut == UnitTypes::Terran_Firebat)
 				agentManagerMap[a] = &combatManager;
 		}
@@ -191,6 +254,12 @@ void Strategizer::updateAgentManagerMap()
 		gasManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
 	{
 		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, gasManager);
+	}
+
+	// Give an SCV to the BuildManager
+	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
+	{
+		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}
 }
 
@@ -225,7 +294,7 @@ void Strategizer::redistributeAgents()
 
 void Strategizer::updateManagers()
 {
-	//buildManager.update();
+	buildManager.update();
 	combatManager.update();
 	//constructionManager.update();
 	gasManager.update();

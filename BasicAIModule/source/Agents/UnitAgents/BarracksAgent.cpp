@@ -26,7 +26,7 @@ void BarracksAgent::update()
 	case TrainState:
         if (!unit.isTraining() && !unit.isBeingConstructed()) 
 		{
-			unit.train(UnitTypes::Terran_Marine);
+			unit.train(unitTypeTarget);
 		}
 		break;
 	}
