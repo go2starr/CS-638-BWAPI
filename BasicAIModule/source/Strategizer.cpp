@@ -303,7 +303,7 @@ void Strategizer::updateManagers()
 	productionManager.update();
 	resourceManager.update();
 	//scoutManager.update();
-	supplyManager.update();
+	//supplyManager.update();
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)

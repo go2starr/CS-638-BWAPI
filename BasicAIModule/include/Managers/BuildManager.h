@@ -5,8 +5,6 @@
  */
 #pragma once
 #include "Manager.h"
-#include "ConstructionManager.h"
-#include "ProductionManager.h"
 #include <queue>
 #include <stack>
 
@@ -42,9 +40,6 @@ public:
 	void build(BWAPI::UnitType type, BWAPI::TilePosition goalPosition, bool immediate=false);
 
 private:
-	ConstructionManager constructionManager;
-	ProductionManager   productionManager;
-
 	queue<BuildReq> buildQueue;
 	stack<BuildReq> buildStack;  // Active equests can be recursive (dependencies)
 

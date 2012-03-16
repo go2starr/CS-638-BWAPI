@@ -12,11 +12,6 @@ void BuildManager::update()
 		numAgents(BWAPI::UnitTypes::Terran_SCV),
 		numAgents(BWAPI::UnitTypes::Terran_Command_Center));
 
-	/* 
-	 * TODO:  Normally, we would pass down orders to the specialized builders.
-	 *        However, to get things rolling I'm doing it here
-	 */
-
 	// Update Agents
 	Manager::update();
 
