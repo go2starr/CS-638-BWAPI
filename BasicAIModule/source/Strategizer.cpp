@@ -151,9 +151,6 @@ void Strategizer::updateAgentManagerMap()
 
 		// if Agent hasn't been assigned a manager
 		if (agentManagerMap[a] == NULL) {
-
-			// Assign agents to managers based upon type
-
 			// Assign SCVs to resource gatherer
 			if (a->getUnit().getType().isWorker())
 				agentManagerMap[a] = &resourceManager;
@@ -176,57 +173,24 @@ void Strategizer::updateAgentManagerMap()
 	}
 
 	// If we are running low on supply, give an SCV to the SupplyManager
-	// if it doesn't already have one !
-	// Note on supplyUsed(): Supply counts returned by BWAPI are double 
-	// what you would expect to see from playing the game.
-	// This is because zerglings take up 0.5 in-game supply.
 	const int remainingSupply = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
-	if (remainingSupply < 8 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
+	if (remainingSupply < 6 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
-		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
-		{
-			Agent   *a  = (*agent).second;
-			UnitType ut = a->getUnit().getType();
-
-			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
-			{
-				agentManagerMap[a] = &supplyManager;
-				break;
-			}
-		}
+		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, supplyManager);
 	}
 
 	// If we have enough SCVs, let's try creating a Barracks/Army
-	// take one of the resourceManager SCV's and give it to the combatManager
-	if (Broodwar->self()->supplyUsed() >= 18 &&
+	if (Broodwar->self()->supplyUsed() >= 20 &&
 		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1 )
 	{
-		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
-		{
-			Agent   *a  = (*agent).second;
-			UnitType ut = a->getUnit().getType();
-			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
-			{
-				agentManagerMap[a] = &combatManager;
-				break;
-			}
-		}
+		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, combatManager);
 	}
 
 	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
 		gasManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
 	{
-		for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
-		{
-			Agent   *a  = (*agent).second;
-			UnitType ut = a->getUnit().getType();
-			if (ut.isWorker() && agentManagerMap[a] == &resourceManager)
-			{
-				agentManagerMap[a] = &gasManager;
-				break;
-			}
-		}
+		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, gasManager);
 	}
 }
 
@@ -269,5 +233,21 @@ void Strategizer::updateManagers()
 	resourceManager.update();
 	//scoutManager.update();
 	supplyManager.update();
+}
+
+bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
+{
+	map<Unit*, Agent*>::iterator i;
+	for (i = unitAgentMap.begin(); i != unitAgentMap.end(); i++)
+		{
+			Agent   *a  = (*i).second;
+			UnitType ut = a->getUnit().getType();
+			if (ut.getID() == type.getID() && agentManagerMap[a] == &src)
+			{
+				agentManagerMap[a] = &dst;
+				return false;
+			}
+		}
+	return true;
 }
 

@@ -56,6 +56,7 @@ private:
 	Strategizer(const Strategizer& other);
 	void operator=(const Strategizer& other);
 
+	// Core update() functions
 	/* updateUnitAgentMap() - Gives an Agent to new Units, removes Agents of inactive Units */
 	void updateUnitAgentMap();
 
@@ -68,6 +69,10 @@ private:
 
 	/* updateManagers() - Calls each Manager's update() method */
 	void updateManagers();
+
+	// Utility
+	/* remap - Remap a unit of type @type from @src to @dst */
+	bool remap(BWAPI::UnitType type, Manager &src, Manager &dst);
 };
 
 

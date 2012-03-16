@@ -30,7 +30,7 @@ void SupplyManager::update()
 	//}
 
 	// Build supply depots if we are running low aren't already building them
-	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 8)
+	if (Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed() < 6)
 	{
 		for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
 		{
