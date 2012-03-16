@@ -24,6 +24,7 @@ void SCVAgent::update()
 		case IdleState:
 			// be idle
 			break;
+
 		case GatherState:
 			// Gather minerals
 			if (unitTarget->getType().isMineralField()) 
@@ -42,55 +43,43 @@ void SCVAgent::update()
 
 		case BuildState:
 			// Return cargo
-			if (unit.isCarryingGas() ||	unit.isCarryingMinerals()) {
-				unit.returnCargo();
-			}
-			// go to idle state after finishing a building, so you can be re assigned
-			// otherwise worker will keep finding new loactions and keep building
-			else if (!unit.isConstructing() && wasConstructing && constructingStructure->isCompleted())
-			{
-				// reset
-				wasConstructing = false;
-				constructingStructure = NULL;
-				// go to default state, for now idle
-				setState(IdleState);
-			}
-			// Reserve a build location
-			else if (!unit.isConstructing() && !buildingReserved)
-			{
-				// find build location for target, TacticalBuildingPlacer decides what is best
-				// needs better seed location, don't always pick the same one
-				buildingLocation = TacticalBuildingPlacer::instance().reserveBuildLocation(unitTypeTarget, Broodwar->self()->getStartLocation(), &unit );
+			//if (unit.isCarryingGas() ||	unit.isCarryingMinerals()) {
+			//	unit.returnCargo();
+			//}
 
+			// Done?
+			if (!unit.isConstructing() && constructingStructure != NULL)
+			{
+				if (constructingStructure->isCompleted())
+				{
+					constructingStructure = NULL;
+					buildingReserved = false;
+					state = IdleState;
+				}
+			}
+
+			// Reserve a build location
+			else if (!buildingReserved)
+			{
+				TacticalBuildingPlacer &tbp = TacticalBuildingPlacer::instance();
+				buildingLocation = tbp.instance().reserveBuildLocation(unitTypeTarget, Broodwar->self()->getStartLocation(), &unit);
 				if (buildingLocation != TilePositions::None)
 				{
-					// TODO: Pass off/cancel reservations on build fails
 					buildingReserved = true;
-					// save our build location
-					buildLocation = buildingLocation;
-				}
-			}
-			else if (!unit.isConstructing() && buildingReserved) {
-				// build will return false if not enough money
-				// keep trying to build each update
-				unit.build(buildingLocation, unitTypeTarget);
-			}
-			// unit.build returned true
-			// once starting construction, don't worry about the build loacation
-			// apparently there can be a disconnect here, if it starts to construct
-			// but somehow there isn't the money when it gets there...
-			// isConstructing() isnt a very good conditional
-			// it would be better if you knew the building was completed
-			else if (unit.isConstructing() && buildingReserved) {
-				// get what we are building
-				Unit * structure = unit.getBuildUnit();
-				if (structure != NULL) {
-					constructingStructure = structure;
-					wasConstructing = true;
-					buildingReserved = false;
 				}
 			}
 
+			// Build it
+			else if (buildingReserved && !unit.isConstructing())
+			{
+				unit.build(buildingLocation, unitTypeTarget);
+			}
+
+			// Building...
+			else if (unit.isConstructing())
+			{
+				constructingStructure = unit.getBuildUnit();
+			}
 			break;
 	}
 
