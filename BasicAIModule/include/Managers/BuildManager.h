@@ -46,5 +46,6 @@ private:
 	ProductionManager   productionManager;
 
 	queue<BuildReq> buildQueue;
-	stack<BuildReq> currentReq;  // Requests can be recursive (dependencies)
+	stack<BuildReq> buildStack;  // Active equests can be recursive (dependencies)
+
 };

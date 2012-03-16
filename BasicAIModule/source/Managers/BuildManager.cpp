@@ -8,7 +8,7 @@ using std::map;
 
 void BuildManager::update()
 {
-	BWAPI::Broodwar->drawTextScreen(2, 30, "\x1F BM : (SCV=%d) (CC=%d)", 
+	BWAPI::Broodwar->drawTextScreen(2, 50, "\x1F BM : (SCV=%d) (CC=%d)", 
 		numAgents(BWAPI::UnitTypes::Terran_SCV),
 		numAgents(BWAPI::UnitTypes::Terran_Command_Center));
 
@@ -20,11 +20,22 @@ void BuildManager::update()
 	// Update Agents
 	Manager::update();
 
-	// Nothing to do if empty build queue
-	if (buildQueue.empty())
+	// Done with the current request?
+	if (buildStack.empty())
+	{
+		// Try to start a new request
+		if (!buildQueue.empty())
+		{
+			buildStack.push(buildQueue.front());
+			buildQueue.pop();
+		}
+	}
+
+	// Process requests if there are any
+	if (buildStack.empty())
 		return;
 
-	BuildReq &req = buildQueue.front();
+	BuildReq &req = buildStack.top();
 	BWAPI::UnitType type = req.type;
 
 	switch (req.state)
@@ -52,8 +63,9 @@ void BuildManager::update()
 		int supplyOwned = BWAPI::Broodwar->self()->supplyTotal() - BWAPI::Broodwar->self()->supplyUsed();
 		if (supplyOwned < type.supplyRequired())
 		{
-			//BWAPI::Broodwar->sendText("!! Not enough supply (%d/%d) to build %s", 
-			//	supplyOwned, type.supplyRequired(), type.c_str());
+			BWAPI::Broodwar->sendText("BM: Insufficient supply (%d/%d) for %s, building Supply Depot", 
+				supplyOwned, type.supplyRequired(), type.c_str());	
+			build(BWAPI::UnitTypes::Terran_Supply_Depot, true);
 			return;
 		}
 
@@ -154,7 +166,7 @@ void BuildManager::update()
 		 *        In the case of a killed SCV doing a build, we may want to restart the
 		 *        order.
 		 */
-		buildQueue.pop();
+		buildStack.pop();
 		break;
 
 	case COMPLETE:
@@ -182,5 +194,8 @@ void BuildManager::build(BWAPI::UnitType type, BWAPI::TilePosition goalPosition,
 	// DEBUG //
 	BWAPI::Broodwar->sendText("BM: Rcvd order for %s", type.c_str());
 
-	buildQueue.push(req);
+	if (immediate) 
+		buildStack.push(req);
+	else
+		buildQueue.push(req);
 }

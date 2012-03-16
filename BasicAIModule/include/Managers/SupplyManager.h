@@ -11,8 +11,9 @@ public:
 	virtual void update();
 
 private:
-    int supplyDepotCount;
-	int supplyDepotConstructingCount;
-	int workersConstructing;
-	int newSupplyDepots;
+    int depotCount;
+	int plannedDepotCount;
+
+	/* plannedSupply - plannedSupply from planned depots + currentSupply*/
+	int plannedSupply();
 };

@@ -15,6 +15,7 @@
 
 class Strategizer
 {
+public:
 	// Managers
 	BuildManager         buildManager;
 	CombatManager        combatManager;
@@ -25,6 +26,7 @@ class Strategizer
 	ScoutManager         scoutManager;
 	SupplyManager        supplyManager;
 
+private:
 	// Agents
 	std::map<BWAPI::Unit*, Agent*> unitAgentMap;
 	std::map<Agent*, Manager*> agentManagerMap;
@@ -73,6 +75,7 @@ private:
 	// Utility
 	/* remap - Remap a unit of type @type from @src to @dst */
 	bool remap(BWAPI::UnitType type, Manager &src, Manager &dst);
+
 };
 
 
