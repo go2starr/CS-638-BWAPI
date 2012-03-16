@@ -110,9 +110,8 @@ EnhancedChokepoint::EnhancedChokepoint(BWTA::Chokepoint * chokepoint)
 	}
 
 	// search buildable tiles for each region 
-	// not working yet
-//	radialSweepSearch(regionASides);
-//	radialSweepSearch(regionBSides);
+	radialSweepSearch(regionASides);
+	radialSweepSearch(regionBSides);
 
 }
 
@@ -255,8 +254,8 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 	int newTileTotalCount;
 	// current side we are on
 	int currentSide;
-	// lenght of the current side we are on
-	int currentSideLength;
+	// number of new build tiles for this side
+	int newSideLength;
 
 	// old comment:
 	// sides are added from left to bottom in constructor
@@ -396,7 +395,7 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 	// init vars
 	foundBuildTile = false;
 	radiusLevel = 0;
-	currentSideLength = 0;
+	newSideLength = 0;
 
 	// set first sides direction
 	sideDirection;
@@ -410,9 +409,11 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 
 	while (!foundBuildTile) {
 
-		// reset 
+		// reset before each round
 		whenToChangeSideLengths.clear();
 		currentSide = 0;
+		// this also gets reset when the side changes
+		newSideLength = 0;
 		lastTileBuildable = false;
 		// side direction (1 && for warning suppression)
 		horizontalSide = (1 && directionOfSides[currentSide][0]);
@@ -442,6 +443,7 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 			startTile = newStartTile;
 			// will be incremented on x and y
 			currentTile = startTile;
+			// what to grow out by
 			currentTileTotalCount = newTileTotalCount + 2 * (int)newSideLengths.size();
 			currentSideLengths.clear();
 			int tileCount = 0; 
@@ -456,6 +458,7 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 		// newSideLengths is set at the end of each round
 		newSideLengths.clear();
 		foundStartTile = false;
+		newTileTotalCount = 0;
 
 
 		// increment
@@ -472,7 +475,8 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 
 			if (BWAPI::Broodwar->isBuildable(currentTile, true)) {
 				buildableTiles.push_back(currentTile);
-				currentSideLength++;
+				newSideLength++;
+				newTileTotalCount++;
 				lastTileBuildable = true; // per round
 				if (!foundStartTile) {
 					newStartTile = currentTile;
@@ -483,7 +487,7 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 					// used saved directions, but also remove any
 					// saved directions for sides that got eliminated
 					if (currentSide > 0) {
-
+						// shift all to the left by 1
 						for (int n = 0; n < currentSide; ++n) {
 							// from horizontal to vertical
 							if (directionOfSides[n][0]) {
@@ -494,7 +498,6 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 							}
 							// pop front
 							directionOfSides[n] = directionOfSides[n+1];
-
 						}
 						// pop back, so no doubles
 						directionOfSides.pop_back();
@@ -515,7 +518,7 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 				// get a few buildable, then not buildable
 				// then buildable again, but for now we want
 				// to limit our search, unless this proves to 
-				// be not so good, if then, the currentSideLength
+				// be not so good, if then, the newSideLength
 				// needs to be changed as it only counts for
 				// buildable tiles
 				break;
@@ -524,23 +527,12 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 			// check for change in direction for next side
 			// if so push back size for newSideLengths
 			if (m == (whenToChangeSideLengths[currentSide]) && 
-				m != (currentTileTotalCount - 1)) {
+				m != (currentTileTotalCount - 1)) { // skip on last tile
 
-					newSideLengths.push_back(currentSideLength);
+					newSideLengths.push_back(newSideLength);
 					currentSide++;
-					// reset
-					currentSideLength = 0;
-
-					// save direction for side on first round
-					// 1st side already saved, 2nd side gets added now and then so on
-					if (radiusLevel == 0) {
-						sideDirection;
-						sideDirection.clear();
-						sideDirection.push_back((int)horizontalSide);
-						sideDirection.push_back(xDir);
-						sideDirection.push_back(yDir);
-						directionOfSides.push_back(sideDirection);
-					}
+					// reset for next side
+					newSideLength = 0;
 
 					// change direction based upon horizontality
 					// how does this change per round?
@@ -561,6 +553,17 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 						// switch
 						horizontalSide = true;
 					}
+					// save direction for side on first round
+					// 1st side already saved, 2nd side gets added now and then so on
+					// needs to happen after the next sides direction is derived
+					if (radiusLevel == 0) {
+						sideDirection;
+						sideDirection.clear();
+						sideDirection.push_back((int)horizontalSide);
+						sideDirection.push_back(xDir);
+						sideDirection.push_back(yDir);
+						directionOfSides.push_back(sideDirection);
+					}
 			}
 
 			// increment direction
@@ -568,6 +571,10 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 			currentTile.y() += yDir;
 
 		} // end round or radius level
+
+		// now at the end of last side, either by
+		// last tile or no more buildable tiles
+		newSideLengths.push_back(newSideLength);
 
 		// increment after each round
 		radiusLevel++;
