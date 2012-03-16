@@ -30,6 +30,8 @@ public:
 	void drawTilePositions(void);
 	void drawBoundingBox(void);
 	void drawBoundingBoxSidesForRegion(BWTA::Region * region, BWAPI::Color color);
+	void drawBuildableTilesForRegion(BWTA::Region * region, BWAPI::Color color);
+	void drawBuildableSupplyDepotTileForRegion(BWTA::Region * region, BWAPI::Color color);
 	
 
 private:
@@ -42,6 +44,16 @@ private:
 	/* pair a region to sides of bounding box, there are only 2 regions per chokepoint */
 	pair<BWTA::Region * , vector<EnhancedSide>> regionASides;
 	pair<BWTA::Region * , vector<EnhancedSide>> regionBSides;
+	// tiles near the chokepoint region side that are buildable
+	// goes only as far to find first buildable supply depot
+	pair<BWTA::Region * , vector<BWAPI::TilePosition>> regionABuildableTiles;
+	pair<BWTA::Region * , vector<BWAPI::TilePosition>> regionBBuildableTiles;
+	// tile near the chokepoint region that can be used to build
+	// a supply depot
+	pair<BWTA::Region * , BWAPI::TilePosition> regionABuildTile;
+	pair<BWTA::Region * , BWAPI::TilePosition> regionBBuildTile;
 
 	bool isSideInRegion(pair<BWAPI::Position, BWAPI::Position> endPoints, BWTA::Region * region);
+	// used to find buildable tiles and a build tile for a supply depot
+	void radialSweepSearch(pair<BWTA::Region * , vector<EnhancedSide>> regionSides);
 };

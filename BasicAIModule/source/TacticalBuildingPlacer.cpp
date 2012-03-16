@@ -61,10 +61,13 @@ void TacticalBuildingPlacer::draw(void)
 			/* leave out for now, sides can be hard to see with this on */
 			//ecPoints[x].drawBoundingBox();
 			chokepoints[0][x].drawBoundingBoxSidesForRegion(region, BWAPI::Colors::Red);
+			// not working yet
+			//chokepoints[0][x].drawBuildableTilesForRegion(region, BWAPI::Colors::White);
 		}
 	}
 }
 
+// draw reserved tiles
 void TacticalBuildingPlacer::update(void)
 {
 	for (int x = 0; x < BWAPI::Broodwar->mapWidth(); x++)
