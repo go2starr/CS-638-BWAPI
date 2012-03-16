@@ -11,7 +11,11 @@ using namespace BWAPI;
 Agent::Agent(Unit& u)
     : unit(u)
     , state(IdleState)
+    , unitTarget(NULL)
+    , positionTarget()
+    , unitTypeTarget(UnitTypes::None)
     , buildingReserved(false)
+    , buildingLocation()
 { }
 
 void Agent::printState() const
@@ -39,13 +43,14 @@ void Agent::printState() const
         Broodwar->drawTextMap(px, py + posOffset, "pos-target: (%d,%d)", 
             positionTarget.x(), positionTarget.y());
 
-        // Draw unit target address if its valid
-        // (calculate position based on whether other stuff is drawn)
-        int unitOffset = -1;
+        // Draw a line to the unit target if its valid
         if( unitTarget != NULL )
-            unitOffset = (posOffset == -1) ? 20 : posOffset + 10;
-        if( unitOffset != -1 )
-            Broodwar->drawTextMap(px, py + unitOffset, "unit-target: %x", unitTarget);
+        {
+            const int tx = unitTarget->getPosition().x();
+            const int ty = unitTarget->getPosition().y();
+            Broodwar->drawLineMap(px, py, tx, ty, Colors::Red);
+            Broodwar->drawTextMap(tx, ty, "id: %x", unitTarget);
+        }
     }
 
 //	if( unit.isSelected() )
