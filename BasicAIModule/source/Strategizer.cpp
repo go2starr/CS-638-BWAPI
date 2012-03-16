@@ -232,6 +232,9 @@ void Strategizer::updateAgentManagerMap()
 			// Firebat -> CombatManager
 			else if (ut == UnitTypes::Terran_Firebat)
 				agentManagerMap[a] = &combatManager;
+            // Medic -> CombatManager
+            else if (ut == UnitTypes::Terran_Medic)
+                agentManagerMap[a] = &combatManager;
 		}
 	}
 
@@ -239,27 +242,27 @@ void Strategizer::updateAgentManagerMap()
 	const int remainingSupply = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
 	if (remainingSupply < 6 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
-		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, supplyManager);
+		remap(UnitTypes::Terran_SCV, resourceManager, supplyManager);
 	}
 
 	// If we have enough SCVs, let's try creating a Barracks/Army
 	if (Broodwar->self()->supplyUsed() >= 20 &&
 		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1 )
 	{
-		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, combatManager);
+		remap(UnitTypes::Terran_SCV, resourceManager, combatManager);
 	}
 
 	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
 		gasManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
 	{
-		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, gasManager);
+		remap(UnitTypes::Terran_SCV, resourceManager, gasManager);
 	}
 
 	// Give an SCV to the BuildManager
 	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
 	{
-		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, buildManager);
+		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}
 }
 
