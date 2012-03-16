@@ -236,11 +236,13 @@ void Strategizer::updateAgentManagerMap()
 	}
 
 	// If we are running low on supply, give an SCV to the SupplyManager
+	/*
 	const int remainingSupply = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
 	if (remainingSupply < 6 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
 		remap(BWAPI::UnitTypes::Terran_SCV, resourceManager, supplyManager);
 	}
+	*/
 
 	// If we have enough SCVs, let's try creating a Barracks/Army
 	if (Broodwar->self()->supplyUsed() >= 20 &&
@@ -301,7 +303,7 @@ void Strategizer::updateManagers()
 	productionManager.update();
 	resourceManager.update();
 	//scoutManager.update();
-	supplyManager.update();
+	//supplyManager.update();
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
