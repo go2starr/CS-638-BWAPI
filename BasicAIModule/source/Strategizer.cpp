@@ -228,7 +228,7 @@ void Strategizer::updateManagers()
 	//buildManager.update();
 	combatManager.update();
 	//constructionManager.update();
-	//gasManager.update();
+	gasManager.update();
 	productionManager.update();
 	resourceManager.update();
 	//scoutManager.update();
