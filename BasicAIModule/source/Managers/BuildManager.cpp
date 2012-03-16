@@ -8,7 +8,7 @@ using std::map;
 
 void BuildManager::update()
 {
-	BWAPI::Broodwar->drawTextScreen(2, 30, "\x1F BM : (SCV=%d) (CC=%d)", 
+	BWAPI::Broodwar->drawTextScreen(2, 50, "\x1F BM : (SCV=%d) (CC=%d)", 
 		numAgents(BWAPI::UnitTypes::Terran_SCV),
 		numAgents(BWAPI::UnitTypes::Terran_Command_Center));
 
