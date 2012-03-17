@@ -14,7 +14,7 @@
 
 using std::pair;
 using std::vector;
-
+using std::set;
 
 class TacticalBuildingPlacer
 {

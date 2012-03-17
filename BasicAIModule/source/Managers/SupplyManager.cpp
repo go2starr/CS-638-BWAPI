@@ -1,12 +1,15 @@
+/*
+ *  SupplyManager.cpp
+ *  
+ *  Used to ensure SupplyDepot count keeps supply below capacity
+ */
 #include "SupplyManager.h"
-
-#include <Strategizer.h>
-#include <Managers/BuildManager.h>
+#include "BuildManager.h"
+#include "Strategizer.h"
 
 #include <BWAPI.h>
 
 using namespace BWAPI;
-using namespace std;
 
 
 SupplyManager::SupplyManager()
@@ -19,20 +22,21 @@ void SupplyManager::update()
 	Broodwar->drawTextScreen(2, 10, "\x1E SM : %d planned", plannedSupply()/2);
 	
 	/* Build supply if running low */
-	int currentSupply = BWAPI::Broodwar->self()->supplyUsed();
+	int currentSupply = Broodwar->self()->supplyUsed();
 	if (plannedSupply() - currentSupply < 6)
 	{
 		plannedDepotCount++;
-		Strategizer::instance().buildManager.build(BWAPI::UnitTypes::Terran_Supply_Depot, true);
+		Strategizer::instance().buildManager.build(UnitTypes::Terran_Supply_Depot, true);
 	}
 
 	/* Base class updates Agents */
 	Manager::update();
 }
 
-int SupplyManager::plannedSupply()
+int SupplyManager::plannedSupply() const
 {
-	int plannedSupply = plannedDepotCount * BWAPI::UnitTypes::Terran_Supply_Depot.supplyProvided();
-	int totalSupply = BWAPI::Broodwar->self()->supplyTotal();
+    // Note: supplyProvided() returns double the onscreen supply count
+	const int plannedSupply = plannedDepotCount * UnitTypes::Terran_Supply_Depot.supplyProvided();
+	const int totalSupply   = Broodwar->self()->supplyTotal();
 	return plannedSupply + totalSupply;
 }

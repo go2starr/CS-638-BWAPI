@@ -1,27 +1,31 @@
-/*
-*  GasManager.h  - This manager sends it's workers to build refineries and gather gas 
-*/
 #pragma once
+/*
+ *  GasManager.h 
+ *  
+ *  This manager sends it's workers to build refineries and gather gas 
+ */
 #include "Manager.h"
 
-using std::vector;
 
 class GasManager : public Manager
 {
-
-
+private:
+    int refineryCount;
+    int refineryConstructingCount;
+    int workersConstructing;
+    int newRefineries;
 
 public:
-	void update();
-	int getGasRate();
-	GasManager();
+    GasManager();
 
-private:
-
-	 int refineryCount;
-	int refineryConstructingCount;
-	int workersConstructing;
-	int newRefineries;
+	virtual void update();
 	
-};
+    int getGasRate() const;
+    int getNumWorkersGathering() const;
 
+    virtual const std::string& getName() const 
+    {
+        static const std::string name("GasMgr");
+        return name; 
+    }
+};

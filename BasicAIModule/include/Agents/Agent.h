@@ -6,6 +6,8 @@
 
 #include <BWAPI.h>
 
+class Manager;
+
 
 class Agent 
 {
@@ -19,6 +21,8 @@ protected:
 
 	bool buildingReserved;                  // Have we reserved space for a building yet?
 	BWAPI::TilePosition buildingLocation;	// Location to build target building at
+
+    Manager *parentManager;
 
 public:  
 	/*
@@ -36,7 +40,13 @@ public:
 
 	inline const State getState()       const { return state; }
 	inline const BWAPI::Unit& getUnit() const { return unit; }
-	inline BWAPI::Unit& getUnit() { return unit; }
+	inline BWAPI::Unit& getUnit() { return unit; }  
+    inline const BWAPI::Position& getPositionTarget() const { return positionTarget; }
+    inline const BWAPI::UnitType& getUnitTypeTarget() const { return unitTypeTarget; }
+    inline BWAPI::Unit* getUnitTarget() const { return unitTarget; }
+
+    void setParentManager(Manager *manager);
+    const std::string getParentManagerName() const;
 
 protected:
 	// C'tor (must be called from subclass)

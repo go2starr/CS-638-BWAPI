@@ -65,6 +65,7 @@
 				AdditionalDependencies="../lib/BWAPId.lib ../lib/BWTAd.lib ../lib/tinyxmld.lib ../lib/CGAL-vc90-mt-gd.lib ../lib/libboost_thread-vc90-mt-gd-1_40.lib ../lib/gmp-vc90-mt-gd.lib ../lib/mpfr-vc90-mt-gd.lib"
 				OutputFile="$(OutDir)\$(ProjectName)d.dll"
 				LinkIncremental="2"
+				IgnoreDefaultLibraryNames="LIBCMTD"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -204,6 +205,10 @@
 			</File>
 			<File
 				RelativePath=".\source\ReservedMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Squad.cpp"
 				>
 			</File>
 			<File
@@ -347,6 +352,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\Common.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\EnhancedChokepoint.h"
 				>
 			</File>
@@ -360,6 +369,10 @@
 			</File>
 			<File
 				RelativePath=".\include\GameStateDB.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Squad.h"
 				>
 			</File>
 			<File

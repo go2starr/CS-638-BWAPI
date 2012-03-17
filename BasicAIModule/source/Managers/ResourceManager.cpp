@@ -1,42 +1,68 @@
 #include "ResourceManager.h"
+#include "Common.h"
+#include "Agent.h"
+
 #include <BWAPI.h>
-#include <set>
+
+#include <limits>
 
 using namespace BWAPI;
-using namespace std;
+
 
 void ResourceManager::update()
 {
-	Broodwar->drawTextScreen(2, 0, "\x1F RM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
+    // TODO: store the mineral units locally in ResourceMgr
+    // so we can more effectively control which workers gather from which minerals
+    
+    Broodwar->drawTextScreen(2, 0, "\x1F RM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
 
 	// Send workers to mine minerals near our base
-	set<Unit*> minerals = Broodwar->getMinerals();
-	set<Unit*>::iterator mineral;
-	AgentSetIter agent;
-
-	for (agent = agents.begin(); agent != agents.end(); agent++)
+    UnitSet  minerals(Broodwar->getMinerals());
+    AgentSet workers(getAgentsOfType(UnitTypes::Terran_SCV));
+	for(AgentSetIter worker = workers.begin(); worker != workers.end(); ++worker)
 	{
-        const Unit& unit = (*agent)->getUnit();
-		if (unit.getType().isWorker() && !unit.isGatheringGas())
+        int minDist = std::numeric_limits<int>::max();
+		Unit* closest = NULL;
+		for(UnitSetIter mineral = minerals.begin(); mineral != minerals.end(); mineral++)
 		{
-			int minDist = 9999999;
-			Unit* closest = 0;
-			for (mineral = minerals.begin(); mineral != minerals.end(); mineral++)
+			int dist = (*worker)->getUnit().getDistance(*mineral);
+			if (dist < minDist)
 			{
-				int dist = unit.getDistance(*mineral);
-				if (dist < minDist)
-				{
-					closest = *mineral;
-				}
+                minDist = dist;
+				closest = *mineral;
 			}
-			if (closest)
-			{
-				(*agent)->setUnitTarget(closest);
-				(*agent)->setState(GatherState);
-			}
+		}
+		if( closest != NULL )
+		{
+            (*worker)->setState(GatherState);
+			(*worker)->setUnitTarget(closest);
+            (*worker)->setUnitTypeTarget(closest->getType());
+            (*worker)->setPositionTarget(closest->getPosition());
 		}
 	}
 	
 	// Update all agents
 	Manager::update();
+}
+
+int ResourceManager::getMineralRate() const
+{
+    // TODO
+	return 0;
+}
+
+int ResourceManager::getNumWorkersGathering() const
+{
+    int count = 0;
+    AgentSetConstIter it  = agents.begin();
+    AgentSetConstIter end = agents.end();
+    for(; it != end;)
+    {
+        Agent *agent = *it;
+        if( agent->getUnit().isGatheringMinerals() )
+        {
+            ++count;
+        }
+    }
+    return count;    
 }

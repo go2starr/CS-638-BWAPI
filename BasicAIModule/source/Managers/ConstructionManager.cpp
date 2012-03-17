@@ -1,5 +1,7 @@
 /*
  * ConstructionManager.cpp
+ * 
+ * Used to build new structures
  */
 #include "ConstructionManager.h"
 
@@ -10,5 +12,5 @@ using namespace BWAPI;
 
 void ConstructionManager::update()
 {
-
+    Manager::update();
 }

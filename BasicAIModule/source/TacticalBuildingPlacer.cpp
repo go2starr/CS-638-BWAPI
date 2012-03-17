@@ -61,16 +61,19 @@ void TacticalBuildingPlacer::draw(void)
 			/* leave out for now, sides can be hard to see with this on */
 			//ecPoints[x].drawBoundingBox();
 			chokepoints[0][x].drawBoundingBoxSidesForRegion(region, BWAPI::Colors::Red);
+			chokepoints[0][x].drawBuildableTilesForRegion(region, BWAPI::Colors::White);
+			chokepoints[0][x].drawBuildableSupplyDepotForRegion(region, BWAPI::Colors::Cyan);
 		}
 	}
 }
 
+// draw reserved tiles
 void TacticalBuildingPlacer::update(void)
 {
 	for (int x = 0; x < BWAPI::Broodwar->mapWidth(); x++)
 		for (int y = 0; y < BWAPI::Broodwar->mapHeight(); y++)
 			if (BWSAL::ReservedMap::getInstance()->isReserved(x, y))
-				BWAPI::Broodwar->drawBoxMap(x*32, y*32, x*32+32, y*32+32, BWAPI::Colors::Red);
+				BWAPI::Broodwar->drawBoxMap(x*32, y*32, x*32+31, y*32+31, BWAPI::Colors::Red);
 }
 
 BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType unitType, BWAPI::TilePosition seedLocation, BWAPI::Unit *builder)

@@ -11,10 +11,18 @@ using BWAPI::Unit;
 
 FirebatAgent::FirebatAgent(Unit& u)
 	: GroundAgent(u)
-{ }
+{
+//    state = DefendState;
+}
 
 void FirebatAgent::update()
 {
+    switch(state)
+    {
+    case IdleState: break;
+    case AttackState: unit.attack(positionTarget); break;
+    case DefendState: unit.attack(positionTarget); break;
+    }
     GroundAgent::update();
 }
 

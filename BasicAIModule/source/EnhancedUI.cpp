@@ -91,10 +91,11 @@ void EnhancedUI::drawPolygonFromRegion(BWTA::Region * region, BWAPI::Color color
 }
 
 /* given top left tile position, draw box for width and height */
-void EnhancedUI::drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height)
+void EnhancedUI::drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height, 
+											 BWAPI::Color color)
 {
 	Broodwar->drawBoxMap(tpos.x() * 32, tpos.y() * 32, ((tpos.x() + width) * 32) - 1, 
-		((tpos.y() + height) * 32) - 1, Colors::Purple, false);
+		((tpos.y() + height) * 32) - 1, color);
 }
 
 int EnhancedUI::getMinTileSize(int pixels){
@@ -108,6 +109,16 @@ int EnhancedUI::getMaxTileSize(int pixels){
 		return  pixels / TILE_SIZE + 1;	
 	}
 	return  pixels / TILE_SIZE;
+}
+
+BWAPI::Position EnhancedUI::getTilePositionCenter(BWAPI::TilePosition tPos) 
+{
+	BWAPI::Position pos;
+
+	pos.x() = tPos.x() * 32 + 15;
+	pos.y() = tPos.y() * 32 + 15;
+
+	return pos;
 }
 
 /* for a given BWTA region, finds corner tile positions for max width and height */

@@ -2,33 +2,34 @@
  *  Manager.cpp - Managers
  */
 #include "Manager.h"
+#include "Common.h"
 #include "Agent.h"
-#include "State.h"
 #include "Tasks/Task.h"
 
 #include <BWAPI.h>
 
-#include <queue>
-#include <set>
-
-
-using namespace std;
 using namespace BWAPI;
 
 
-/* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type */
+/* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type, from this Manager's AgentSet */
 AgentSet Manager::getAgentsOfType(UnitType type)
 {
-    AgentSet agentSet;
-    AgentSetIter it  = agents.begin();
-    AgentSetIter end = agents.end();
+    return getAgentsOfType(type, agents);
+}
+
+/* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type from the specified AgentSet */
+AgentSet Manager::getAgentsOfType(UnitType type, AgentSet& agentSet)
+{
+    AgentSet resultSet;
+    AgentSetIter it  = agentSet.begin();
+    AgentSetIter end = agentSet.end();
     for(; it != end; ++it)
     {
         Agent* agent = *it;
         if( agent->getUnit().getType() ==  type )
-            agentSet.insert(agent);
+            resultSet.insert(agent);
     }
-    return agentSet;
+    return resultSet;
 }
 
 /* update - Called on each frame */
@@ -49,7 +50,7 @@ void Manager::addAgent(Agent &t)
 }
 
 /* removeAgent - Remove an Agent of @ut from the Managers Agent set */
-Agent* Manager::removeAgent(BWAPI::UnitType ut)
+Agent* Manager::removeAgent(UnitType ut)
 {
 	Agent *agent = NULL;
 	AgentSetIter it;
@@ -110,5 +111,5 @@ int Manager::numAgents() const { return agents.size(); }
 /* numAgents - Find out how many Agents of @type this Manager owns */
 int Manager::numAgents(UnitType type)
 {
-    return getAgentsOfType(type).size(); // :)
+    return getAgentsOfType(type).size();
 }

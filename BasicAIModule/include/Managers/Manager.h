@@ -1,22 +1,12 @@
+#pragma once
 /*
  *  Manager.h  - Managers control Agents.
  */
-#pragma once
-#include <Agent.h>
-#include <State.h>
-#include "Tasks/Task.h"
+#include "Common.h"
 
 #include <BWAPI.h>
 
-#include <queue>
-#include <list>
-#include <set>
-
-typedef std::set<Agent*>         AgentSet;
-typedef AgentSet::iterator       AgentSetIter;
-typedef AgentSet::const_iterator AgentSetConstIter;
-
-typedef std::priority_queue<Task*> TaskQueue;
+#include <string>
 
 
 class Manager
@@ -25,10 +15,15 @@ protected:
 	AgentSet  agents;
 	TaskQueue tasks;
 
-    /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type */
+    /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type, from this Manager's AgentSet */
     AgentSet getAgentsOfType(BWAPI::UnitType type); 
+    /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type, from the specified AgentSet */
+    AgentSet getAgentsOfType(BWAPI::UnitType type, AgentSet& agentSet); 
 
 public:    
+    /* onMatchStart - Called when a new match begins */
+    virtual void onMatchStart() { }
+
     /* update - Called on each frame */
 	virtual void update();
 
@@ -55,6 +50,13 @@ public:
     int Manager::numAgents() const;
     /* numAgents - Find out how many Agents of @type this Manager owns */
     int numAgents(BWAPI::UnitType type);
+
+    /* getName - Returns an stl string representation of this Manager's name */
+    virtual const std::string& getName() const 
+    {
+        static const std::string name("INVALID");
+        return name; 
+    }
 };
 
 
