@@ -3,14 +3,7 @@
  * Squad.h
  */
 #include "Agent.h"
-
-#include <set>
-
-// This is duplicated from Manager.h
-// consider extracting to Common.h or something...
-typedef std::set<Agent*>         AgentSet;
-typedef AgentSet::iterator       AgentSetIter;
-typedef AgentSet::const_iterator AgentSetConstIter;
+#include "Common.h"
 
 
 class Squad

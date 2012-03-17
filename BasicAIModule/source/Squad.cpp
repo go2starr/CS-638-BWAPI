@@ -3,6 +3,7 @@
  */
 #include "Squad.h"
 #include "Agent.h"
+#include "Common.h"
 
 #include <cassert>
 
