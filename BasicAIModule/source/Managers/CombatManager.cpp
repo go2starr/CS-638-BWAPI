@@ -55,7 +55,7 @@ void CombatManager::update()
                 // set agents states to Attack until 
                 // - we reach the number we want, or
                 // - we run out of marines to assign
-                const Position enemyBase(target);
+                const Position enemyBase(target.x() + 5, target.y());
                 const int attackNum = numMarines / 2;
 
 				// TODO INCLUDE ALL UNIT TYPES

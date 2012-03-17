@@ -10,6 +10,8 @@ public:
 	SupplyManager();
 	virtual void update();
 
+    virtual const std::string getName() const { return "SupplyMgr"; }
+
 private:
     int depotCount;
 	int plannedDepotCount;

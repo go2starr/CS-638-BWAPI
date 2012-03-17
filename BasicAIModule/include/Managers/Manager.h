@@ -3,11 +3,12 @@
  */
 #pragma once
 #include <Agent.h>
-#include <State.h>
+#include "State.h"
 #include "Tasks/Task.h"
 
 #include <BWAPI.h>
 
+#include <string>
 #include <queue>
 #include <list>
 #include <set>
@@ -50,6 +51,9 @@ public:
 	virtual int mwtpLast(BWAPI::UnitType &ut);
 	/*  estimateCost  -  best estimate at the cost of completing this task */
 	virtual int estimateCost(Task &t);
+
+    /* getName - Returns an stl string representation of this Manager's name */
+    virtual const std::string getName() const { return "INVALID"; };
 
     /* numAgents - Find out how many Agents of any unit type this Manager owns */
     int Manager::numAgents() const;

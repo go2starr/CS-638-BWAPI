@@ -41,6 +41,8 @@ public:
 	void build(BWAPI::UnitType type, bool immediate=false);
 	void build(BWAPI::UnitType type, BWAPI::TilePosition goalPosition, bool immediate=false);
 
+    virtual const std::string getName() const { return "BuildMgr"; }
+
 private:
 	ConstructionManager constructionManager;
 	ProductionManager   productionManager;

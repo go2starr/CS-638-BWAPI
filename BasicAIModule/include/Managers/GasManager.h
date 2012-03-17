@@ -16,9 +16,11 @@ public:
 	int getGasRate();
 	GasManager();
 
+    virtual const std::string getName() const { return "GasMgr"; }
+
 private:
 
-	 int refineryCount;
+	int refineryCount;
 	int refineryConstructingCount;
 	int workersConstructing;
 	int newRefineries;

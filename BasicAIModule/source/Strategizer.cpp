@@ -13,6 +13,7 @@
 #include <map>
 
 using namespace BWAPI;
+
 using std::set;
 using std::map;
 using std::pair;
@@ -52,59 +53,59 @@ void Strategizer::onMatchStart()
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 
 	// Marines
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Marine);
 
 	// Upgrade
-	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
+	buildManager.build(UnitTypes::Terran_Academy);
 
 	// Firebat
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Firebat);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Firebat);
 
 	// Medic
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Medic);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Medic);
 
 
 	/******** FOR GOOD MEASURE :-) ***********************/
 	// Marines
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Marine);
 
 	// Upgrade
-	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
+	buildManager.build(UnitTypes::Terran_Academy);
 
 	// Firebat
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Firebat);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Firebat);
 
 	// Marines
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Marine);
 
 	// Upgrade
-	buildManager.build(BWAPI::UnitTypes::Terran_Academy);
+	buildManager.build(UnitTypes::Terran_Academy);
 
 	// Firebat
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Firebat);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Firebat);
 
 
 	/****************************************************
 	// Upgrade - Factory
-	buildManager.build(BWAPI::UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Factory);
 
 	// Vulture
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Vulture);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Vulture);
 
 	// Upgrade
-	buildManager.build(BWAPI::UnitTypes::Terran_Armory);
+	buildManager.build(UnitTypes::Terran_Armory);
 
 	// Goliaths
-	buildManager.build(BWAPI::UnitTypes::Terran_Barracks);
-	buildManager.build(BWAPI::UnitTypes::Terran_Goliath);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Goliath);
 	****************************************************/
 }
 
@@ -280,7 +281,6 @@ void Strategizer::redistributeAgents()
 	// Revoke all agents from managers
 	buildManager.removeAllAgents();
 	combatManager.removeAllAgents();
-	constructionManager.removeAllAgents();
 	gasManager.removeAllAgents();
 	productionManager.removeAllAgents();
 	resourceManager.removeAllAgents();
@@ -294,6 +294,7 @@ void Strategizer::redistributeAgents()
 		Agent   *a = (*agentManager).first;
 		Manager *m = (*agentManager).second;
 		m->addAgent(*a);
+        a->setParentManager(m);
 	}
 }
 
@@ -301,7 +302,6 @@ void Strategizer::updateManagers()
 {
 	buildManager.update();
 	combatManager.update();
-	//constructionManager.update();
 	gasManager.update();
 	productionManager.update();
 	resourceManager.update();

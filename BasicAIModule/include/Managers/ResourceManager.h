@@ -9,5 +9,7 @@ class ResourceManager : public Manager
 public:
 	void update();
 	int getMineralRate();
+
+    virtual const std::string getName() const { return "ResourceMgr"; }
 };
 

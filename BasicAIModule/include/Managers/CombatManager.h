@@ -8,4 +8,5 @@ class CombatManager : public Manager
 {
 public: 
 	void update();
+    virtual const std::string getName() const { return "CombatMgr"; }
 };

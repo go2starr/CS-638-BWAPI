@@ -19,7 +19,6 @@ public:
 	// Managers
 	BuildManager         buildManager;
 	CombatManager        combatManager;
-	ConstructionManager  constructionManager;
 	GasManager           gasManager;
 	ProductionManager    productionManager;
 	ResourceManager      resourceManager;
