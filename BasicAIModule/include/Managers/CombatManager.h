@@ -1,14 +1,13 @@
-/*
- *  CombatManager  -  Used to defend our base, and (eventually) attack other bases
- */
 #pragma once
+/*
+ * CombatManager.h
+ *  
+ * Used to defend our base and attack other bases
+ */
 #include "Manager.h"
-#include "Squad.h"
+#include "Common.h"
 
 #include <BWAPI.h>
-
-#include <vector>
-#include <string>
 
 
 class CombatManager : public Manager
@@ -16,12 +15,16 @@ class CombatManager : public Manager
 private:
     AgentSet unassignedAgents;
     AgentSet assignedAgents;
-    std::vector<Squad> squads;
+    SquadVector squads;
     BWAPI::Position enemyBase;
 
 public: 
     virtual void onMatchStart();
 	virtual void update();
     
-    virtual const std::string getName() const { return "CombatMgr"; }
+    virtual const std::string& getName() const 
+    { 
+        static const std::string name("CombatMgr");
+        return name;
+    }
 };

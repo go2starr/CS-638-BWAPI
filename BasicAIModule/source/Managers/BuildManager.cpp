@@ -1,12 +1,23 @@
+/*
+ *  BuildManager.cpp
+ *  
+ *  Used to produce new units, buildings and add-ons
+ *  Passes tasks down to the Construction or Production Managers
+ */
 #include "BuildManager.h"
+#include "Common.h"
+#include "Agent.h"
+#include "State.h"
+
+#include <BWAPI.h>
 #include <BWTA.h>
 
-#include <set>
+#include <deque>
 #include <map>
 
 using namespace BWAPI;
 
-using std::set;
+using std::deque;
 using std::map;
 
 
@@ -15,6 +26,8 @@ void BuildManager::update()
 	Broodwar->drawTextScreen(2, 40, "\x07 BM : (SCV=%d) (CC=%d)", 
 		numAgents(UnitTypes::Terran_SCV),
 		numAgents(UnitTypes::Terran_Command_Center));
+
+    drawDebugText();
 
 	/* 
 	 * TODO:  Normally, we would pass down orders to the specialized builders.
@@ -102,8 +115,9 @@ void BuildManager::update()
 			// Find an idle builder
 			for (AgentSetIter i = agents.begin(); i != agents.end(); i++)
 			{
-				if ((*i)->getUnit().getType().getID() == builderType.getID() &&
-					(*i)->getState() == IdleState)
+				if ((*i)->getUnit().getType().getID() == builderType.getID() //)
+                 && (*i)->getState() == IdleState)  // NOTE: structures don't transition properly out of TrainState into IdleState
+                                                    // so this check will fail when it probably shouldn't
 				{
 					// Found one, build it
 					if (type.isBuilding())
@@ -155,8 +169,8 @@ void BuildManager::update()
 			 * We can't check if a builder is *really* building using ->isConstructing(),
 			 * but we can see if a structure is being built by our builder
 			 */
-			set<Unit*> ownedUnits = Broodwar->self()->getUnits();
-			for (set<Unit*>::const_iterator i = ownedUnits.begin(); i != ownedUnits.end(); i++)
+			UnitSet ownedUnits = Broodwar->self()->getUnits();
+			for (UnitSetConstIter i = ownedUnits.begin(); i != ownedUnits.end(); i++)
 			{
 				if ((*i)->getBuildUnit() == builder)
 				{
@@ -205,4 +219,52 @@ void BuildManager::build(UnitType type, TilePosition goalPosition, bool immediat
 		buildStack.push(req);
 	else
 		buildQueue.push(req);
+}
+
+// Note: this is ugly because in order to print its elements 
+// we have to break down the queue and stack and rebuild them
+// in the right order when we're done
+void BuildManager::drawDebugText()
+{
+    const int starty  = 60;
+    int x = 2; 
+    int y = starty;
+
+    Broodwar->drawTextScreen(x, y, "BuildMgr - queue (%d)", (int)buildQueue.size());
+
+    deque<BuildReq> tempq;
+    while(!buildQueue.empty())
+    {
+        BuildReq req = buildQueue.front();
+        buildQueue.pop();
+        Broodwar->drawTextScreen(x, y += 10, "-%s", UnitTypeStrings[req.type.getID()]);
+        tempq.push_back(req);
+    }
+    while(!tempq.empty())
+    {
+        BuildReq req = tempq.front();
+        tempq.pop_front();
+        buildQueue.push(req);
+    }
+
+    tempq.clear();
+
+    x = 150;
+    y = starty;
+
+    Broodwar->drawTextScreen(x, y, "BuildMgr - stack (%d)", (int)buildStack.size());
+    while(!buildStack.empty())
+    {
+        BuildReq req = buildStack.top();
+        buildStack.pop();
+        Broodwar->drawTextScreen(x, y += 10, "-%s", UnitTypeStrings[req.type.getID()]);
+        tempq.push_back(req);
+    }
+    while(!tempq.empty())
+    {
+        BuildReq req = tempq.front();
+        tempq.pop_front();
+        buildStack.push(req);
+    }
+    
 }

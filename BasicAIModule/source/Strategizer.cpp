@@ -6,16 +6,12 @@
 #include "IncludeAllUnitAgents.h"
 #include "TacticalBuildingPlacer.h"
 #include "GameEvent.h"
+#include "Common.h"
 
 #include <BWAPI.h>
 
-#include <set>
-#include <map>
-
 using namespace BWAPI;
 
-using std::set;
-using std::map;
 using std::pair;
 
 
@@ -139,8 +135,8 @@ void Strategizer::onMatchEnd(bool isWinner)
 	// postfix increment inside the loop keeps the 
 	// iterator valid as it traverses the map
 	// Source: Effective STL (Scott Meyers - 2001)
-	map<Agent*, Manager*>::iterator it  = agentManagerMap.begin();
-	map<Agent*, Manager*>::iterator end = agentManagerMap.end();
+	AgentManagerMapIter it  = agentManagerMap.begin();
+	AgentManagerMapIter end = agentManagerMap.end();
 	for(; it != end;)
 	{
 		Agent* agent = it->first;
@@ -157,11 +153,9 @@ void Strategizer::onMatchEnd(bool isWinner)
 */
 void Strategizer::updateUnitAgentMap()
 {
-	set<Unit*> units = Broodwar->self()->getUnits();
-	set<Unit*>::iterator unit;
-
 	// Create agents for newly found, friendly units
-	for (unit = units.begin(); unit != units.end(); ++unit)
+    UnitSet units = Broodwar->self()->getUnits();
+	for (UnitSetIter unit = units.begin(); unit != units.end(); ++unit)
 	{
 		Unit *u = *unit;
 
@@ -209,8 +203,7 @@ void Strategizer::updateUnitAgentMap()
 void Strategizer::updateAgentManagerMap()
 {
 	// Normally, we would shuffle Units around by bid here..
-	map<Unit*, Agent*>::iterator agent;
-	for (agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
+	for (UnitAgentMapIter agent = unitAgentMap.begin(); agent != unitAgentMap.end(); agent++)
 	{
 		Agent   *a  = (*agent).second;
 		UnitType ut = a->getUnit().getType();
@@ -226,7 +219,7 @@ void Strategizer::updateAgentManagerMap()
 			else if (ut.isRefinery())
 				agentManagerMap[a] = &gasManager;
 			// Command Center -> Production Manager
-            // TODO - this is the wrong ProductionManager
+            // TODO: this is the wrong ProductionManager
             // we want to assign it to the one in BuildManager
 			else if (ut.isResourceDepot())
 				agentManagerMap[a] = &productionManager;
@@ -298,11 +291,13 @@ void Strategizer::redistributeAgents()
 	supplyManager.removeAllAgents();
 
 	// Redistribute agents
-	map<Agent*, Manager*>::iterator agentManager;
-	for (agentManager = agentManagerMap.begin(); agentManager != agentManagerMap.end(); agentManager++)
+    AgentManagerMapIter it  = agentManagerMap.begin();
+    AgentManagerMapIter end = agentManagerMap.end();
+	for(; it != end; ++it)
 	{
-		Agent   *a = (*agentManager).first;
-		Manager *m = (*agentManager).second;
+        pair<Agent*, Manager*> agentManager = *it;
+		Agent   *a = agentManager.first;
+		Manager *m = agentManager.second;
 		m->addAgent(*a);
         a->setParentManager(m);
 	}
@@ -315,23 +310,24 @@ void Strategizer::updateManagers()
 	gasManager.update();
 	productionManager.update(); // remove once build mgr is more complete
 	resourceManager.update();
-	//scoutManager.update();
+	scoutManager.update();
 	supplyManager.update();
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
 {
-	map<Unit*, Agent*>::iterator i;
-	for (i = unitAgentMap.begin(); i != unitAgentMap.end(); i++)
+    UnitAgentMapIter it  = unitAgentMap.begin();
+    UnitAgentMapIter end = unitAgentMap.end();
+	for(; it != end; ++it)
+	{
+        pair<Unit*, Agent*> unitAgent = *it;
+		Agent   *a  = unitAgent.second;
+		UnitType ut = a->getUnit().getType();
+		if (ut == type && agentManagerMap[a] == &src)
 		{
-			Agent   *a  = (*i).second;
-			UnitType ut = a->getUnit().getType();
-			if (ut.getID() == type.getID() && agentManagerMap[a] == &src)
-			{
-				agentManagerMap[a] = &dst;
-				return false;
-			}
+			agentManagerMap[a] = &dst;
+			return false;
 		}
+	}
 	return true;
 }
-

@@ -2,21 +2,17 @@
  *  Manager.cpp - Managers
  */
 #include "Manager.h"
+#include "Common.h"
 #include "Agent.h"
-#include "State.h"
 #include "Tasks/Task.h"
 
 #include <BWAPI.h>
 
-#include <queue>
-#include <set>
-
 using namespace BWAPI;
-using namespace std;
 
 
 /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type, from this Manager's AgentSet */
-AgentSet Manager::getAgentsOfType(BWAPI::UnitType type)
+AgentSet Manager::getAgentsOfType(UnitType type)
 {
     return getAgentsOfType(type, agents);
 }
@@ -54,7 +50,7 @@ void Manager::addAgent(Agent &t)
 }
 
 /* removeAgent - Remove an Agent of @ut from the Managers Agent set */
-Agent* Manager::removeAgent(BWAPI::UnitType ut)
+Agent* Manager::removeAgent(UnitType ut)
 {
 	Agent *agent = NULL;
 	AgentSetIter it;
@@ -115,5 +111,5 @@ int Manager::numAgents() const { return agents.size(); }
 /* numAgents - Find out how many Agents of @type this Manager owns */
 int Manager::numAgents(UnitType type)
 {
-    return getAgentsOfType(type).size(); // :)
+    return getAgentsOfType(type).size();
 }

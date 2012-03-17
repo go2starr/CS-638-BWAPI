@@ -12,7 +12,7 @@ using BWAPI::Unit;
 FirebatAgent::FirebatAgent(Unit& u)
 	: GroundAgent(u)
 {
-    state = DefendState;
+//    state = DefendState;
 }
 
 void FirebatAgent::update()

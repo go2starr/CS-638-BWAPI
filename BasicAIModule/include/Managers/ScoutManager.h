@@ -9,5 +9,9 @@ class ScoutManager : public Manager
 public: 
 	void update();
 
-    virtual const std::string getName() const { return "ScoutMgr"; }
+    virtual const std::string& getName() const 
+    { 
+        static const std::string name("ScoutMgr");
+        return name;
+    }
 };

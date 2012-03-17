@@ -12,7 +12,7 @@ using BWAPI::Unit;
 MarineAgent::MarineAgent(Unit& u)
 	: GroundAgent(u)
 {
-    state = DefendState;
+//    state = DefendState;
 }
 
 void MarineAgent::update()

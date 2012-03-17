@@ -12,7 +12,7 @@ using BWAPI::Unit;
 MedicAgent::MedicAgent(Unit& u)
 	: GroundAgent(u)
 {
-    state = DefendState;
+//    state = DefendState;
 }
 
 void MedicAgent::update()

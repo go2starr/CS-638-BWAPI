@@ -352,6 +352,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\Common.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\EnhancedChokepoint.h"
 				>
 			</File>

@@ -1,34 +1,31 @@
+#pragma once
 /* 
  * Strategizer.h
  */
-#pragma once
 #include "GameEvent.h"
 // #include "GameStateDB.h"
 #include "IncludeAllManagers.h"
+#include "Common.h"
 
 #include "TacticalBuildingPlacer.h"
 
 #include <BWAPI.h>
 
-#include <map>
-
 
 class Strategizer
 {
 public:
-	// Managers
-	BuildManager         buildManager;
-	CombatManager        combatManager;
-	GasManager           gasManager;
-	ProductionManager    productionManager;
-	ResourceManager      resourceManager;
-	ScoutManager         scoutManager;
-	SupplyManager        supplyManager;
+	BuildManager      buildManager;
+	CombatManager     combatManager;
+	GasManager        gasManager;
+	ProductionManager productionManager;    // TODO: remove this once BuildMgr is more complete
+	ResourceManager   resourceManager;
+	ScoutManager      scoutManager;
+	SupplyManager     supplyManager;
 
 private:
-	// Agents
-	std::map<BWAPI::Unit*, Agent*> unitAgentMap;
-	std::map<Agent*, Manager*> agentManagerMap;
+	UnitAgentMap      unitAgentMap;
+	AgentManagerMap   agentManagerMap;
 
 	// Game State analysis
 	// GameStateDB gsdb;
@@ -50,8 +47,7 @@ public:
 	/* onEvent - Called by EventProducer when a new event is detected */
 	void onEvent(GameEvent& e);
   
-private:
-  
+private:  
 	// Strategizer is singleton, hence private ctors/assignment
 	Strategizer() { }
 	Strategizer(const Strategizer& other);
@@ -74,7 +70,6 @@ private:
 	// Utility
 	/* remap - Remap a unit of type @type from @src to @dst */
 	bool remap(BWAPI::UnitType type, Manager &src, Manager &dst);
-
 };
 
 

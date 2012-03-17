@@ -36,8 +36,8 @@ void Agent::printState() const
     if( typeTargetID >= 0 && typeTargetID < NUM_UNIT_TYPES && typeTargetID != UnitTypes::None )
         Broodwar->drawTextMap(px, py + 20, "target: %s", UnitTypeStrings[typeTargetID]);
 
-    // Note: drawing this stuff all the time clutters things up massively
-    // TODO: look into adding a chat flag to toggle this stuff (/debuginfo or something)
+    // Note: drawing this stuff all the time clutters things up massively, but can be useful
+    // TODO: look into adding a global chat flag to toggle this stuff (/debuginfo or something)
     if( unit.isSelected() )
     {
         Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);

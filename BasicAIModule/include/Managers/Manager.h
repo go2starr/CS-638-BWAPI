@@ -1,23 +1,12 @@
+#pragma once
 /*
  *  Manager.h  - Managers control Agents.
  */
-#pragma once
-#include "Agent.h"
-#include "State.h"
-#include "Tasks/Task.h"
+#include "Common.h"
 
 #include <BWAPI.h>
 
 #include <string>
-#include <queue>
-#include <list>
-#include <set>
-
-typedef std::set<Agent*>         AgentSet;
-typedef AgentSet::iterator       AgentSetIter;
-typedef AgentSet::const_iterator AgentSetConstIter;
-
-typedef std::priority_queue<Task*> TaskQueue;
 
 
 class Manager
@@ -57,13 +46,17 @@ public:
 	/*  estimateCost  -  best estimate at the cost of completing this task */
 	virtual int estimateCost(Task &t);
 
-    /* getName - Returns an stl string representation of this Manager's name */
-    virtual const std::string getName() const { return "INVALID"; };
-
     /* numAgents - Find out how many Agents of any unit type this Manager owns */
     int Manager::numAgents() const;
     /* numAgents - Find out how many Agents of @type this Manager owns */
     int numAgents(BWAPI::UnitType type);
+
+    /* getName - Returns an stl string representation of this Manager's name */
+    virtual const std::string& getName() const 
+    {
+        static const std::string name("INVALID");
+        return name; 
+    }
 };
 
 

@@ -1,10 +1,10 @@
 #include "CombatManager.h"
+#include "Common.h"
 #include "Squad.h"
 
 #include <BWAPI.h>
 #include <BWTA.h>
 
-#include <vector>
 #include <string>
 
 using namespace BWAPI;
