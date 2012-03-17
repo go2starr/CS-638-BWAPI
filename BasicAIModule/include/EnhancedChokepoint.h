@@ -31,7 +31,7 @@ public:
 	void drawBoundingBox(void);
 	void drawBoundingBoxSidesForRegion(BWTA::Region * region, BWAPI::Color color);
 	void drawBuildableTilesForRegion(BWTA::Region * region, BWAPI::Color color);
-	void drawBuildableSupplyDepotTileForRegion(BWTA::Region * region, BWAPI::Color color);
+	void drawBuildableSupplyDepotForRegion(BWTA::Region * region, BWAPI::Color color);
 	
 
 private:

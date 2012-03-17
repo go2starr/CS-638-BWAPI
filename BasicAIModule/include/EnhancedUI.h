@@ -4,13 +4,14 @@
 #include <BWTA.h>
 //#include <BWSAL.h>
 
-using namespace std;
+using std::vector;
 
 class EnhancedUI
 {
 public:
 	void update() const;
-	void drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height);
+	void drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height, 
+		BWAPI::Color color);
 	int getMinTileSize(int pixels);
 	int getMaxTileSize(int pixels);
 	BWAPI::Position getTilePositionCenter(BWAPI::TilePosition);

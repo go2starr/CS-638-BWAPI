@@ -91,10 +91,11 @@ void EnhancedUI::drawPolygonFromRegion(BWTA::Region * region, BWAPI::Color color
 }
 
 /* given top left tile position, draw box for width and height */
-void EnhancedUI::drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height)
+void EnhancedUI::drawBoxAtTilePositionToSize(BWAPI::TilePosition tpos, int width, int height, 
+											 BWAPI::Color color)
 {
 	Broodwar->drawBoxMap(tpos.x() * 32, tpos.y() * 32, ((tpos.x() + width) * 32) - 1, 
-		((tpos.y() + height) * 32) - 1, Colors::Purple, false);
+		((tpos.y() + height) * 32) - 1, color);
 }
 
 int EnhancedUI::getMinTileSize(int pixels){

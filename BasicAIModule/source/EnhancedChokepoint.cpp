@@ -479,41 +479,41 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 
 			if (BWAPI::Broodwar->isBuildable(currentTile, true) && 
 				isPositionInPolygon(eui->getTilePositionCenter(currentTile), poly)) {
-				buildableTiles.push_back(currentTile);
-				newSideLength++;
-				newTileTotalCount++;
-				lastTileBuildable = true; // per round
-				if (!foundStartTile) {
-					newStartTile = currentTile;
-					foundStartTile = true;
+					buildableTiles.push_back(currentTile);
+					newSideLength++;
+					newTileTotalCount++;
+					lastTileBuildable = true; // per round
+					if (!foundStartTile) {
+						newStartTile = currentTile;
+						foundStartTile = true;
 
-					// see if we are on a different side now, 
-					// if so, need to change xStartDir and yStartDir
-					// used saved directions, but also remove any
-					// saved directions for sides that got eliminated
-					if (currentSide > 0) {
-						// shift all to the left by 1
-						for (int n = 0; n < currentSide; ++n) {
-							// from horizontal to vertical
-							if (directionOfSides[n][0]) {
-								xStartDir = xStartDir * -1;
+						// see if we are on a different side now, 
+						// if so, need to change xStartDir and yStartDir
+						// used saved directions, but also remove any
+						// saved directions for sides that got eliminated
+						if (currentSide > 0) {
+							// shift all to the left by 1
+							for (int n = 0; n < currentSide; ++n) {
+								// from horizontal to vertical
+								if (directionOfSides[n][0]) {
+									xStartDir = xStartDir * -1;
+								}
+								else {
+									yStartDir = yStartDir * -1;
+								}
+								// pop front
+								directionOfSides[n] = directionOfSides[n+1];
 							}
-							else {
-								yStartDir = yStartDir * -1;
-							}
-							// pop front
-							directionOfSides[n] = directionOfSides[n+1];
+							// pop back, so no doubles
+							directionOfSides.pop_back();
 						}
-						// pop back, so no doubles
-						directionOfSides.pop_back();
 					}
-				}
 
-				if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
-					foundBuildTile = true; // yay!
-					buildTile = currentTile;
-					break;
-				}
+					if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+						foundBuildTile = true; // yay!
+						buildTile = currentTile;
+						break;
+					}
 			}
 			else if (lastTileBuildable) {
 				// move on to next round since this tile
@@ -596,6 +596,9 @@ void EnhancedChokepoint::radialSweepSearch(pair<BWTA::Region * , vector<Enhanced
 		regionBBuildableTiles.second = buildableTiles;
 		regionBBuildTile.second = buildTile;
 	}
+
+	// clean up
+	delete(eui);
 
 	return;
 
@@ -720,19 +723,24 @@ void EnhancedChokepoint::drawBuildableTilesForRegion(BWTA::Region * region, BWAP
 	}
 	delete eui;
 }
-void EnhancedChokepoint::drawBuildableSupplyDepotTileForRegion(BWTA::Region * region, BWAPI::Color color)
+void EnhancedChokepoint::drawBuildableSupplyDepotForRegion(BWTA::Region * region, 
+														   BWAPI::Color color)
 {
 	assert(region);
 
 	EnhancedUI * eui = new EnhancedUI();
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+
 	if (region == regionABuildTile.first) {
 
-		eui->drawTilePosition(regionABuildTile.second, color);
-
-
+		//eui->drawTilePosition(regionABuildTile.second, color);
+		eui->drawBoxAtTilePositionToSize(regionABuildTile.second, depot.tileWidth(), 
+			depot.tileHeight(), color);
 	}
 	else {
-		eui->drawTilePosition(regionBBuildTile.second, color);
+		//eui->drawTilePosition(regionBBuildTile.second, color);
+		eui->drawBoxAtTilePositionToSize(regionBBuildTile.second, depot.tileWidth(), 
+			depot.tileHeight(), color);
 	}
 	delete eui;
 }
