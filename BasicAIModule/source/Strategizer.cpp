@@ -57,14 +57,9 @@ void Strategizer::onMatchStart()
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 
 	// Marines
-	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
 
-	// Upgrade
-	buildManager.build(UnitTypes::Terran_Academy);
-
 	// Firebat
-	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Firebat);
 
 	// Medic
@@ -221,6 +216,9 @@ void Strategizer::updateAgentManagerMap()
 			// Command Center -> Production Manager
             // TODO: this is the wrong ProductionManager
             // we want to assign it to the one in BuildManager
+			//
+			// Left here until we find a way to generate SCVs in BM.
+			// -mike
 			else if (ut.isResourceDepot())
 				agentManagerMap[a] = &productionManager;
 

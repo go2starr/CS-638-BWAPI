@@ -89,7 +89,8 @@ void BuildManager::update()
 			int rc = (*i).second;
 			if (Broodwar->self()->allUnitCount(rt) < rc)
 			{
-				Broodwar->sendText("!! Bad build order:  Need %dx%s to build %s", rc, rt.c_str(), type.c_str());
+				build(rt, true);
+				Broodwar->sendText("%s pushed: prereq to build %s", rt.c_str(), type.c_str());
 				return;
 			}
 		}
@@ -98,7 +99,8 @@ void BuildManager::update()
 		UnitType builderType = type.whatBuilds().first;
 		if (Broodwar->self()->allUnitCount(builderType) < 1)
 		{
-			Broodwar->sendText("!! Bad build order:  Need a %s to build %s", builderType.c_str(), type.c_str());
+			build(builderType, true);
+			Broodwar->sendText("%s pushed:  Need a %s to build %s", builderType.c_str(), type.c_str());
 			return;
 		}
 		// OK - requirements met, let's build it!
