@@ -2,7 +2,7 @@
  *  Manager.h  - Managers control Agents.
  */
 #pragma once
-#include <Agent.h>
+#include "Agent.h"
 #include "State.h"
 #include "Tasks/Task.h"
 
@@ -26,10 +26,15 @@ protected:
 	AgentSet  agents;
 	TaskQueue tasks;
 
-    /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type */
+    /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type, from this Manager's AgentSet */
     AgentSet getAgentsOfType(BWAPI::UnitType type); 
+    /* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type, from the specified AgentSet */
+    AgentSet getAgentsOfType(BWAPI::UnitType type, AgentSet& agentSet); 
 
 public:    
+    /* onMatchStart - Called when a new match begins */
+    virtual void onMatchStart() { }
+
     /* update - Called on each frame */
 	virtual void update();
 

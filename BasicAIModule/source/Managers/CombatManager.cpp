@@ -1,10 +1,46 @@
 #include "CombatManager.h"
+#include "Squad.h"
+
 #include <BWAPI.h>
 #include <BWTA.h>
 
+#include <vector>
+#include <string>
+
 using namespace BWAPI;
+using BWTA::Chokepoint;
+
 using namespace std;
 
+
+void CombatManager::onMatchStart()
+{
+    Player* enemy = Broodwar->enemy();
+    if( enemy != NULL )
+    {
+        // Get the likely enemy base location (furthest from myStart)
+        // TODO - this should probably be calculated only once, 
+        // maybe we should have a Manager::onMatchStart() method?
+        TilePosition myStart = Broodwar->self()->getStartLocation();
+        TilePosition target;
+        double maxDistance = 0.0;
+        set<TilePosition>& startPositions = Broodwar->getStartLocations();
+        set<TilePosition>::iterator pit  = startPositions.begin();
+        set<TilePosition>::iterator pend = startPositions.end();
+        for(; pit != pend; ++pit)
+        {
+            TilePosition pos = *pit;
+            const double distance = pos.getDistance(myStart);
+            if( distance > maxDistance )
+            {
+                target = pos;
+                maxDistance = distance;
+            }
+        }
+
+        enemyBase = Position(target);
+    }
+}
 
 void CombatManager::update()
 {
@@ -15,6 +51,25 @@ void CombatManager::update()
         numAgents(UnitTypes::Terran_Firebat), 
         numAgents(UnitTypes::Terran_Medic));
 
+    // If we have any new Agents, they should go in the unassigned set
+    AgentSetIter it  = agents.begin();
+    AgentSetIter end = agents.end();
+    for(; it != end; ++it)
+    {
+        Agent *agent = *it;
+        if( assignedAgents.find(agent) == assignedAgents.end() ) 
+        {
+            unassignedAgents.insert(agent);
+            // TODO - this is a hack to make them defend in the right place
+            Chokepoint *cp = BWTA::getNearestChokepoint(agent->getUnit().getPosition());
+            if( cp != NULL )
+                agent->setPositionTarget(cp->getCenter());
+            else 
+                agent->setPositionTarget(Position(Broodwar->self()->getStartLocation()));
+        }
+    }
+        
+
     // Setup a relatively small enemy base assault if we have a decent number of marines
     // TODO - CombatManager should start putting it's Agents in Squads
     // then when a Squad is full, and the CombatManager gets assigned the 
@@ -22,57 +77,63 @@ void CombatManager::update()
     // We could track two more sets of Agent*, 
     // one would be currently unassigned Agent's, the other would be assigned
     const int numMarines = numAgents(UnitTypes::Terran_Marine);
-    const int threshold = 50;
-    if( numMarines >= threshold )
+    const int numFirebats = numAgents(UnitTypes::Terran_Firebat);
+    const int numMedics = numAgents(UnitTypes::Terran_Medic);
+    const int numTroops = numMarines + numFirebats + numMedics;
+
+    const int threshold = 40;
+    if( numTroops >= threshold )
     {
-        Player* enemy = Broodwar->enemy();
-        if( enemy != NULL )
+        // Setup the attack force:
+        // set agents states to Attack until 
+        // - we reach the number we want, or
+        // - we run out of marines to assign
+        const int attackNum = numTroops / 2;
+
+        // TODO : add units to a squad and put them in the assigned set
+
+        int numAssignedTroops = 0;
+
+        AgentSet marines(getAgentsOfType(UnitTypes::Terran_Marine, unassignedAgents));
+        AgentSetIter it  = marines.begin();
+        AgentSetIter end = marines.end();
+        for(; it != end && numAssignedTroops < attackNum; 
+            ++it, ++numAssignedTroops)
         {
-            // Get the likely enemy base location (furthest from myStart)
-            // TODO - this should probably be calculated only once, 
-            // maybe we should have a Manager::onMatchStart() method?
-            TilePosition myStart = Broodwar->self()->getStartLocation();
-            TilePosition target;
-            double maxDistance = 0.0;
-            set<TilePosition>& startPositions = Broodwar->getStartLocations();
-            set<TilePosition>::iterator pit  = startPositions.begin();
-            set<TilePosition>::iterator pend = startPositions.end();
-            for(; pit != pend; ++pit)
-            {
-                TilePosition pos = *pit;
-                const double distance = pos.getDistance(myStart);
-                if( distance > maxDistance )
-                {
-                    target = pos;
-                    maxDistance = distance;
-                }
-            }
+            Agent* marine = *it;
+            marine->setState(AttackState);
+            marine->setPositionTarget(enemyBase);
+            
+            unassignedAgents.erase(marine);
+            assignedAgents.insert(marine);
+        }
 
-            // If a valid target was found
-            if( target.isValid() )
-            {
-                // Setup the attack force:
-                // set agents states to Attack until 
-                // - we reach the number we want, or
-                // - we run out of marines to assign
-                const Position enemyBase(target.x() + 5, target.y());
-                const int attackNum = numMarines / 2;
+        AgentSet firebats(getAgentsOfType(UnitTypes::Terran_Firebat, unassignedAgents));
+        it  = firebats.begin();
+        end = firebats.end();
+        for(; it != end && numAssignedTroops < attackNum; 
+            ++it, ++numAssignedTroops)
+        {
+            Agent* firebat = *it;
+            firebat->setState(AttackState);
+            firebat->setPositionTarget(enemyBase);
 
-				// TODO INCLUDE ALL UNIT TYPES
-                AgentSet marines(getAgentsOfType(UnitTypes::Terran_Marine));
+            unassignedAgents.erase(firebat);
+            assignedAgents.insert(firebat);
+        }
 
-                AgentSetIter it  = marines.begin();
-                AgentSetIter end = marines.end();
-                for(int i = 0; i < attackNum && it != end; ++i, ++it)
-                {
-                    Agent* marine = *it;
-                    marine->setState(AttackState);
-                    marine->setPositionTarget(enemyBase);
-                }
-            } else { // complain about it
-                if( Broodwar->getFrameCount() % 60 == 0 )
-                    Broodwar->sendText("CombatMgr: attack target is invalid");
-            }
+        AgentSet medics(getAgentsOfType(UnitTypes::Terran_Medic, unassignedAgents));
+        it  = medics.begin();
+        end = medics.end();
+        for(; it != end && numAssignedTroops < attackNum; 
+            ++it, ++numAssignedTroops)
+        {
+            Agent* medic = *it;
+            medic->setState(AttackState);
+            medic->setPositionTarget(enemyBase);
+
+            unassignedAgents.erase(medic);
+            assignedAgents.insert(medic);
         }
     }
 	

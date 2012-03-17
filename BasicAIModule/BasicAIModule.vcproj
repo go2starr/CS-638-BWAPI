@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\Squad.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\Strategizer.cpp"
 				>
 			</File>
@@ -361,6 +365,10 @@
 			</File>
 			<File
 				RelativePath=".\include\GameStateDB.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Squad.h"
 				>
 			</File>
 			<File

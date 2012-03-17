@@ -41,6 +41,9 @@ public:
 	inline const State getState()       const { return state; }
 	inline const BWAPI::Unit& getUnit() const { return unit; }
 	inline BWAPI::Unit& getUnit() { return unit; }  
+    inline const BWAPI::Position& getPositionTarget() const { return positionTarget; }
+    inline const BWAPI::UnitType& getUnitTypeTarget() const { return unitTypeTarget; }
+    inline BWAPI::Unit* getUnitTarget() const { return unitTarget; }
 
     void setParentManager(Manager *manager);
     const std::string getParentManagerName() const;

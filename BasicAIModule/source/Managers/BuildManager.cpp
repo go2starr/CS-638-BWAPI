@@ -21,6 +21,9 @@ void BuildManager::update()
 	 *        However, to get things rolling I'm doing it here
 	 */
 
+    productionManager.update();
+    constructionManager.update();
+
 	// Update Agents
 	Manager::update();
 

@@ -11,24 +11,29 @@
 #include <queue>
 #include <set>
 
-
-using namespace std;
 using namespace BWAPI;
+using namespace std;
 
 
-/* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type */
-AgentSet Manager::getAgentsOfType(UnitType type)
+/* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type, from this Manager's AgentSet */
+AgentSet Manager::getAgentsOfType(BWAPI::UnitType type)
 {
-    AgentSet agentSet;
-    AgentSetIter it  = agents.begin();
-    AgentSetIter end = agents.end();
+    return getAgentsOfType(type, agents);
+}
+
+/* getAgentsOfType - Gets an AgentSet containing all owned Agents of the specified type from the specified AgentSet */
+AgentSet Manager::getAgentsOfType(UnitType type, AgentSet& agentSet)
+{
+    AgentSet resultSet;
+    AgentSetIter it  = agentSet.begin();
+    AgentSetIter end = agentSet.end();
     for(; it != end; ++it)
     {
         Agent* agent = *it;
         if( agent->getUnit().getType() ==  type )
-            agentSet.insert(agent);
+            resultSet.insert(agent);
     }
-    return agentSet;
+    return resultSet;
 }
 
 /* update - Called on each frame */

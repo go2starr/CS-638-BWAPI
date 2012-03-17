@@ -50,6 +50,14 @@ void Strategizer::update()
 */
 void Strategizer::onMatchStart()
 {
+    buildManager.onMatchStart();
+    combatManager.onMatchStart();
+    gasManager.onMatchStart();
+    productionManager.onMatchStart();
+    resourceManager.onMatchStart();
+    scoutManager.onMatchStart();
+    supplyManager.onMatchStart();
+
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 
 	// Marines
@@ -218,6 +226,8 @@ void Strategizer::updateAgentManagerMap()
 			else if (ut.isRefinery())
 				agentManagerMap[a] = &gasManager;
 			// Command Center -> Production Manager
+            // TODO - this is the wrong ProductionManager
+            // we want to assign it to the one in BuildManager
 			else if (ut.isResourceDepot())
 				agentManagerMap[a] = &productionManager;
 
@@ -282,7 +292,7 @@ void Strategizer::redistributeAgents()
 	buildManager.removeAllAgents();
 	combatManager.removeAllAgents();
 	gasManager.removeAllAgents();
-	productionManager.removeAllAgents();
+	productionManager.removeAllAgents(); // remove once build mgr is more complete
 	resourceManager.removeAllAgents();
 	scoutManager.removeAllAgents();
 	supplyManager.removeAllAgents();
@@ -303,7 +313,7 @@ void Strategizer::updateManagers()
 	buildManager.update();
 	combatManager.update();
 	gasManager.update();
-	productionManager.update();
+	productionManager.update(); // remove once build mgr is more complete
 	resourceManager.update();
 	//scoutManager.update();
 	supplyManager.update();

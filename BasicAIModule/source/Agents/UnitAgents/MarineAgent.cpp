@@ -11,7 +11,9 @@ using BWAPI::Unit;
 
 MarineAgent::MarineAgent(Unit& u)
 	: GroundAgent(u)
-{ }
+{
+    state = DefendState;
+}
 
 void MarineAgent::update()
 {
@@ -19,7 +21,7 @@ void MarineAgent::update()
     {
     case IdleState: break;
     case AttackState: unit.attack(positionTarget); break;
-    case DefendState: unit.patrol(positionTarget); break;
+    case DefendState: unit.attack(positionTarget); break;
     }
 
     GroundAgent::update();
