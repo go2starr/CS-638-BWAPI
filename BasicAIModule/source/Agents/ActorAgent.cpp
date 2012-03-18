@@ -12,5 +12,18 @@ ActorAgent::ActorAgent(Unit &u)
 
 void ActorAgent::update()
 {
+    switch(state)
+    {
+    case IdleState: break;
+    case AttackState: 
+		if (!unit.isAttacking() && !unit.isMoving())
+			unit.attack(positionTarget); 
+		break;
+    case DefendState: 
+		if (!unit.isAttacking() && !unit.isMoving())
+			unit.attack(positionTarget); 
+		break;
+    }
+
 	Agent::update();
 }

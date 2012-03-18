@@ -17,19 +17,6 @@ MarineAgent::MarineAgent(Unit& u)
 
 void MarineAgent::update()
 {
-    switch(state)
-    {
-    case IdleState: break;
-    case AttackState: 
-		if (!unit.isAttacking())
-			unit.attack(positionTarget); 
-		break;
-    case DefendState: 
-		if (!unit.isAttacking())
-			unit.attack(positionTarget); 
-		break;
-    }
-
     GroundAgent::update();
 }
 

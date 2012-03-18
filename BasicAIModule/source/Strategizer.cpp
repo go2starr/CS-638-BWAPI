@@ -67,18 +67,19 @@ void Strategizer::onMatchStart()
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
 
-	// Tanks
-	buildManager.build(UnitTypes::Terran_Siege_Tank_Tank_Mode);
-
 	/* OVERKILL */
-		buildManager.build(UnitTypes::Terran_Marine);
 	buildManager.build(UnitTypes::Terran_Barracks);
 		buildManager.build(UnitTypes::Terran_Marine);
-	buildManager.build(UnitTypes::Terran_Barracks);
+	
+		buildManager.build(UnitTypes::Terran_Barracks);
 		buildManager.build(UnitTypes::Terran_Marine);
-	buildManager.build(UnitTypes::Terran_Barracks);
+	
+		buildManager.build(UnitTypes::Terran_Barracks);
 		buildManager.build(UnitTypes::Terran_Marine);
-	buildManager.build(UnitTypes::Terran_Barracks);
+	
+		buildManager.build(UnitTypes::Terran_Barracks);
+		buildManager.build(UnitTypes::Terran_Firebat);
+	
 }
 
 /* 
