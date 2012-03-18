@@ -5,6 +5,7 @@
  *  Passes tasks down to the Construction or Production Managers
  */
 #include "BuildManager.h"
+#include "ResourceManager.h"
 #include "Common.h"
 #include "Agent.h"
 #include "State.h"
@@ -71,7 +72,7 @@ void BuildManager::update()
 				supplyOwned, type.supplyRequired(), type.c_str());	
 			build(UnitTypes::Terran_Supply_Depot, true);
 			*/
-			return;
+			break;
 		}
 
 		// Required units?
@@ -84,7 +85,7 @@ void BuildManager::update()
 			{
 				build(rt, true);
 				Broodwar->sendText("%s pushed: prereq to build %s", rt.c_str(), type.c_str());
-				return;
+				break;
 			}
 		}
 		
@@ -94,7 +95,7 @@ void BuildManager::update()
 		{
 			build(builderType, true);
 			Broodwar->sendText("%s pushed:  Need a %s to build %s", builderType.c_str(), type.c_str());
-			return;
+			break;
 		}
 
 		// Required resources?
@@ -103,7 +104,7 @@ void BuildManager::update()
 		{
 			//Broodwar->sendText("BM: %d/%d minerals %d/%d gas for %s",
 			//	mineralsOwned, mineralsNeeded, gasOwned, gasNeeded, type.c_str());
-			return;
+			break;
 		}
 
 		// OK - requirements met, let's build it!
@@ -180,6 +181,17 @@ void BuildManager::update()
 	case COMPLETE:
 		break;
 	}
+
+    // Keep our workers busy when they aren't building
+    AgentSet workers(getAgentsOfType(UnitTypes::Terran_SCV));
+    for(AgentSetIter worker = workers.begin(); worker != workers.end(); ++worker)
+    {
+        Agent& agent = **worker;
+        if( agent.getState() == IdleState ) 
+        {
+            ResourceManager::makeAgentGatherMinerals(agent);
+        }
+    }
 }
 
 void BuildManager::build(UnitType type, bool immediate)

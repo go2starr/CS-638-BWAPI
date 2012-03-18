@@ -12,6 +12,9 @@ class ResourceManager : public Manager
 public:
 	void update();
 
+    static bool makeAgentGatherMinerals(Agent& agent);
+    static BWAPI::Unit* getClosestMineralPatch(const Agent& agent);
+
 	int getMineralRate() const;
     int getNumWorkersGathering() const;
 
