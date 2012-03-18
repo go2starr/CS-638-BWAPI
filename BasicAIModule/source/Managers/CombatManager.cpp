@@ -76,10 +76,13 @@ void CombatManager::update()
     // 'Attack' task, it can send whole squads at a time 
     // We could track two more sets of Agent*, 
     // one would be currently unassigned Agent's, the other would be assigned
+
+	/*
     const int numMarines = numAgents(UnitTypes::Terran_Marine);
     const int numFirebats = numAgents(UnitTypes::Terran_Firebat);
     const int numMedics = numAgents(UnitTypes::Terran_Medic);
-    //const int numTroops = numMarines + numFirebats + numMedics;
+    const int numTroops = numMarines + numFirebats + numMedics;
+	*/
 	const int numTroops = agents.size();
 
     const int threshold = 40;
@@ -94,11 +97,7 @@ void CombatManager::update()
         // TODO : add units to a squad and put them in the assigned set
 
         int numAssignedTroops = 0;
-
-        AgentSet marines(getAgentsOfType(UnitTypes::Terran_Marine, unassignedAgents));
-        AgentSetIter it  = marines.begin();
-        AgentSetIter end = marines.end();
-        for(; it != end && numAssignedTroops < attackNum; 
+		for(it = agents.begin(); it != agents.end() && numAssignedTroops < attackNum; 
             ++it, ++numAssignedTroops)
         {
             Agent* marine = *it;
@@ -108,36 +107,8 @@ void CombatManager::update()
             unassignedAgents.erase(marine);
             assignedAgents.insert(marine);
         }
-
-        AgentSet firebats(getAgentsOfType(UnitTypes::Terran_Firebat, unassignedAgents));
-        it  = firebats.begin();
-        end = firebats.end();
-        for(; it != end && numAssignedTroops < attackNum; 
-            ++it, ++numAssignedTroops)
-        {
-            Agent* firebat = *it;
-            firebat->setState(AttackState);
-            firebat->setPositionTarget(enemyBase);
-
-            unassignedAgents.erase(firebat);
-            assignedAgents.insert(firebat);
-        }
-
-        AgentSet medics(getAgentsOfType(UnitTypes::Terran_Medic, unassignedAgents));
-        it  = medics.begin();
-        end = medics.end();
-        for(; it != end && numAssignedTroops < attackNum; 
-            ++it, ++numAssignedTroops)
-        {
-            Agent* medic = *it;
-            medic->setState(AttackState);
-            medic->setPositionTarget(enemyBase);
-
-            unassignedAgents.erase(medic);
-            assignedAgents.insert(medic);
-        }
-    }
-	
+	}
 	/* Base class updates Agents */
 	Manager::update();
 }
+

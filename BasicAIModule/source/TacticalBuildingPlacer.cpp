@@ -97,7 +97,6 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 	}
 
 	loc = buildingPlacer.findBuildLocation(BWSAL::ReservedMap::getInstance(), unitType, seedLocation, builder);
-
 	BWSAL::ReservedMap::getInstance()->reserveTiles(loc, unitType, unitType.tileWidth(), unitType.tileHeight());
 
 	return loc;

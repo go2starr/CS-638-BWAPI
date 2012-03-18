@@ -23,10 +23,20 @@ void SupplyManager::update()
 	
 	/* Build supply if running low */
 	int currentSupply = Broodwar->self()->supplyUsed();
-	if (plannedSupply() - currentSupply < 6)
+	if (plannedSupply() - currentSupply < 12)
 	{
+		Broodwar->sendText("SM: Nearing capacity (%d/%d), Supply Depot ordered",
+			currentSupply, plannedSupply());
 		plannedDepotCount++;
 		Strategizer::instance().buildManager.build(UnitTypes::Terran_Supply_Depot, true);
+	}
+
+	/* Detect Supply Depot completion */
+	int completedDepots = Broodwar->self()->completedUnitCount(UnitTypes::Terran_Supply_Depot);
+	if (completedDepots > depotCount)
+	{
+		depotCount++;
+		plannedDepotCount--;
 	}
 
 	/* Base class updates Agents */

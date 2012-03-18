@@ -61,13 +61,26 @@ void Strategizer::onMatchStart()
 	
 	// Firebats
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Firebat);
+	buildManager.build(UnitTypes::Terran_Marine);
 
 	// Marines
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
-	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Firebat);
+
+	// Vultures
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Vulture);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Vulture);
+
+	buildManager.build(UnitTypes::Terran_Valkyrie);
+	buildManager.build(UnitTypes::Terran_Goliath);
+
+	/**
+	buildManager.build(UnitTypes::Terran_Battlecruiser);
+    **/
 }
 
 /* 

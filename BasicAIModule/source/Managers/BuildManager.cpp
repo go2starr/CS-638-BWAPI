@@ -66,9 +66,11 @@ void BuildManager::update()
 		int supplyOwned = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
 		if (supplyOwned < type.supplyRequired())
 		{
+			/*
 			Broodwar->sendText("BM: Insufficient supply (%d/%d) for %s, building Supply Depot", 
 				supplyOwned, type.supplyRequired(), type.c_str());	
 			build(UnitTypes::Terran_Supply_Depot, true);
+			*/
 			return;
 		}
 

@@ -67,6 +67,7 @@ void SCVAgent::update()
 				{
 					buildingReserved = true;
 				}
+				unit.move(Position(buildingLocation));
 			}
 
 			// Build it

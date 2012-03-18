@@ -11,7 +11,7 @@ void StructureAgent::update()
 	switch (state)
 	{
 	case IdleState:
-		break;
+		// fall through
 
 	case TrainState:
 		if (!unit.isTraining() && !unit.isBeingConstructed()) 
