@@ -8,6 +8,5 @@ class ActorAgent : public Agent
 {
 public:
 	virtual void update();
-protected:
 	ActorAgent(BWAPI::Unit &u);
 };

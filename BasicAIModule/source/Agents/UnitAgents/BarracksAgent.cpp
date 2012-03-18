@@ -16,20 +16,5 @@ BarracksAgent::BarracksAgent(Unit &u)
 
 void BarracksAgent::update()
 {
-	// Send Units to nearest chokepoint
-    BWTA::Chokepoint* chokepoint = BWTA::getNearestChokepoint(unit.getPosition());
-    if( chokepoint != NULL )
-        unit.setRallyPoint(chokepoint->getCenter());
-
-	switch (state)
-	{
-	case TrainState:
-        if (!unit.isTraining() && !unit.isBeingConstructed()) 
-		{
-			unit.train(unitTypeTarget);
-		}
-		break;
-	}
-
 	StructureAgent::update();
 }

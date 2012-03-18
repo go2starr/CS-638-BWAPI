@@ -141,6 +141,10 @@ void Strategizer::updateUnitAgentMap()
 				a = new FirebatAgent(*u);
 			else if (ut == UnitTypes::Terran_Medic)
 				a = new MedicAgent(*u);
+			else if (ut.isBuilding())
+				a = new StructureAgent(*u);
+			else
+				a = new ActorAgent(*u);
 
 			if (a != NULL)
 				unitAgentMap[u] = a;
@@ -188,6 +192,8 @@ void Strategizer::updateAgentManagerMap()
 			// Barracks -> BuildManager
 			else if (ut == UnitTypes::Terran_Barracks)
 				agentManagerMap[a] = &buildManager;
+			else if (ut.isBuilding())
+				agentManagerMap[a] = &buildManager;
 
 			// Combat:
 			// Marines -> CombatManager
@@ -199,6 +205,8 @@ void Strategizer::updateAgentManagerMap()
             // Medic -> CombatManager
             else if (ut == UnitTypes::Terran_Medic)
                 agentManagerMap[a] = &combatManager;
+			else
+				agentManagerMap[a] = &combatManager;
 		}
 	}
 
@@ -212,25 +220,25 @@ void Strategizer::updateAgentManagerMap()
 	*/
 
 	// If we have enough SCVs, let's try creating a Barracks/Army
-	if (Broodwar->self()->supplyUsed() >= 20 &&
-		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1 )
-	{
-		remap(UnitTypes::Terran_SCV, resourceManager, combatManager);
-	}
+// 	if (Broodwar->self()->supplyUsed() >= 20 &&
+// 		combatManager.numAgents(UnitTypes::Terran_SCV) < 1 )
+// 	{
+// 		remap(UnitTypes::Terran_SCV, resourceManager, combatManager);
+// 	}
 
 	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
-		gasManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
+		gasManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, gasManager);
 	}
 
 	// Give an SCV to the BuildManager
-	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
+	if (buildManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}
-	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 200)
+	if (buildManager.numAgents(UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 200)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}

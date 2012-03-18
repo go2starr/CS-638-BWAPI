@@ -29,6 +29,9 @@ void BuildManager::update()
 
     drawDebugText();
 
+	// Update Agents
+	Manager::update();
+
 	// Done with the current request?
 	if (buildStack.empty())
 	{
@@ -176,9 +179,6 @@ void BuildManager::update()
 	case COMPLETE:
 		break;
 	}
-
-	// Update Agents
-	Manager::update();
 }
 
 void BuildManager::build(UnitType type, bool immediate)

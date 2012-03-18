@@ -79,7 +79,8 @@ void CombatManager::update()
     const int numMarines = numAgents(UnitTypes::Terran_Marine);
     const int numFirebats = numAgents(UnitTypes::Terran_Firebat);
     const int numMedics = numAgents(UnitTypes::Terran_Medic);
-    const int numTroops = numMarines + numFirebats + numMedics;
+    //const int numTroops = numMarines + numFirebats + numMedics;
+	const int numTroops = agents.size();
 
     const int threshold = 40;
     if( numTroops >= threshold )
