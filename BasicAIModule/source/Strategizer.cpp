@@ -55,8 +55,34 @@ void Strategizer::onMatchStart()
     supplyManager.onMatchStart();
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
-	// Terran ghost
+	// Marines
+	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+
+	// Firebats
+	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+
+	// Medic
+	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Medic);
+
+	// Tanks
+	buildManager.build(UnitTypes::Terran_Siege_Tank_Tank_Mode);
+
+	// Ghost
 	buildManager.build(UnitTypes::Terran_Ghost);
+
+
+	/* OVERKILL */
+		buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+		buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+		buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+		buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
 }
 
 /* 

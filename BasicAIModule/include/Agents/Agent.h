@@ -3,6 +3,7 @@
  */
 #pragma once
 #include "State.h"
+#include <Common.h>
 
 #include <BWAPI.h>
 
@@ -38,6 +39,13 @@ public:
 	inline void setPositionTarget(const BWAPI::Position& target) { positionTarget = target; }
 	inline void setUnitTypeTarget(const BWAPI::UnitType& target) { unitTypeTarget = target; }
 
+	bool unitTypeTargetValid() { 
+		int typeTargetID = unitTypeTarget.getID();
+		return typeTargetID >= 0 && 
+			typeTargetID < NUM_UNIT_TYPES && 
+			typeTargetID != BWAPI::UnitTypes::None; 
+	}
+
 	inline const State getState()       const { return state; }
 	inline const BWAPI::Unit& getUnit() const { return unit; }
 	inline BWAPI::Unit& getUnit() { return unit; }  
@@ -52,5 +60,5 @@ protected:
 	// C'tor (must be called from subclass)
 	Agent(BWAPI::Unit &u);
 
-	virtual void printState() const;
+	virtual void printState();
 };
