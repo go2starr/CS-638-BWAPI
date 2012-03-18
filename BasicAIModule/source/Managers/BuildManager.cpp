@@ -29,9 +29,6 @@ void BuildManager::update()
 
     drawDebugText();
 
-	// Update Agents
-	Manager::update();
-
 	// Done with the current request?
 	if (buildStack.empty())
 	{
@@ -108,9 +105,9 @@ void BuildManager::update()
 		// Find an idle builder
 		for (AgentSetIter i = agents.begin(); i != agents.end(); i++)
 		{
-			if ((*i)->getUnit().getType().getID() == builderType.getID() //)
-                && (*i)->getState() == IdleState)  // NOTE: structures don't transition properly out of TrainState into IdleState
-                                                   // so this check will fail when it probably shouldn't
+			if ((*i)->getUnit().getType().getID() == builderType.getID()
+				&& (*i)->getState() != BuildState 
+				&& (*i)->getState() != TrainState)  
 			{
 				// Found one, build it (this works for addons too)
 				if (type.isBuilding())
@@ -128,8 +125,8 @@ void BuildManager::update()
 		// Wait if we didn't find a builder
 		if (req.builder == NULL)
 		{
-			//Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
-			//	type.c_str());
+			Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
+			type.c_str());
 			break;
 		}
 	}
@@ -179,6 +176,9 @@ void BuildManager::update()
 	case COMPLETE:
 		break;
 	}
+
+	// Update Agents
+	Manager::update();
 }
 
 void BuildManager::build(UnitType type, bool immediate)

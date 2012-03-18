@@ -56,23 +56,19 @@ void Strategizer::onMatchStart()
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Marines
-	buildManager.build(UnitTypes::Terran_Marine);
 	buildManager.build(UnitTypes::Terran_Barracks);
-
+	buildManager.build(UnitTypes::Terran_Marine);
+	
 	// Firebats
-	buildManager.build(UnitTypes::Terran_Marine);
 	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Firebat);
 
-	// Medic
+	// Marines
+	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
-	buildManager.build(UnitTypes::Terran_Medic);
 
 	// Tanks
 	buildManager.build(UnitTypes::Terran_Siege_Tank_Tank_Mode);
-
-	// Ghost
-	buildManager.build(UnitTypes::Terran_Ghost);
-
 
 	/* OVERKILL */
 		buildManager.build(UnitTypes::Terran_Marine);
@@ -245,7 +241,7 @@ void Strategizer::updateAgentManagerMap()
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}
-	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 400)
+	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 200)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}

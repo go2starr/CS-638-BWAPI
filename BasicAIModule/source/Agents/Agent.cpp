@@ -30,9 +30,10 @@ void Agent::printState()
 	const int radius = unit.getRight() - px;
 
 	// Draw owner, state, type
-	Broodwar->drawTextMap(px, py, "(%s, %s%s)", getParentManagerName().c_str(),
-		StateStrings[state], unitTypeTargetValid() ? (string(", ") += string(UnitTypeStrings[unitTypeTarget.getID()])).c_str()
-													:	"");
+	if (state != GatherState)
+		Broodwar->drawTextMap(px, py, "(%s, %s%s)", getParentManagerName().c_str(),
+			StateStrings[state], unitTypeTargetValid() ? (string(", ") += string(UnitTypeStrings[unitTypeTarget.getID()])).c_str()
+														:	"");
 
     // Note: drawing this stuff all the time clutters things up massively, but can be useful
     // TODO: look into adding a global chat flag to toggle this stuff (/debuginfo or something)
