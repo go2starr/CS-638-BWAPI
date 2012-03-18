@@ -278,6 +278,10 @@
 					RelativePath=".\source\Agents\State.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\source\Agents\StructureAgent.cpp"
+					>
+				</File>
 				<Filter
 					Name="UnitAgents"
 					>

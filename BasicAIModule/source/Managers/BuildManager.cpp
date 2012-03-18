@@ -62,15 +62,6 @@ void BuildManager::update()
 		int mineralsOwned = Broodwar->self()->minerals();
 		int gasOwned = Broodwar->self()->gas();
 
-		// Required resources?
-		if (mineralsOwned < mineralsNeeded ||
-			gasOwned < gasNeeded) 
-		{
-			//Broodwar->sendText("BM: %d/%d minerals %d/%d gas for %s",
-			//	mineralsOwned, mineralsNeeded, gasOwned, gasNeeded, type.c_str());
-			return;
-		}
-
 		// Required supply?
 		int supplyOwned = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
 		if (supplyOwned < type.supplyRequired())
@@ -87,7 +78,7 @@ void BuildManager::update()
 		{
 			UnitType rt = (*i).first;
 			int rc = (*i).second;
-			if (Broodwar->self()->allUnitCount(rt) < rc)
+			if (Broodwar->self()->visibleUnitCount(rt) < rc)
 			{
 				build(rt, true);
 				Broodwar->sendText("%s pushed: prereq to build %s", rt.c_str(), type.c_str());
@@ -97,51 +88,52 @@ void BuildManager::update()
 		
 		// Required builder?
 		UnitType builderType = type.whatBuilds().first;
-		if (Broodwar->self()->allUnitCount(builderType) < 1)
+		if (Broodwar->self()->visibleUnitCount(builderType) < 1)
 		{
 			build(builderType, true);
 			Broodwar->sendText("%s pushed:  Need a %s to build %s", builderType.c_str(), type.c_str());
 			return;
 		}
+
+		// Required resources?
+		if (mineralsOwned < mineralsNeeded ||
+			gasOwned < gasNeeded) 
+		{
+			//Broodwar->sendText("BM: %d/%d minerals %d/%d gas for %s",
+			//	mineralsOwned, mineralsNeeded, gasOwned, gasNeeded, type.c_str());
+			return;
+		}
+
 		// OK - requirements met, let's build it!
-		if (!type.isAddon())
+		// Find an idle builder
+		for (AgentSetIter i = agents.begin(); i != agents.end(); i++)
 		{
-			// Find an idle builder
-			for (AgentSetIter i = agents.begin(); i != agents.end(); i++)
+			if ((*i)->getUnit().getType().getID() == builderType.getID() //)
+                && (*i)->getState() == IdleState)  // NOTE: structures don't transition properly out of TrainState into IdleState
+                                                   // so this check will fail when it probably shouldn't
 			{
-				if ((*i)->getUnit().getType().getID() == builderType.getID() //)
-                 && (*i)->getState() == IdleState)  // NOTE: structures don't transition properly out of TrainState into IdleState
-                                                    // so this check will fail when it probably shouldn't
-				{
-					// Found one, build it
-					if (type.isBuilding())
-						(*i)->setState(BuildState);
-					else
-						(*i)->setState(TrainState);
-					(*i)->setUnitTypeTarget(type);
-
+				// Found one, build it (this works for addons too)
+				if (type.isBuilding())
+					(*i)->setState(BuildState);
+				else
+					(*i)->setState(TrainState);
+				(*i)->setUnitTypeTarget(type);
 					// Remember we issued the command
-					req.builder = &(*i)->getUnit();
-					req.state = ISSUED;
-
+				req.builder = &(*i)->getUnit();
+				req.state = ISSUED;
 					// DEBUG //
-					Broodwar->sendText("BM: Worker found, building %s", type.c_str());
-				}
-			}
-			// Wait if we didn't find a builder
-			if (req.builder == NULL)
-			{
-				//Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
-				//	type.c_str());
-				break;
+				Broodwar->sendText("BM: Worker found, building %s", type.c_str());
 			}
 		}
-		else
+		// Wait if we didn't find a builder
+		if (req.builder == NULL)
 		{
-			Broodwar->sendText("!! Bad build order: addons not yet implemented");
+			//Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
+			//	type.c_str());
+			break;
 		}
-		break;
 	}
+	break;
 
 	case ISSUED:
 	{
@@ -252,7 +244,7 @@ void BuildManager::drawDebugText()
         BuildReq req = buildStack.top();
         buildStack.pop();
         Broodwar->drawTextScreen(x, y += 10, "-%s", UnitTypeStrings[req.type.getID()]);
-        tempq.push_back(req);
+		tempq.push_front(req);
     }
     while(!tempq.empty())
     {

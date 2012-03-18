@@ -55,57 +55,8 @@ void Strategizer::onMatchStart()
     supplyManager.onMatchStart();
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
-
-	// Marines
-	buildManager.build(UnitTypes::Terran_Marine);
-
-	// Firebat
-	buildManager.build(UnitTypes::Terran_Firebat);
-
-	// Medic
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Medic);
-
-
-	/******** FOR GOOD MEASURE :-) ***********************/
-	// Marines
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine);
-
-	// Upgrade
-	buildManager.build(UnitTypes::Terran_Academy);
-
-	// Firebat
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Firebat);
-
-	// Marines
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine);
-
-	// Upgrade
-	buildManager.build(UnitTypes::Terran_Academy);
-
-	// Firebat
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Firebat);
-
-
-	/****************************************************
-	// Upgrade - Factory
-	buildManager.build(UnitTypes::Terran_Factory);
-
-	// Vulture
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Vulture);
-
-	// Upgrade
-	buildManager.build(UnitTypes::Terran_Armory);
-
-	// Goliaths
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Goliath);
-	****************************************************/
+	// Terran ghost
+	buildManager.build(UnitTypes::Terran_Ghost);
 }
 
 /* 
@@ -265,6 +216,10 @@ void Strategizer::updateAgentManagerMap()
 
 	// Give an SCV to the BuildManager
 	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
+	{
+		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
+	}
+	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 400)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}
