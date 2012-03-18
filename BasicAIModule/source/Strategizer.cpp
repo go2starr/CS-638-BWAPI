@@ -69,16 +69,16 @@ void Strategizer::onMatchStart()
 
 	/* OVERKILL */
 	buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Marine);
 	
-		buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Marine);
 	
-		buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Marine);
 	
-		buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Firebat);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Firebat);
 	
 }
 
@@ -224,25 +224,25 @@ void Strategizer::updateAgentManagerMap()
 	*/
 
 	// If we have enough SCVs, let's try creating a Barracks/Army
-	if (Broodwar->self()->supplyUsed() >= 20 &&
-		combatManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1 )
-	{
-		remap(UnitTypes::Terran_SCV, resourceManager, combatManager);
-	}
+// 	if (Broodwar->self()->supplyUsed() >= 20 &&
+// 		combatManager.numAgents(UnitTypes::Terran_SCV) < 1 )
+// 	{
+// 		remap(UnitTypes::Terran_SCV, resourceManager, combatManager);
+// 	}
 
 	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
-		gasManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
+		gasManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, gasManager);
 	}
 
 	// Give an SCV to the BuildManager
-	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < 1)
+	if (buildManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}
-	if (buildManager.numAgents(BWAPI::UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 200)
+	if (buildManager.numAgents(UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 200)
 	{
 		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
 	}
