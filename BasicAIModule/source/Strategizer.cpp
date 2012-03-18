@@ -65,21 +65,9 @@ void Strategizer::onMatchStart()
 
 	// Marines
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine);
-
-	/* OVERKILL */
 	buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Marine);
-	
-		buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Marine);
-	
-		buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Marine);
-	
-		buildManager.build(UnitTypes::Terran_Barracks);
-		buildManager.build(UnitTypes::Terran_Firebat);
-	
+	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Marine);
 }
 
 /* 
