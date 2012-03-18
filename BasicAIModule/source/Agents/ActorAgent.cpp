@@ -3,6 +3,7 @@
  */
 #include "ActorAgent.h"
 #include "Agent.h"
+#include <Common.h>
 
 using namespace BWAPI;
 
@@ -18,6 +19,7 @@ void ActorAgent::update()
     case AttackState: 
 		if (!unit.isAttacking() && !unit.isMoving())
 			unit.attack(positionTarget);
+
 		break;
     case DefendState: 
 		if (!unit.isAttacking() && !unit.isMoving())

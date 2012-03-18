@@ -68,9 +68,10 @@ void Strategizer::onMatchStart()
 	buildManager.build(UnitTypes::Terran_Marine);
 
 	// Vultures
+	buildManager.build(UnitTypes::Terran_Factory);
 	buildManager.build(UnitTypes::Terran_Vulture);
-	buildManager.build(UnitTypes::Terran_Valkyrie);
-	buildManager.build(UnitTypes::Terran_Goliath);
+	buildManager.build(UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Vulture);
 
 	/**
 	buildManager.build(UnitTypes::Terran_Battlecruiser);

@@ -20,7 +20,7 @@ void StructureAgent::update()
 		}
 		else
 		{
-			state = IdleState;
+			//state = IdleState;
 		}
 		break;
 
