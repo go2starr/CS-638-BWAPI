@@ -125,8 +125,8 @@ void BuildManager::update()
 		// Wait if we didn't find a builder
 		if (req.builder == NULL)
 		{
-			Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
-			type.c_str());
+			//Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
+			//type.c_str());
 			break;
 		}
 	}
