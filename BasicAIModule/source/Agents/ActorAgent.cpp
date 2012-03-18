@@ -17,7 +17,7 @@ void ActorAgent::update()
     case IdleState: break;
     case AttackState: 
 		if (!unit.isAttacking() && !unit.isMoving())
-			unit.attack(positionTarget); 
+			unit.attack(positionTarget);
 		break;
     case DefendState: 
 		if (!unit.isAttacking() && !unit.isMoving())

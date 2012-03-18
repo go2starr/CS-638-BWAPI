@@ -139,8 +139,6 @@ void BuildManager::update()
 
 	case ISSUED:
 	{
-		//Broodwar->sendText("BM: ===== ISSUED =====");
-
 		/* We need to determine if the order has been started (i.e. resources spent) */
 		Unit* builder = req.builder;
 
@@ -160,7 +158,8 @@ void BuildManager::update()
 			UnitSet ownedUnits = Broodwar->self()->getUnits();
 			for (UnitSetConstIter i = ownedUnits.begin(); i != ownedUnits.end(); i++)
 			{
-				if ((*i)->getBuildUnit() == builder)
+				if ((*i)->getBuildUnit() == builder &&
+					(*i)->isVisible())
 				{
 					req.state = STARTED;
 				}

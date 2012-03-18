@@ -92,7 +92,7 @@ void CombatManager::update()
         // set agents states to Attack until 
         // - we reach the number we want, or
         // - we run out of marines to assign
-        const int attackNum = numTroops / 2;
+        const int attackNum = numTroops;
 
         // TODO : add units to a squad and put them in the assigned set
 
