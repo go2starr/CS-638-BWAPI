@@ -24,12 +24,6 @@ using std::map;
 
 void BuildManager::update()
 {
-	Broodwar->drawTextScreen(2, 40, "\x07 BM : (SCV=%d) (CC=%d)", 
-		numAgents(UnitTypes::Terran_SCV),
-		numAgents(UnitTypes::Terran_Command_Center));
-
-    drawDebugText();
-
 	// Update Agents
 	Manager::update();
 
@@ -265,5 +259,15 @@ void BuildManager::drawDebugText()
         tempq.pop_front();
         buildStack.push(req);
     }
-    
+}
+
+void BuildManager::draw()
+{
+	Broodwar->drawTextScreen(2, 40, "\x07 BM : (SCV=%d) (CC=%d)", 
+	numAgents(UnitTypes::Terran_SCV),
+	numAgents(UnitTypes::Terran_Command_Center));
+
+    drawDebugText();
+
+	Manager::draw();
 }

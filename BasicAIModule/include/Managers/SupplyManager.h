@@ -20,6 +20,7 @@ public:
 	SupplyManager();
 
 	virtual void update();
+	virtual void draw();
 
     virtual const std::string& getName() const 
     { 

@@ -44,13 +44,6 @@ void CombatManager::onMatchStart()
 
 void CombatManager::update()
 {
-	Broodwar->drawTextScreen(2, 20, 
-        "\x11 CM : (SCV=%d) (Marine=%d) (Firebat=%d) (Medic=%d)", 
-		numAgents(UnitTypes::Terran_SCV), 
-		numAgents(UnitTypes::Terran_Marine), 
-        numAgents(UnitTypes::Terran_Firebat), 
-        numAgents(UnitTypes::Terran_Medic));
-
 	// Get new agents into state
 	addNewAgents();        
 
@@ -116,4 +109,16 @@ void CombatManager::addNewAgents()
 	        assignedAgents.insert(agent);
 		}
 	}
+}
+
+void CombatManager::draw()
+{
+	Broodwar->drawTextScreen(2, 20, 
+       "\x11 CM : (SCV=%d) (Marine=%d) (Firebat=%d) (Medic=%d)", 
+	numAgents(UnitTypes::Terran_SCV), 
+	numAgents(UnitTypes::Terran_Marine), 
+    numAgents(UnitTypes::Terran_Firebat), 
+    numAgents(UnitTypes::Terran_Medic));
+
+	Manager::draw();
 }

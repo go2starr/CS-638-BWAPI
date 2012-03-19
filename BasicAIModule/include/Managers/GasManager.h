@@ -19,6 +19,7 @@ public:
     GasManager();
 
 	virtual void update();
+	virtual void draw();
 	
     int getGasRate() const;
     int getNumWorkersGathering() const;

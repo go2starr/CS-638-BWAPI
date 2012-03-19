@@ -25,22 +25,24 @@ void Strategizer::update()
 	// Draw "GUI"
 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
 	Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
-
 	TacticalBuildingPlacer::instance().update(); // draw reserved map
+	draw();  // draw managers
 
-	// Find new units, remove inactive ones
-	updateUnitAgentMap();
+	if (Broodwar->getFrameCount() % 30 == 0)
+	{
+		// Find new units, remove inactive ones
+		updateUnitAgentMap();
+	
+		// Remap Agents to Managers (bid war)
+		updateAgentManagerMap();	
 
-	// Remap Agents to Managers (bid war)
-	updateAgentManagerMap();	
-
-	// Give Agents to updated Managers
-	redistributeAgents();
-
-	// Let Managers manager
-	updateManagers();
+		// Give Agents to updated Managers
+		redistributeAgents();
+	
+		// Let Managers manager
+		updateManagers();
+	}
 }
-
 /* 
 *  onMatchStart()
 *
@@ -294,6 +296,15 @@ void Strategizer::updateManagers()
 	resourceManager.update();
 	scoutManager.update();
 	supplyManager.update();
+}
+
+void Strategizer::draw()
+{
+	buildManager.draw();
+	combatManager.draw();
+	gasManager.draw();
+	resourceManager.draw();
+	supplyManager.draw();
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)

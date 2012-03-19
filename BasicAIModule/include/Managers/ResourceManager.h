@@ -11,6 +11,7 @@ class ResourceManager : public Manager
 {
 public:
 	void update();
+	void draw();
 
     static bool makeAgentGatherMinerals(Agent& agent);
     static BWAPI::Unit* getClosestMineralPatch(const Agent& agent);

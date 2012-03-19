@@ -38,6 +38,9 @@ public:
 	/* update - Called by AI Module for each frame */
 	void update();
 
+	/* draw - draw debug info to screen */
+	void draw();
+
 	/* onMatchStart - Called by AI Module when a new match begins */
 	void onMatchStart();
 

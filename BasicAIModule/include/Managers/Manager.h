@@ -26,6 +26,8 @@ public:
 
     /* update - Called on each frame */
 	virtual void update();
+	/* draw - draw debug info */
+	virtual void draw();
 
 	/* addAgent - Add an Agent to the Managers Agent set */
 	virtual void addAgent(Agent &t);

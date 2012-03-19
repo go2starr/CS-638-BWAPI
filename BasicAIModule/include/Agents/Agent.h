@@ -30,6 +30,9 @@ public:
 	 * update - Called on each frame to update this agent's state and unit.
 	 */
 	virtual void update();
+	
+	/* draw - draw debug info to screen */
+	virtual void draw();
  
 	bool operator==(const Agent& other);
 
@@ -59,6 +62,4 @@ public:
 protected:
 	// C'tor (must be called from subclass)
 	Agent(BWAPI::Unit &u);
-
-	virtual void printState();
 };

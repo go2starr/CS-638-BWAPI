@@ -21,7 +21,8 @@ private:
 public: 
     virtual void onMatchStart();
 	virtual void update();
-    
+    virtual void draw();
+
     virtual const std::string& getName() const 
     { 
         static const std::string name("CombatMgr");

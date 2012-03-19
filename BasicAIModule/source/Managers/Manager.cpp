@@ -43,6 +43,13 @@ void Manager::update()
 	}
 }
 
+/* draw */
+void Manager::draw()
+{
+	for (AgentSetIter agent = agents.begin(); agent != agents.end(); agent++)
+		(*agent)->draw();
+}
+
 /* addAgent - Add an Agent to the Managers Agent set */
 void Manager::addAgent(Agent &t)
 {

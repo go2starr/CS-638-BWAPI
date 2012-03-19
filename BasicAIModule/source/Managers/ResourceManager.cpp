@@ -13,8 +13,6 @@ void ResourceManager::update()
 {
     // TODO: store the mineral units locally in ResourceMgr
     // so we can more effectively control which workers gather from which minerals
-    
-    Broodwar->drawTextScreen(2, 0, "\x1F RM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
 
 	// Send workers to mine minerals near our base
     AgentSet workers(getAgentsOfType(UnitTypes::Terran_SCV));
@@ -83,4 +81,10 @@ int ResourceManager::getNumWorkersGathering() const
         }
     }
     return count;    
+}
+
+void ResourceManager::draw()
+{
+	Broodwar->drawTextScreen(2, 0, "\x1F RM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
+	Manager::draw();
 }

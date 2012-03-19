@@ -19,8 +19,6 @@ SupplyManager::SupplyManager()
 
 void SupplyManager::update()
 {
-	Broodwar->drawTextScreen(2, 10, "\x1E SM : %d planned", plannedSupply()/2);
-	
 	/* Build supply if running low */
 	int currentSupply = Broodwar->self()->supplyUsed();
 	if (plannedSupply() - currentSupply < 12)
@@ -49,4 +47,10 @@ int SupplyManager::plannedSupply() const
 	const int plannedSupply = plannedDepotCount * UnitTypes::Terran_Supply_Depot.supplyProvided();
 	const int totalSupply   = Broodwar->self()->supplyTotal();
 	return plannedSupply + totalSupply;
+}
+
+void SupplyManager::draw()
+{
+	Broodwar->drawTextScreen(2, 10, "\x1E SM : %d planned", plannedSupply()/2);
+	Manager::draw();
 }

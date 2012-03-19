@@ -23,7 +23,34 @@ Agent::Agent(Unit& u)
     , parentManager(NULL)
 { }
 
-void Agent::printState()
+bool Agent::operator==(const Agent& other)
+{
+	// Compare by pointer values
+	if( &(this->unit) == &(other.unit) )
+		return true;
+	else
+		return false;
+}
+
+void Agent::update()
+{
+    if( state == BuildState )
+        positionTarget = Position(buildingLocation);
+}
+
+void Agent::setParentManager(Manager *manager)
+{
+    if( manager != NULL ) 
+        parentManager = manager;
+}
+
+const std::string Agent::getParentManagerName() const 
+{
+    return (parentManager != NULL) ? 
+        parentManager->getName() : "None";
+}
+
+void Agent::draw()
 {
 	const int px = unit.getPosition().x();
 	const int py = unit.getPosition().y();
@@ -69,33 +96,19 @@ void Agent::printState()
             }
         }
     }
-}
 
-bool Agent::operator==(const Agent& other)
-{
-	// Compare by pointer values
-	if( &(this->unit) == &(other.unit) )
-		return true;
-	else
-		return false;
-}
+	if (state == AttackState)
+	{
+		// Draw our attack range
+		Position unitPosition = unit.getPosition();
+		int x = unitPosition.x();
+		int y = unitPosition.y();
+		int attackRadius = unit.getType().seekRange();
+		Broodwar->drawCircle(CoordinateType::Map, x, y, attackRadius, BWAPI::Colors::White);
 
-void Agent::update()
-{
-    if( state == BuildState )
-        positionTarget = Position(buildingLocation);
-
-	printState();
-}
-
-void Agent::setParentManager(Manager *manager)
-{
-    if( manager != NULL ) 
-        parentManager = manager;
-}
-
-const std::string Agent::getParentManagerName() const 
-{
-    return (parentManager != NULL) ? 
-        parentManager->getName() : "None";
+		// Draw our current target
+		Position targetPosition = unit.getTargetPosition();
+		Broodwar->drawLine(CoordinateType::Map, x, y, targetPosition.x(), targetPosition.y(),
+			BWAPI::Colors::Red);
+	}
 }

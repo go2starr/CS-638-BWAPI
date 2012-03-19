@@ -24,9 +24,6 @@ void GasManager::update()
     // TODO: the refineries could be persistently stores by the GasMgr
     // so we can see who is gathering from where, and whether its exhausted
 	// TODO: worry about gas steal?
-
-	Broodwar->drawTextScreen(2, 30, "\x10 GM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
-
     AgentSet refineries(getAgentsOfType(UnitTypes::Terran_Refinery));
 
     // Get a count on new refineries
@@ -101,4 +98,10 @@ int GasManager::getNumWorkersGathering() const
         }
     }
     return count;
+}
+
+void GasManager::draw()
+{
+	Broodwar->drawTextScreen(2, 30, "\x10 GM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
+	Manager::draw();
 }
