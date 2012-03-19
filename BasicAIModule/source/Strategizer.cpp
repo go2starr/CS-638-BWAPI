@@ -24,6 +24,8 @@ void Strategizer::update()
 {
 	// Draw "GUI"
 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
+	Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
+
 	TacticalBuildingPlacer::instance().update(); // draw reserved map
 
 	// Find new units, remove inactive ones
