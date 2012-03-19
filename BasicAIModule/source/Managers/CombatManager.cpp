@@ -51,7 +51,40 @@ void CombatManager::update()
         numAgents(UnitTypes::Terran_Firebat), 
         numAgents(UnitTypes::Terran_Medic));
 
-    // If we have any new Agents, they should go in the unassigned set
+	// Get new agents into state
+	addNewAgents();        
+
+	// Attack?
+	const int numTroops = agents.size();
+    const int threshold = 10;
+
+    if( numTroops >= threshold )
+    {
+        // Attack with full force (adjust to lower)
+		for (SquadVectorIter it = squads.begin(); it != squads.end(); it++)
+		{
+			Agent *a = (*it)->getLeader();
+			if (a != NULL)
+			{
+				a->setState(AttackState);
+				a->setPositionTarget(enemyBase);
+			}
+		}
+	}
+
+	/* Update squads */
+	for (SquadVectorIter it = squads.begin(); it != squads.end(); it++)
+	{
+		(*it)->update();
+	}
+	/* Base class updates Agents */
+	Manager::update();
+}
+
+
+void CombatManager::addNewAgents()
+{
+	// If we have any new Agents, they should go in the unassigned set
     AgentSetIter it  = agents.begin();
     AgentSetIter end = agents.end();
     for(; it != end; ++it)
@@ -66,49 +99,21 @@ void CombatManager::update()
                 agent->setPositionTarget(cp->getCenter());
             else 
                 agent->setPositionTarget(Position(Broodwar->self()->getStartLocation()));
-        }
-    }
-        
 
-    // Setup a relatively small enemy base assault if we have a decent number of marines
-    // TODO - CombatManager should start putting it's Agents in Squads
-    // then when a Squad is full, and the CombatManager gets assigned the 
-    // 'Attack' task, it can send whole squads at a time 
-    // We could track two more sets of Agent*, 
-    // one would be currently unassigned Agent's, the other would be assigned
+			// Assign Agent to a Squad (only 1 atm)
+			if (squads.empty())
+			{
+				squads.push_back(new Squad());
+			}
+			Squad *squad = squads.at(0);
 
-	/*
-    const int numMarines = numAgents(UnitTypes::Terran_Marine);
-    const int numFirebats = numAgents(UnitTypes::Terran_Firebat);
-    const int numMedics = numAgents(UnitTypes::Terran_Medic);
-    const int numTroops = numMarines + numFirebats + numMedics;
-	*/
-	const int numTroops = agents.size();
-
-    const int threshold = 10;
-    if( numTroops >= threshold )
-    {
-        // Setup the attack force:
-        // set agents states to Attack until 
-        // - we reach the number we want, or
-        // - we run out of marines to assign
-        const int attackNum = numTroops;
-
-        // TODO : add units to a squad and put them in the assigned set
-
-        int numAssignedTroops = 0;
-		for(it = agents.begin(); it != agents.end() && numAssignedTroops < attackNum; 
-            ++it, ++numAssignedTroops)
-        {
-            Agent* marine = *it;
-            marine->setState(AttackState);
-            marine->setPositionTarget(enemyBase);
-            
-            unassignedAgents.erase(marine);
-            assignedAgents.insert(marine);
-        }
+			squad->addAgent(*it);
+			if (squad->getLeader() == NULL)
+			{
+				squad->setLeader(*it);
+			}
+	        unassignedAgents.erase(agent);
+	        assignedAgents.insert(agent);
+		}
 	}
-	/* Base class updates Agents */
-	Manager::update();
 }
-

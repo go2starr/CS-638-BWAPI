@@ -27,4 +27,7 @@ public:
         static const std::string name("CombatMgr");
         return name;
     }
+
+private:
+	void addNewAgents();
 };
