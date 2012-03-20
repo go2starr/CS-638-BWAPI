@@ -673,6 +673,15 @@ vector<EnhancedSide> & EnhancedChokepoint::getBoundingBoxSidesForRegion(BWTA::Re
 
 	return regionBSides.second;
 }
+
+BWAPI::TilePosition EnhancedChokepoint::getBuildTile(BWTA::Region * region)
+{
+	assert(region);
+	if (region == regionABuildTile.first) {
+		return regionABuildTile.second;
+	}
+	return regionBBuildTile.second;
+}
 void EnhancedChokepoint::drawBoundingBoxSidesForRegion(BWTA::Region * region, BWAPI::Color color)
 {
 	assert(region);

@@ -30,7 +30,11 @@ public:
 
 private:
 	TacticalBuildingPlacer();
+	// search for optimal build pattern to wall off chokepoint in a region
+	vector<BWAPI::TilePosition> chokepointBuildPatternSearch(EnhancedChokepoint ecpoint, BWTA::Region * region);
 
 	vector<pair<BWTA::Region *, vector<EnhancedChokepoint>>> regionsToChokepoints;
+	// for chokepointBuildPatternSearch() return
+	vector<vector<BWAPI::TilePosition>> chokepointBuildLocations;
 	BWSAL::BFSBuildingPlacer buildingPlacer;
 };

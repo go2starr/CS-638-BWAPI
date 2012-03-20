@@ -27,6 +27,7 @@ public:
 	/* enhanced functionality */
 	bool isPositionInPolygon(BWAPI::Position searchPos, BWTA::Polygon poly);
 	vector<EnhancedSide> & getBoundingBoxSidesForRegion(BWTA::Region * region);
+	BWAPI::TilePosition getBuildTile(BWTA::Region * region);
 	void drawTilePositions(void);
 	void drawBoundingBox(void);
 	void drawBoundingBoxSidesForRegion(BWTA::Region * region, BWAPI::Color color);
