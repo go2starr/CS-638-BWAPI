@@ -26,7 +26,6 @@ void ActorAgent::update()
 			Position tp = unit.getTargetPosition();
 			if (isOccupiedPosition(tp))
 			{
-				Broodwar->sendText("Position occupied, adjusting target");
 				unit.move(getClosestPosition(tp));
 				positionTarget = unit.getTargetPosition();
 			}

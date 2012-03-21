@@ -28,7 +28,7 @@ void Strategizer::update()
 	TacticalBuildingPlacer::instance().update(); // draw reserved map
 	draw();  // draw managers
 
-	if (Broodwar->getFrameCount() % 30 == 0)
+	if (Broodwar->getFrameCount() % 10 == 0)
 	{
 		// Find new units, remove inactive ones
 		updateUnitAgentMap();
