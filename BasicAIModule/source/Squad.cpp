@@ -5,8 +5,12 @@
 #include "Agent.h"
 #include "Common.h"
 
+#include <algorithm>
 #include <cassert>
 
+using namespace BWAPI;
+using std::min;
+using std::max;
 
 Squad::Squad()
     : agents()
@@ -53,6 +57,34 @@ void Squad::update()
             agent->setUnitTypeTarget(leader->getUnitTypeTarget());
         }
     }
+}
+
+void Squad::draw()
+{
+	// Draw a box enclosing my squad
+	int minX, maxX, minY, maxY;
+	minX = minY = 999999;
+	maxX = maxY = -1;
+	int sumX, sumY;
+	sumX = sumY = 0;
+	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
+	{
+		int x = (*it)->getUnit().getPosition().x();
+		int y = (*it)->getUnit().getPosition().y();
+		sumX += x;
+		sumY += y;
+		minX = min(x, minX);
+		maxX = max(x, maxX);
+		minY = min(y, minY);
+		maxY = max(y, maxY);
+	}
+	int x0, y0;
+	if (agents.size())
+	{
+		x0 = sumX / agents.size();
+		y0 = sumY / agents.size();
+		Broodwar->drawEllipseMap(x0, y0, maxX-minX, maxY-minY, Colors::Cyan);
+	}
 }
 
 

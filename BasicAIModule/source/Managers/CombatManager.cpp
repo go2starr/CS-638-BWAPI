@@ -120,5 +120,10 @@ void CombatManager::draw()
     numAgents(UnitTypes::Terran_Firebat), 
     numAgents(UnitTypes::Terran_Medic));
 
+	for (SquadVectorIter it = squads.begin(); it != squads.end(); it++)
+	{
+		(*it)->draw();
+	}
+
 	Manager::draw();
 }

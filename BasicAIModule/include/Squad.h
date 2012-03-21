@@ -20,6 +20,7 @@ public:
     Squad& operator=(const Squad& rhs);
 
     void update();
+	void draw();
 
     inline void addAgent(Agent* agent)    { agents.insert(agent); }
     inline void removeAgent(Agent* agent) { agents.erase(agent); }
