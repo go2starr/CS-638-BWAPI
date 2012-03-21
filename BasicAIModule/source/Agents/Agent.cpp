@@ -106,9 +106,11 @@ void Agent::draw()
 		int attackRadius = unit.getType().seekRange();
 		Broodwar->drawCircle(CoordinateType::Map, x, y, attackRadius, BWAPI::Colors::White);
 
-		// Draw our current target
-		Position targetPosition = unit.getTargetPosition();
-		Broodwar->drawLine(CoordinateType::Map, x, y, targetPosition.x(), targetPosition.y(),
-			BWAPI::Colors::Red);
+
 	}
+
+	// Draw our current target position
+	Position targetPosition = unit.getTargetPosition();
+	Broodwar->drawLineMap(unit.getPosition().x(), unit.getPosition().y(),
+		targetPosition.x(), targetPosition.y(), Colors::Yellow);
 }
