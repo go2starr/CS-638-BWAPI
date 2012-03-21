@@ -45,7 +45,9 @@ void CombatManager::onMatchStart()
 void CombatManager::update()
 {
 	// Get new agents into state
-	addNewAgents();        
+	addNewAgents();  
+
+	// TODO : Merge squads
 
 	// Attack?
 	const int numTroops = agents.size();
@@ -98,7 +100,12 @@ void CombatManager::addNewAgents()
 			{
 				squads.push_back(new Squad());
 			}
-			Squad *squad = squads.at(0);
+			// Create a new squad if current is full
+			if (squads.back()->getAgents().size() > 10)
+			{
+				squads.push_back(new Squad());
+			}
+			Squad *squad = squads.back();
 
 			squad->addAgent(*it);
 			if (squad->getLeader() == NULL)
