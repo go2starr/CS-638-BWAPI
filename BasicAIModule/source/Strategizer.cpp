@@ -124,11 +124,18 @@ void Strategizer::onMatchEnd(bool isWinner)
 */
 void Strategizer::updateUnitAgentMap()
 {
-	// Create agents for newly found, friendly units
+	// Create agents for newly found, friendly units.  Delete dead ones
     UnitSet units = Broodwar->self()->getUnits();
 	for (UnitSetIter unit = units.begin(); unit != units.end(); ++unit)
 	{
 		Unit *u = *unit;
+
+		// Remove dead Agents
+		if (u->getHitPoints() <= 0 ||
+			!u->isVisible())
+		{
+			unitAgentMap.erase(unitAgentMap.find(u));
+		}
 
 		// Only construct active units
 		if (!u->isCompleted())  // TODO: Determine a more robust conditional
