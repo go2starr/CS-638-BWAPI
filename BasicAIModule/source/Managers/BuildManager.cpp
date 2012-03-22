@@ -82,7 +82,6 @@ void BuildManager::update()
 			if (Broodwar->self()->visibleUnitCount(rt) < rc)
 			{
 				build(rt, true);
-				Broodwar->sendText("%s pushed: prereq to build %s", rt.c_str(), type.c_str());
 				break;
 			}
 		}
@@ -95,7 +94,6 @@ void BuildManager::update()
             // seems like they are due to bulid stack overflows, 
             // there should be some sanity checks here
 			build(builderType, true);
-			Broodwar->sendText("%s pushed:  Need a %s to build %s", builderType.c_str(), type.c_str());
 			break;
 		}
 
