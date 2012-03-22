@@ -130,14 +130,6 @@ void Strategizer::updateUnitAgentMap()
 	{
 		Unit *u = *unit;
 
-		// Remove dead Agents
-		if (u->getHitPoints() <= 0 ||
-			!u->isVisible())
-		{
-			agentManagerMap.erase(agentManagerMap.find(unitAgentMap[u]));
-			unitAgentMap.erase(unitAgentMap.find(u));
-		}
-
 		// Only construct active units
 		if (!u->isCompleted())  // TODO: Determine a more robust conditional
 		{
@@ -197,10 +189,11 @@ void Strategizer::updateAgentManagerMap()
 			// Resources:
 			// SCV -> ResourceManager
 			if (a->getUnit().getType().isWorker())
-				agentManagerMap[a] = &resourceManager;
+				agentManagerMap[a] = &buildManager;
 			// Refinery -> Gas Manager
 			else if (ut.isRefinery())
 				agentManagerMap[a] = &gasManager;
+
 			// Command Center -> Production Manager
             // TODO: this is the wrong ProductionManager
             // we want to assign it to the one in BuildManager
@@ -252,17 +245,7 @@ void Strategizer::updateAgentManagerMap()
 	if (Broodwar->self()->supplyUsed() >= 30 &&
 		gasManager.numAgents(UnitTypes::Terran_SCV) < 1)
 	{
-		remap(UnitTypes::Terran_SCV, resourceManager, gasManager);
-	}
-
-	// Give an SCV to the BuildManager
-	if (buildManager.numAgents(UnitTypes::Terran_SCV) < 1)
-	{
-		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
-	}
-	if (buildManager.numAgents(UnitTypes::Terran_SCV) < Broodwar->self()->minerals() / 200)
-	{
-		remap(UnitTypes::Terran_SCV, resourceManager, buildManager);
+		remap(UnitTypes::Terran_SCV, buildManager, gasManager);
 	}
 }
 
