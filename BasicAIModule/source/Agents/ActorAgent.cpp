@@ -18,26 +18,26 @@ void ActorAgent::update()
 {
     switch(state)
     {
-    case IdleState: 
-
-		// Invariant to state - If we are moving to an occupied location, adjust target
-		if (unit.isMoving())
-		{
-			Position tp = unit.getTargetPosition();
-			if (isOccupiedPosition(tp))
-			{
-				unit.move(getClosestPosition(tp));
-				positionTarget = unit.getTargetPosition();
-			}
-		}
+    case IdleState:
 		break;
 
     case AttackState: 
 	{
-		// Attack if we aren't
-		if (!unit.isAttacking() && !unit.isMoving())
+		// Move to attack target
+		if (!unit.isAttacking() && !unit.isMoving() && unit.getDistance(positionTarget) > 300)
+		{
+			// Correct our destination if necessary
+			Position tp = positionTarget;
+			if (isOccupiedPosition(tp))
+			{
+				unit.attack(getClosestPosition(tp));
+				positionTarget = unit.getTargetPosition();
+			}
+			// Move/attack
 			unit.attack(positionTarget);
+		}
 	}
+	break;
 
     case DefendState: 
 		if (!unit.isAttacking() && !unit.isMoving())

@@ -51,8 +51,9 @@ void Squad::update()
         Agent *agent = *it;
         if( agent != leader ) 
         {
-            agent->setState(leader->getState());
-            agent->setPositionTarget(leader->getPositionTarget());
+            // agent->setState(leader->getState());
+			agent->setState(AttackState);
+			agent->setPositionTarget(leader->getPositionTarget());
             agent->setUnitTarget(leader->getUnitTarget());
             agent->setUnitTypeTarget(leader->getUnitTypeTarget());
         }
