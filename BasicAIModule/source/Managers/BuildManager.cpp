@@ -82,11 +82,11 @@ void BuildManager::update()
 		UnitType builderType = type.whatBuilds().first;
 		if (Broodwar->self()->visibleUnitCount(builderType) < 1)
 		{
-            // TODO: this is dangerous, I've had several crashes here...
-            // seems like they are due to bulid stack overflows, 
-            // there should be some sanity checks here
 			build(builderType, true);
-			Broodwar->sendText("%s pushed:  Need a %s to build %s", builderType.c_str(), type.c_str());
+            // TODO: I've had several crashes here...
+            // they seem to stem from the calls to c_str(), they must be returning a bad pointer...
+            // commenting it out has stopped the crashes here for me so far.
+//			Broodwar->sendText("%s pushed:  Need a %s to build %s", builderType.c_str(), type.c_str());
 			break;
 		}
 
