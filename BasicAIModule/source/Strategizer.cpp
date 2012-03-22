@@ -69,7 +69,10 @@ void Strategizer::onMatchStart()
 
 	// Firebat
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Firebat);
+
+	// Expand
+	buildManager.build(UnitTypes::Terran_Command_Center);
 
 	// Vultures
 	buildManager.build(UnitTypes::Terran_Factory);

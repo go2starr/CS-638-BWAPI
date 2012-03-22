@@ -7,6 +7,9 @@
 #include <BWSAL/BFSBuildingPlacer.h>
 #include <BWAPI.h>
 
+#include <algorithm>
+
+
 TacticalBuildingPlacer::TacticalBuildingPlacer()
 {
 
@@ -615,6 +618,9 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 {
 	BWAPI::TilePosition loc;
 
+	// Find a default location first
+	loc = buildingPlacer.findBuildLocation(BWSAL::ReservedMap::getInstance(), unitType, seedLocation, builder);
+
 	// special build case for refineries
 	if (unitType == BWAPI::UnitTypes::Terran_Refinery) {
 		// hardcode for now, for start location
@@ -627,11 +633,24 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 			loc =(*j)->getTilePosition();
 			break;
 		}
-		BWSAL::ReservedMap::getInstance()->reserveTiles(loc, unitType, unitType.tileWidth(), unitType.tileHeight());
-		return loc;	
 	}
+	// Expansions
+	else if (unitType == BWAPI::UnitTypes::Terran_Command_Center)
+	{
+		double minDist = 9999999;
+		set<BWTA::BaseLocation*> expansions = BWTA::getBaseLocations();
+		for (set<BWTA::BaseLocation*>::iterator it = expansions.begin(); it != expansions.end(); it++)
+		{
+			double dist = (*it)->getGroundDistance(BWTA::getStartLocation(BWAPI::Broodwar->self()));
+			if (dist < minDist && 
+				dist > 200) // Don't rebuild at our start location
+			{
+				minDist = dist;
+				loc = (*it)->getTilePosition();
+			}
+		}
 
-	loc = buildingPlacer.findBuildLocation(BWSAL::ReservedMap::getInstance(), unitType, seedLocation, builder);
+	}
 	BWSAL::ReservedMap::getInstance()->reserveTiles(loc, unitType, unitType.tileWidth(), unitType.tileHeight());
 
 	return loc;
