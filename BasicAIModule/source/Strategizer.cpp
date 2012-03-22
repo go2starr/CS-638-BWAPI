@@ -41,6 +41,12 @@ void Strategizer::update()
 	
 		// Let Managers manager
 		updateManagers();
+
+        if( checkForfeit() )
+        {
+            Broodwar->sendText("Surrendering match...");
+            Broodwar->leaveGame();
+        }
 	}
 }
 /* 
@@ -323,4 +329,12 @@ bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
 		}
 	}
 	return true;
+}
+
+bool Strategizer::checkForfeit()
+{
+    // TODO: will eventually be using productionMgr inside buildMgr?
+    // if so, that change will mess this up
+    AgentSet pmCC(productionManager.getAgentsOfType(UnitTypes::Terran_Command_Center));
+    return pmCC.size() == 0;
 }

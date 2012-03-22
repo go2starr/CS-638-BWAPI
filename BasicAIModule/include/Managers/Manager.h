@@ -8,6 +8,8 @@
 
 #include <string>
 
+class Strategizer;
+
 
 class Manager
 {
@@ -21,6 +23,8 @@ protected:
     AgentSet getAgentsOfType(BWAPI::UnitType type, AgentSet& agentSet); 
 
 public:    
+    friend class Strategizer; // Either this or declare public const versions of getAgentsOfType()
+
     /* onMatchStart - Called when a new match begins */
     virtual void onMatchStart() { }
 
