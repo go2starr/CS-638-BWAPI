@@ -134,6 +134,7 @@ void Strategizer::updateUnitAgentMap()
 		if (u->getHitPoints() <= 0 ||
 			!u->isVisible())
 		{
+			agentManagerMap.erase(agentManagerMap.find(unitAgentMap[u]));
 			unitAgentMap.erase(unitAgentMap.find(u));
 		}
 
@@ -143,7 +144,7 @@ void Strategizer::updateUnitAgentMap()
 			continue;
 		}
 		// New agent
-		if (unitAgentMap.find(u) == unitAgentMap.end())
+		if (unitAgentMap[u] == NULL)
 		{
 			UnitType ut = u->getType();
 			Agent *a = NULL;
