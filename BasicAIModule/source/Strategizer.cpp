@@ -292,8 +292,12 @@ void Strategizer::redistributeAgents()
         pair<Agent*, Manager*> agentManager = *it;
 		Agent   *a = agentManager.first;
 		Manager *m = agentManager.second;
-		m->addAgent(*a);
-        a->setParentManager(m);
+		// TODO : Change this to assert
+		if (a != NULL)
+		{
+			m->addAgent(*a);
+			a->setParentManager(m);
+		}
 	}
 }
 
