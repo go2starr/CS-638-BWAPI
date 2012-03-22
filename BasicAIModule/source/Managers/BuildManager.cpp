@@ -61,11 +61,6 @@ void BuildManager::update()
 		int supplyOwned = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
 		if (supplyOwned < type.supplyRequired())
 		{
-			/*
-			Broodwar->sendText("BM: Insufficient supply (%d/%d) for %s, building Supply Depot", 
-				supplyOwned, type.supplyRequired(), type.c_str());	
-			build(UnitTypes::Terran_Supply_Depot, true);
-			*/
 			break;
 		}
 
@@ -96,8 +91,6 @@ void BuildManager::update()
 		if (mineralsOwned < mineralsNeeded ||
 			gasOwned < gasNeeded) 
 		{
-			//Broodwar->sendText("BM: %d/%d minerals %d/%d gas for %s",
-			//	mineralsOwned, mineralsNeeded, gasOwned, gasNeeded, type.c_str());
 			break;
 		}
 
@@ -115,18 +108,16 @@ void BuildManager::update()
 				else
 					(*i)->setState(TrainState);
 				(*i)->setUnitTypeTarget(type);
-					// Remember we issued the command
+				// Remember we issued the command
 				req.builder = &(*i)->getUnit();
 				req.state = ISSUED;
-					// DEBUG //
 				Broodwar->sendText("BM: Worker found, building %s", type.c_str());
+				break;
 			}
 		}
 		// Wait if we didn't find a builder
 		if (req.builder == NULL)
 		{
-			//Broodwar->sendText("BM: Could not find worker of type %s for %s", builderType.c_str(), 
-			//type.c_str());
 			break;
 		}
 	}
