@@ -51,7 +51,7 @@ void CombatManager::update()
 
 	// Attack?
 	const int numTroops = agents.size();
-    const int threshold = 50;
+    const int threshold = 70;
 
     if( numTroops >= threshold )
     {

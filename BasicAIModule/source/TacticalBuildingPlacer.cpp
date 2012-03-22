@@ -6,8 +6,12 @@
 #include <TacticalBuildingPlacer.h>
 #include <BWSAL/BFSBuildingPlacer.h>
 #include <BWAPI.h>
+#include <Common.h>
 
 #include <algorithm>
+
+using namespace BWAPI;
+using namespace BWTA;
 
 
 TacticalBuildingPlacer::TacticalBuildingPlacer()
@@ -641,9 +645,24 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 		set<BWTA::BaseLocation*> expansions = BWTA::getBaseLocations();
 		for (set<BWTA::BaseLocation*>::iterator it = expansions.begin(); it != expansions.end(); it++)
 		{
+			bool isCC = false;
+			// Don't rebuild at a base location
+			UnitSet units = Broodwar->getUnitsInRadius((*it)->getPosition(), 200);
+			for (UnitSetIter u = units.begin(); u != units.end(); u++)
+			{
+				if ((*u)->getType().getID() == UnitTypes::Terran_Command_Center)
+				{
+					isCC = true;
+					break;
+				}
+			}
+			if (isCC)
+				continue;
+
+			// Otherwise, find the closest
 			double dist = (*it)->getGroundDistance(BWTA::getStartLocation(BWAPI::Broodwar->self()));
 			if (dist < minDist && 
-				dist > 200) // Don't rebuild at our start location
+				dist > 200) // Don't rebuild at a location
 			{
 				minDist = dist;
 				loc = (*it)->getTilePosition();
