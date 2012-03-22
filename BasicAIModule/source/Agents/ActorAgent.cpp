@@ -26,6 +26,7 @@ void ActorAgent::update()
 		// Move to attack target
 		if (!unit.isAttacking() && !unit.isMoving() && unit.getDistance(positionTarget) > 300)
 		{
+			/*
 			// Correct our destination if necessary
 			Position tp = positionTarget;
 			if (isOccupiedPosition(tp))
@@ -33,6 +34,7 @@ void ActorAgent::update()
 				unit.attack(getClosestPosition(tp));
 				positionTarget = unit.getTargetPosition();
 			}
+			*/
 			// Move/attack
 			unit.attack(positionTarget);
 		}
