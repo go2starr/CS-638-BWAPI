@@ -73,6 +73,9 @@ private:
 	// Utility
 	/* remap - Remap a unit of type @type from @src to @dst */
 	bool remap(BWAPI::UnitType type, Manager &src, Manager &dst);
+
+    /* checkForfeit - Checks to see if we can't win and should just forfeit the match */
+    bool checkForfeit();
 };
 
 
