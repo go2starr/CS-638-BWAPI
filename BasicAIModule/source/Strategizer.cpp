@@ -62,25 +62,29 @@ void Strategizer::onMatchStart()
 	// Marines
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
-	
-	// Marines
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
 
+	/*
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
+
 
 	// Vultures
-	buildManager.build(UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Marine);
 	buildManager.build(UnitTypes::Terran_Vulture);
 
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
+	*/
 
 	buildManager.build(UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Vulture);
 	buildManager.build(UnitTypes::Terran_Vulture);
 
-	buildManager.build(UnitTypes::Terran_Goliath);
+	buildManager.build(UnitTypes::Terran_Valkyrie);
 }
 
 /* 

@@ -27,6 +27,15 @@ void BuildManager::update()
 	// Update Agents
 	Manager::update();
 
+	/*** <DEBUG> ****/
+	if (buildStack.size() > 5 || 
+		buildQueue.size() > 50)
+	{
+		Broodwar->sendText("BM STACK OVERFLOW");
+		return;
+	}
+	/*** </DEBUG> ****/
+
 	// Done with the current request?
 	if (buildStack.empty())
 	{
