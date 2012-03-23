@@ -28,7 +28,7 @@ void BuildManager::update()
 	Manager::update();
 
 	/*** <DEBUG> ****/
-	if (buildStack.size() > 5 || 
+	if (buildStack.size() > 50 || 
 		buildQueue.size() > 50)
 	{
 		Broodwar->sendText("BM STACK OVERFLOW");

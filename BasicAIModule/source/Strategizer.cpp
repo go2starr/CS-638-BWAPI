@@ -66,6 +66,7 @@ void Strategizer::onMatchStart()
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Initial troops
+	buildManager.build(UnitTypes::Terran_Valkyrie);
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
 	buildManager.build(UnitTypes::Terran_Barracks);
