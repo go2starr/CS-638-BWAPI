@@ -66,7 +66,6 @@ void Strategizer::onMatchStart()
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Initial troops
-	buildManager.build(UnitTypes::Terran_Valkyrie);
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
 	buildManager.build(UnitTypes::Terran_Barracks);
@@ -82,18 +81,18 @@ void Strategizer::onMatchStart()
 	buildManager.build(UnitTypes::Terran_Vulture);
 
 	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Vulture);
 	buildManager.build(UnitTypes::Terran_Siege_Tank_Siege_Mode);
 
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
 
+	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);	
 	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
 	buildManager.build(UnitTypes::Terran_Goliath);
-	
-	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
 	buildManager.build(UnitTypes::Terran_Goliath);
+
+	buildManager.build(UnitTypes::Terran_Starport);
+	buildManager.build(UnitTypes::Terran_Battlecruiser);
 
 }
 
