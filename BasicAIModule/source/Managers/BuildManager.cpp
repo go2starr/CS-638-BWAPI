@@ -75,24 +75,24 @@ void BuildManager::update()
 
 		// Required units?
 		map<UnitType, int> requiredUnits = type.requiredUnits();
+		bool unitsFound = true;
 		for (map<UnitType, int>::iterator i = requiredUnits.begin(); i != requiredUnits.end(); i++)
 		{
 			UnitType rt = (*i).first;
 			int rc = (*i).second;
-			if (Broodwar->self()->visibleUnitCount(rt) < rc)
+			if (Broodwar->self()->visibleUnitCount(rt) < 1)
 			{
 				build(rt, true);
-				break;
+				unitsFound = false;
 			}
 		}
+		if (!unitsFound)
+			break;
 		
 		// Required builder?
 		UnitType builderType = type.whatBuilds().first;
 		if (Broodwar->self()->visibleUnitCount(builderType) < 1)
 		{
-            // TODO: this is dangerous, I've had several crashes here...
-            // seems like they are due to bulid stack overflows, 
-            // there should be some sanity checks here
 			build(builderType, true);
 			break;
 		}
@@ -140,7 +140,8 @@ void BuildManager::update()
 
 		if (builder->getType().isBuilding())
 		{
-			if (builder->isTraining())
+			if (builder->isTraining() ||    // Train units
+				builder->isConstructing())  // Addon
 			{
 				req.state = STARTED;
 			}
@@ -264,9 +265,10 @@ void BuildManager::drawDebugText()
 
 void BuildManager::draw()
 {
-	Broodwar->drawTextScreen(2, 40, "\x07 BM : (SCV=%d) (CC=%d)", 
+	Broodwar->drawTextScreen(2, 40, "\x07 BM : (SCV=%d) (CC=%d) (MS=%d)", 
 	numAgents(UnitTypes::Terran_SCV),
-	numAgents(UnitTypes::Terran_Command_Center));
+	numAgents(UnitTypes::Terran_Command_Center),
+	numAgents(UnitTypes::Terran_Machine_Shop));
 
     drawDebugText();
 

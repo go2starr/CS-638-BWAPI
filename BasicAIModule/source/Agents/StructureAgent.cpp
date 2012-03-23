@@ -24,12 +24,12 @@ void StructureAgent::update()
 		}
 		break;
 
-		case BuildState:
+	case BuildState:
 		if (unitTypeTarget.isAddon())
 		{
-			if (unit.getAddon()->getType().getID() != unitTypeTarget.getID())
-				unit.buildAddon(unitTypeTarget);
-			else
+			unit.buildAddon(unitTypeTarget);
+			if (unit.getAddon() != NULL && 
+				unit.getAddon()->getType().getID() == unitTypeTarget.getID())
 				state = IdleState;
 		}
 	}

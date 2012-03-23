@@ -65,7 +65,7 @@ void Strategizer::onMatchStart()
     supplyManager.onMatchStart();
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
-	// Marines
+	// Initial troops
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
 	buildManager.build(UnitTypes::Terran_Barracks);
@@ -74,20 +74,26 @@ void Strategizer::onMatchStart()
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
 
-	// Vultures
+	// Secondary tropps
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Firebat);
+	buildManager.build(UnitTypes::Terran_Factory);
 	buildManager.build(UnitTypes::Terran_Vulture);
+
+	buildManager.build(UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Vulture);
+	buildManager.build(UnitTypes::Terran_Siege_Tank_Siege_Mode);
 
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
 
-	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Vulture);
-	buildManager.build(UnitTypes::Terran_Vulture);
-
+	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
 	buildManager.build(UnitTypes::Terran_Goliath);
+	
+	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
+	buildManager.build(UnitTypes::Terran_Goliath);
+
 }
 
 /* 
@@ -162,6 +168,8 @@ void Strategizer::updateUnitAgentMap()
 			else if (ut == UnitTypes::Terran_Medic)
 				a = new MedicAgent(*u);
 			else if (ut.isBuilding())
+				a = new StructureAgent(*u);
+			else if (ut.isAddon())
 				a = new StructureAgent(*u);
 			else
 				a = new ActorAgent(*u);
