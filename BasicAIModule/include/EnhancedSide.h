@@ -20,6 +20,9 @@ public:
 	~EnhancedSide(void);
 	pair<BWAPI::Position, BWAPI::Position> getEndPoints(void);
 	vector<BWAPI::TilePosition> getTilePositions(void);
+	vector<BWAPI::Position> getWalkTiles(void);
+	int getLengthPixels(void);
+	int getLengthTiles(void);
 	Orientation getOrientation(void);
 	bool isHorizontal(void);
 	// returns length not covered / overlapping and if not zero sets the leftover
@@ -27,7 +30,8 @@ public:
 	int checkCoverage(EnhancedSide coveringSide, vector<EnhancedSide> * sidesNotCovered);
 	// finds minimum gap between a side and a wall by searching for buildable tiles
 	// returns the minimum number of tiles found
-	int checkGap(void);
+	int checkMinGap(void);
+	int checkMaxGap(void);
 	void drawSide(BWAPI::Color color);
 	void drawTiles(BWAPI::Color color);
 
@@ -36,6 +40,10 @@ private:
 	pair<BWAPI::Position, BWAPI::Position> endPoints;
 	pair<BWAPI::TilePosition, BWAPI::TilePosition> endTilePositions;
 	vector<BWAPI::TilePosition> tilePositions;
+	// 8*8 pixel tiles
+	vector<BWAPI::Position> walkTiles;
 	// is this a vertical side or not
 	bool horizontal;
+	int lengthPixels;
+	int lengthTiles;
 };
