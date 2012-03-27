@@ -53,6 +53,531 @@ TacticalBuildingPlacer::~TacticalBuildingPlacer(void)
 {
 }
 
+int TacticalBuildingPlacer::facingSideMinGap(EnhancedSide::Orientation orientation, BWAPI::TilePosition facingSideEnd)
+{
+
+	pair<BWAPI::Position, BWAPI::Position> sideEndPoints;
+	int facingSideEndTileGap;
+	int facingSideEndWidth, facingSideEndHeight;
+	int xStartPos, yStartPos;
+	int xEndPos, yEndPos;
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+	EnhancedSide * facingSide;
+
+	facingSideEndWidth = (depot.tileWidth() * 32) - 1;
+	facingSideEndHeight = (depot.tileHeight() * 32) - 1;
+	xStartPos = facingSideEnd.x() * 32;
+	yStartPos = facingSideEnd.y() * 32;
+	xEndPos = xStartPos + facingSideEndWidth;
+	yEndPos = yStartPos + facingSideEndHeight;
+
+	if (orientation == EnhancedSide::left) {
+		sideEndPoints.first.x() = xStartPos;
+		sideEndPoints.first.y() = yStartPos;
+		sideEndPoints.second.x() = xStartPos;
+		sideEndPoints.second.y() = yEndPos;
+	}
+	else if (orientation == EnhancedSide::top) {
+		sideEndPoints.first.x() = xStartPos;
+		sideEndPoints.first.y() = yStartPos;
+		sideEndPoints.second.x() = xEndPos;
+		sideEndPoints.second.y() = yStartPos;
+	}
+	else if (orientation == EnhancedSide::right) {
+		sideEndPoints.first.x() = xEndPos;
+		sideEndPoints.first.y() = yStartPos;
+		sideEndPoints.second.x() = xEndPos;
+		sideEndPoints.second.y() = yEndPos;		
+	}
+	else if (orientation == EnhancedSide::bottom) {
+		sideEndPoints.first.x() = xStartPos;
+		sideEndPoints.first.y() = yEndPos;
+		sideEndPoints.second.x() = xEndPos;
+		sideEndPoints.second.y() = yEndPos;
+	}
+
+	facingSide = new EnhancedSide(sideEndPoints, orientation);
+
+	facingSideEndTileGap = facingSide->checkMinGap();
+	delete(facingSide);
+	return facingSideEndTileGap;
+}
+
+// if horizontal growth, uses the 2 vertical sides from endTiles
+// if vertical growth, usese the 2 horizontal sides from endTiles
+pair<int, int> TacticalBuildingPlacer::sideEndsMinGap(bool horizontalGrowth, pair<BWAPI::TilePosition, BWAPI::TilePosition> endTiles)
+{
+
+	pair <int, int> sideEndGaps;
+	pair<BWAPI::Position, BWAPI::Position> sideEndPoints;
+	int currentTileGapSideA, currentTileGapSideB;
+	int buildWidth, buildHeight;
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+
+	buildWidth = depot.tileWidth();
+	buildHeight = depot.tileHeight();
+
+	if (horizontalGrowth) {
+		// check side A gap
+		sideEndPoints.first.x() = endTiles.first.x() * 32;
+		sideEndPoints.first.y() = endTiles.first.y() * 32;
+		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
+		sideEndPoints.second.y() = sideEndPoints.first.y() + (buildHeight * 32) - 1;
+		EnhancedSide buildSideA(sideEndPoints, EnhancedSide::left);
+		currentTileGapSideA = buildSideA.checkMinGap();
+
+		// check side B gap
+		sideEndPoints.first.x() = ((endTiles.second.x() + buildWidth) * 32) - 1;
+		// sideEndPoints.first.y() same
+		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
+		// sideEndPoints.second.y() same
+		EnhancedSide buildSideB(sideEndPoints, EnhancedSide::right);
+		currentTileGapSideB = buildSideB.checkMinGap();
+	}
+	else {
+		// check side A gap
+		sideEndPoints.first.x() = endTiles.first.x() * 32;
+		sideEndPoints.first.y() = endTiles.first.y() * 32;
+		sideEndPoints.second.x() = sideEndPoints.first.x() + (buildWidth * 32) - 1;
+		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
+		EnhancedSide buildSideA(sideEndPoints, EnhancedSide::top);
+		currentTileGapSideA = buildSideA.checkMinGap();
+
+		// check side B gap
+		// sideEndPoints.first.x() same
+		sideEndPoints.first.y() = ((endTiles.second + buildHeight) * 32) - 1;
+		// sideEndPoints.second.x() same
+		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
+		EnhancedSide buildSideB(sideEndPoints, EnhancedSide::bottom);
+		currentTileGapSideB = buildSideB.checkMinGap();
+	}
+	sideEndGaps.first = currentTileGapSideA;
+	sideEndGaps.second = currentTileGapSideB;
+
+	return sideEndGaps;
+}
+
+
+// make sure to clear currentSidesNotCovered before hand if need be
+// currentSidesNotCovered default is NULL
+int TacticalBuildingPlacer::sideCoverage(EnhancedSide * ecpSide, pair<BWAPI::TilePosition, BWAPI::TilePosition> endTiles, 
+										 vector<EnhancedSide> * currentSidesNotCovered)
+{
+	pair<BWAPI::Position, BWAPI::Position> sideEndPoints;
+	int buildWidth, buildHeight;
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+	int currentLengthNotCovered;
+
+	buildWidth = depot.tileWidth();
+	buildHeight = depot.tileHeight();
+
+	if (ecpSide->isHorizontal()) {
+		//  -------------
+		//A |   |   |   | B
+		// left to right, get top side
+		// get from endTiles, far left
+		sideEndPoints.first.x() = endTiles.first.x() * 32;
+		sideEndPoints.first.y() = endTiles.first.y() * 32;
+		// get from endTiles, far right
+		sideEndPoints.second.x() = ((endTiles.second.x() + buildWidth) * 32) - 1;
+		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
+		// check coverage
+		EnhancedSide coveringSide(sideEndPoints, EnhancedSide::top);
+		currentLengthNotCovered = ecpSide->checkCoverage(coveringSide, currentSidesNotCovered);
+	}
+	else {
+		// top to bottom
+		// get left side and compare for coverage
+		// endTile A (first) is top
+		sideEndPoints.first.x() = endTiles.first.x() * 32;
+		sideEndPoints.first.y() = endTiles.first.y() * 32;
+		// get from endTiles, far bottom
+		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
+		sideEndPoints.second.y() = ((endTiles.second.y() + buildHeight) * 32) - 1;
+		// check coverage
+		EnhancedSide coveringSide(sideEndPoints, EnhancedSide::left);
+		currentLengthNotCovered = ecpSide->checkCoverage(coveringSide, currentSidesNotCovered);
+	}
+	return currentLengthNotCovered;
+}
+
+
+// returns true if either side has poor gap
+// should this start at the baseTile? -- this is usually used after growEndsByCoverage,
+// which may have already made some progress
+// OR at least give it an option to just use the endTiles
+// based off of facing side gap
+bool TacticalBuildingPlacer::growEndsByGap(EnhancedSide::Orientation orientation, pair<BWAPI::TilePosition, BWAPI::TilePosition> & endTiles, 
+										   BWAPI::TilePosition baseTile, pair<pair<int,int>,pair<int,int>> sideGrowDirs, int & tileFacingGapSideA, int & tileFacingGapSideB)
+{
+
+	BWAPI::TilePosition currentTile;
+	int prevGapEndA, prevGapEndB;
+	int currentGapEndA, currentGapEndB;
+	int xGrowDirEndA, yGrowDirEndA;
+	int xGrowDirEndB, yGrowDirEndB;
+	int buildWidth, buildHeight;
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+	bool canBuild;
+	bool poorGapA, poorGapB;
+
+	buildWidth = depot.tileWidth();
+	buildHeight = depot.tileHeight();
+
+	currentTile = baseTile;
+	canBuild = true;
+
+	// directions
+	xGrowDirEndA = sideGrowDirs.first.first;
+	yGrowDirEndA = sideGrowDirs.first.second;
+	xGrowDirEndB = sideGrowDirs.second.first;
+	yGrowDirEndB = sideGrowDirs.second.second;
+
+	// for finding baseline gaps
+	prevGapEndA = prevGapEndB = -1;
+	poorGapA = poorGapB = false;
+
+	// init for return
+	currentGapEndA = facingSideMinGap(orientation, endTiles.first);
+	currentGapEndB = facingSideMinGap(orientation, endTiles.second);
+
+	// grow end A
+	while (canBuild) {
+		currentTile.x() += xGrowDirEndA * buildWidth;
+		currentTile.y() += yGrowDirEndA * buildHeight;
+		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+			endTiles.first = currentTile;
+			// check gap for forward progress
+			if (prevGapEndA < 0) {
+				prevGapEndA = facingSideMinGap(orientation, endTiles.first);
+				if (prevGapEndA == 0) {
+					break;
+				}
+			}
+			else {
+				currentGapEndA = facingSideMinGap(orientation, endTiles.first);
+				if (currentGapEndA >= prevGapEndA) {
+					poorGapA = true;
+					break;
+				}
+				else if (currentGapEndA == 0) {
+					break;
+				}
+			}
+		}
+		else {
+			canBuild = false;
+			break;
+		}
+	}
+	// grow end B
+	currentTile = baseTile;
+	canBuild = true;
+
+	while (canBuild) {
+		currentTile.x() += xGrowDirEndB * buildWidth;
+		currentTile.y() += yGrowDirEndB * buildHeight;
+
+		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+			endTiles.second = currentTile;
+			// check gap for forward progress
+			if (prevGapEndB < 0) {
+				prevGapEndB = facingSideMinGap(orientation, endTiles.second);
+				if (prevGapEndB == 0) {
+					break;
+				}
+			}
+			else {
+				currentGapEndB = facingSideMinGap(orientation, endTiles.second);
+				if (currentGapEndB >= prevGapEndB) {
+					poorGapB = true;
+					break;
+				}
+				else if (currentGapEndB == 0) {
+					break;
+				}
+			}
+		}
+		else {
+			canBuild = false;
+			break;
+		}
+	}
+
+	// set gaps
+	tileFacingGapSideA = currentGapEndA;
+	tileFacingGapSideB = currentGapEndB;
+
+	return (poorGapA || poorGapB);
+}
+
+// attempts to grow out endTiles in specified directions sideGrowDirs starting at baseTile
+// stops growing if tiles are unbuildable or if chokepoint side coverage doesn't increase
+// returns length that still isn't covered after growing
+// endTiles should already be initialized, and should be anyways to get initialLengthNotCovered
+int TacticalBuildingPlacer::growEndsByCoverage(EnhancedSide * ecpSide, pair<BWAPI::TilePosition, BWAPI::TilePosition> & endTiles, 
+											   BWAPI::TilePosition baseTile, int initialLengthNotCovered, pair<pair<int,int>,pair<int,int>> sideGrowDirs)
+{
+
+	BWAPI::TilePosition currentTile;
+	int prevLengthNotCovered, currentLengthNotCovered;
+	int xGrowDirEndA, yGrowDirEndA;
+	int xGrowDirEndB, yGrowDirEndB;
+	int buildWidth, buildHeight;
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+	bool canBuild;
+	// get initial coverage first (baseline)
+	// 	minLengthNotCovered = currentLengthNotCovered;
+
+	buildWidth = depot.tileWidth();
+	buildHeight = depot.tileHeight();
+
+	prevLengthNotCovered = initialLengthNotCovered;
+	// in case nothing can be built
+	currentLengthNotCovered = initialLengthNotCovered;
+	currentTile = baseTile;
+	canBuild = true;
+
+	// directions
+	xGrowDirEndA = sideGrowDirs.first.first;
+	yGrowDirEndA = sideGrowDirs.first.second;
+	xGrowDirEndB = sideGrowDirs.second.first;
+	yGrowDirEndB = sideGrowDirs.second.second;
+
+	// grow end A
+	while (canBuild) {
+		currentTile.x() += xGrowDirEndA * buildWidth;
+		currentTile.y() += yGrowDirEndA * buildHeight;
+		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+			endTiles.first = currentTile;
+			// check coverage for forward progress
+			currentLengthNotCovered = sideCoverage(ecpSide, endTiles);
+			if (currentLengthNotCovered == 0) {
+				break;
+			}
+			if (currentLengthNotCovered >= prevLengthNotCovered) {
+				// stop growing
+				break;
+			}
+			else {
+				prevLengthNotCovered = currentLengthNotCovered;
+			}
+		}
+		else {
+			canBuild = false;
+			break;
+		}
+	}
+	// grow end B
+	currentTile = baseTile;
+	canBuild = true;
+
+	while (canBuild) {
+		currentTile.x() += xGrowDirEndB * buildWidth;
+		currentTile.y() += yGrowDirEndB * buildHeight;
+
+		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+			endTiles.second = currentTile;
+			// check coverage for forward progress
+			currentLengthNotCovered = sideCoverage(ecpSide, endTiles);
+			if (currentLengthNotCovered == 0) {
+				break;
+			}
+			if (currentLengthNotCovered >= prevLengthNotCovered) {
+				// stop growing
+				break;
+			}
+			else {
+				prevLengthNotCovered = currentLengthNotCovered;
+			}
+		}
+		else {
+			canBuild = false;
+			break;
+		}
+	}
+
+	return currentLengthNotCovered;
+}
+
+// used after other grow functions when its known this 
+// is the right direction to be growing
+// doesn't start at the baseTile, but picks up after the build tiles
+// returs the over all length
+int TacticalBuildingPlacer::growEndsByLength(pair<BWAPI::TilePosition, BWAPI::TilePosition> & endTiles, 
+											 pair<pair<int,int>,pair<int,int>> sideGrowDirs)
+{
+
+	BWAPI::TilePosition currentTile;
+	int xGrowDirEndA, yGrowDirEndA;
+	int xGrowDirEndB, yGrowDirEndB;
+	int buildWidth, buildHeight;
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+	bool canBuild;
+	int numBuildTiles;
+	bool xShared, yShared, rightOrder;
+
+	numBuildTiles = 0;
+	buildWidth = depot.tileWidth();
+	buildHeight = depot.tileHeight();
+
+	currentTile = endTiles.first;
+	canBuild = true;
+	xShared = yShared = rightOrder = false;
+
+	// directions
+	xGrowDirEndA = sideGrowDirs.first.first;
+	yGrowDirEndA = sideGrowDirs.first.second;
+	xGrowDirEndB = sideGrowDirs.second.first;
+	yGrowDirEndB = sideGrowDirs.second.second;
+
+	// grow end A
+	while (canBuild) {
+		currentTile.x() += xGrowDirEndA * buildWidth;
+		currentTile.y() += yGrowDirEndA * buildHeight;
+		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+			endTiles.first = currentTile;
+		}
+		else {
+			canBuild = false;
+			break;
+		}
+	}
+	// grow end B
+	currentTile = endTiles.second;
+	canBuild = true;
+
+	while (canBuild) {
+		currentTile.x() += xGrowDirEndB * buildWidth;
+		currentTile.y() += yGrowDirEndB * buildHeight;
+
+		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+			endTiles.second = currentTile;
+		}
+		else {
+			canBuild = false;
+			break;
+		}
+	}
+
+	// ensure endTiles share a coord and that the
+	// first coord is less than the 2nd
+
+	// find shared coord
+	if (endTiles.first.x() == endTiles.second.x()) {
+		xShared = true;
+	}
+	else {
+		yShared = true;
+	}
+
+	if (xShared || yShared) {
+		if ((endTiles.first.x() <= endTiles.second.x()) || 
+			(endTiles.first.y() <= endTiles.second.y())) {
+				rightOrder = true;
+		}
+	}
+
+	if (rightOrder) {
+		currentTile = endTiles.first;
+		while (currentTile != endTiles.second) {
+			currentTile.x() += xGrowDirEndB * buildWidth;
+			currentTile.y() += yGrowDirEndB * buildHeight;
+			numBuildTiles++;
+			// check for overrun
+			if (numBuildTiles > 10) {
+				break;
+			}
+		}
+	}
+
+	return numBuildTiles;
+}
+
+// check to see if bumping the set by 1 or 2 tiles 
+// will open up another build position and close the gap
+// if horizontal, look for gap total of 3
+// if vertical, look for gap total of 2 (1 on either side)
+// set min gap for sides if an improvement
+// return true if able to bump grow
+bool TacticalBuildingPlacer::growEndsByBumping(bool horizontalGrowth, pair<BWAPI::TilePosition, BWAPI::TilePosition> & endTiles, 
+											   pair<pair<int,int>,pair<int,int>> sideGrowDirs, int & minTileGapSideA,
+											   int & minTileGapSideB)
+{
+
+	BWAPI::TilePosition currentTile;
+	int xGrowDirEndA, yGrowDirEndA;
+	int xGrowDirEndB, yGrowDirEndB;
+	int currentTileGapSideA, currentTileGapSideB;
+	pair<int, int> sideEndGaps;
+	int buildWidth, buildHeight;
+	const BWAPI::UnitType & depot = BWAPI::UnitTypes::Terran_Supply_Depot;
+	bool canBuild;
+	bool madeImprovement;
+
+	buildWidth = depot.tileWidth();
+	buildHeight = depot.tileHeight();
+
+	canBuild = true;
+	madeImprovement = false;
+
+	// directions
+	xGrowDirEndA = sideGrowDirs.first.first;
+	yGrowDirEndA = sideGrowDirs.first.second;
+	xGrowDirEndB = sideGrowDirs.second.first;
+	yGrowDirEndB = sideGrowDirs.second.second;
+
+
+	// check for propper gap first
+
+	// leave grow here for now, but should be replaced with growEnds()
+	// FIX as gap is now in walkable tiles, NOT build tiles -- done
+	if ((horizontalGrowth && (minTileGapSideA / 4) + (minTileGapSideB / 4) == buildWidth) ||
+		(!horizontalGrowth && (minTileGapSideA / 4) + (minTileGapSideB / 4) == buildHeight)) {
+			// shift first side 1 or 2 tiles and try to grow the second side
+			if (horizontalGrowth) {
+				currentTile.x() = endTiles.first.x() - (minTileGapSideA / 4);
+			}
+			else {
+				currentTile.y() = endTiles.first.y() - (minTileGapSideA / 4);
+			}
+
+			if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+				endTiles.first = currentTile;
+				// keep going and grow end B
+				canBuild = true;
+
+				while (canBuild) {
+					currentTile.x() += xGrowDirEndB * buildWidth;
+					currentTile.y() += yGrowDirEndB * buildHeight;
+
+					if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+						endTiles.second = currentTile;
+					}
+					else {
+						canBuild = false;
+						break;
+					}
+				}
+			}
+
+			// check for gap improvement after bumping
+
+			sideEndGaps = sideEndsMinGap(horizontalGrowth, endTiles);
+			currentTileGapSideA = sideEndGaps.first;
+			currentTileGapSideB = sideEndGaps.second;
+
+			if (currentTileGapSideA + currentTileGapSideB < minTileGapSideA + minTileGapSideB) {
+				madeImprovement = true;
+				minTileGapSideA = currentTileGapSideA;
+				minTileGapSideB = currentTileGapSideB;
+			}
+	} // end bump check
+
+	return madeImprovement;
+}
+
+
 // search for optimal build pattern to wall off chokepoint in a region
 vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch(
 	EnhancedChokepoint ecpoint, BWTA::Region * region) 
@@ -60,7 +585,7 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 	vector<BWAPI::TilePosition> buildTiles;
 	//vector<BWAPI::TilePosition> currentBuildTiles;
 	// side A and B
-	pair<BWAPI::TilePosition, BWAPI::TilePosition> endTiles;
+	pair<BWAPI::TilePosition, BWAPI::TilePosition> endTiles, prevEndTiles;
 	// main tile to search from
 	BWAPI::TilePosition baseTile;
 	BWAPI::TilePosition currentTile;
@@ -71,12 +596,20 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 	EnhancedSide * ecpSide;
 	pair<BWAPI::Position, BWAPI::Position> sideEndPoints;
 	// pixels
-	int minLengthNotCovered, currentLengthNotCovered;
-	// tiles
+	int minLengthNotCovered;
+	int currentLengthNotCovered;
+	// gap in walk tiles (8x8 px)
+	pair <int, int> sideEndGaps;
 	int minTileGapSideA, minTileGapSideB;
+	int minTileFacingGapSideA, minTileFacingGapSideB;
+	int maxTileGapSideA, maxTileGapSideB;
 	int currentTileGapSideA, currentTileGapSideB;
+	int currentTileFacingGapSideA, currentTileFacingGapSideB;
+	int prevTileGapSideA, prevTileGapSideB;
+	int prevTileFacingGapSideA, prevTileFacingGapSideB;
 	int ecpNumSides;
-	EnhancedSide::Orientation orientation;
+	EnhancedSide::Orientation orientation, facingSideOrientation;
+	pair<pair<int,int>,pair<int,int>> sideGrowDirs;
 	// to extend buildings to the wall
 	int xGrowDirEndA, yGrowDirEndA;
 	int xGrowDirEndB, yGrowDirEndB;
@@ -87,36 +620,53 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 	// bump by the gap number
 	//int xBumpDir, yBumpDir;
 	bool canBuild;
-	// quickly tell if wall is far away on growth
-	bool hitMax;
-	// make sure 2nd direction isn't really bad either
-	bool hitMaxReverse;
+	bool poorCoverage;
+	bool poorFacingSideGap;
+	bool poorSideEndGap;
+	bool tryShifting;
+	bool reverseGrowDirection;
+	bool reverseShiftDirection;
+	bool maxGrow;
 	// count growth
-	int buildCountSideA, buildCountSideB;
+	//int buildCountSideA, buildCountSideB;
 	// general purpose
 	int count;
+	int numBuildTiles;
 
 	assert(region);
 
+	// init bools
+	canBuild = true;
+	poorCoverage = false;
+	poorFacingSideGap = false;
+	poorSideEndGap = false;
+	tryShifting = false;
+	reverseGrowDirection = false;
+	reverseShiftDirection = false;
+	maxGrow = false;
 
 	baseTile = ecpoint.getBuildTile(region);
 	ecpSides = ecpoint.getBoundingBoxSidesForRegion(region);
 	buildWidth = depot.tileWidth();
 	buildHeight = depot.tileHeight();
 	ecpNumSides = (int)ecpSides.size();
+	numBuildTiles = 0;
+
 
 	// only handles 2 sides
 	assert(ecpNumSides && ecpNumSides <= 2);
 
 	// if sides, search on longest otherwise
-	// if the 2 sides are equal in length
-	// you'll almost always have to search in both directions
-	// one way will have a lot of space and the other way a little
-	// -- maybe do gap analysis to pick either side?
-	// nope, as it turns out, one tile of the side can have gap 0
-	// and another of gap 40 and checkGap() is set up for the min
-	// TODO: set up gap check for max
-	// otherwise hitMax check is in place
+	// if the 2 sides are equal in length (very common)
+	// use checkMaxGap() to find the greatest gap
+	// if the side is facing the whole then it will have
+	// a very large max gap, this is the side we want
+	// as the other side is facing the wall, ah the dunce side
+	// BROKEN!! -- max gap needs to use walkable tiles instead of
+	// buildable tiles, because this is giving the wrong side
+	// otherwise go back to using the build tile, then the
+	// 2 matching sides with greates max gap then pick same
+	// vertical or horizontal side
 	if (ecpNumSides > 1) {
 		int size = ecpSides[0].getTilePositions().size();
 		int sizeTemp;
@@ -127,54 +677,70 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 				ecpSide = &(ecpSides[m]);
 			}
 			else if (sizeTemp == size) {
-				// gap analysis for 4 sides of the build area from baseTile
-				// if left (A) and right have min, then pick horizontal side
-				// if top (A) and bottom have min, then pick vertical side
-				// left side
-				sideEndPoints.first.x() = baseTile.x() * 32;
-				sideEndPoints.first.y() = baseTile.y() * 32;
-				sideEndPoints.second.x() = sideEndPoints.first.x();
-				sideEndPoints.second.y() = ((baseTile.y() + buildHeight) * 32) - 1;
-				EnhancedSide left(sideEndPoints, EnhancedSide::left);
-				minTileGapSideA = left.checkGap();
-				// right side
-				sideEndPoints.first.x() = ((baseTile.x() + buildWidth) * 32) - 1;
-				sideEndPoints.first.y() = baseTile.y() * 32;
-				sideEndPoints.second.x() = sideEndPoints.first.x();
-				sideEndPoints.second.y() = ((baseTile.y() + buildHeight) * 32) - 1;
-				EnhancedSide right(sideEndPoints, EnhancedSide::right);
-				minTileGapSideB = right.checkGap();
-				// top side
-				sideEndPoints.first.x() = baseTile.x() * 32;
-				sideEndPoints.first.y() = baseTile.y() * 32;
-				sideEndPoints.second.x() = ((baseTile.x() + buildWidth) * 32) - 1;
-				sideEndPoints.second.y() = sideEndPoints.first.y();
-				EnhancedSide top(sideEndPoints, EnhancedSide::top);
-				currentTileGapSideA = top.checkGap();
-				// bottom side
-				sideEndPoints.first.x() = baseTile.x() * 32;
-				sideEndPoints.first.y() = ((baseTile.y() + buildHeight) * 32) - 1;
-				sideEndPoints.second.x() = ((baseTile.x() + buildWidth) * 32) - 1;
-				sideEndPoints.second.y() = sideEndPoints.first.y();
-				EnhancedSide bottom(sideEndPoints, EnhancedSide::bottom);
-				currentTileGapSideB = bottom.checkGap();
-				// pick horizontal side
-				if (minTileGapSideA + minTileGapSideB > currentTileGapSideA + currentTileGapSideB) {
-					if (ecpSides[0].isHorizontal()) {
-						ecpSide = &(ecpSides[0]);
-					}
-					else {
-						ecpSide = &(ecpSides[1]);
-					}
+				// pick whichever side has the max gap
+				// as we want to wall off that one
+
+				maxTileGapSideA = ecpSides[0].checkMaxGap();
+				maxTileGapSideB = ecpSides[1].checkMaxGap();
+
+				if (maxTileGapSideA > maxTileGapSideB) {
+					ecpSide = &(ecpSides[0]);
 				}
 				else {
-					if (!ecpSides[0].isHorizontal()) {
-						ecpSide = &(ecpSides[0]);
-					}
-					else {
-						ecpSide = &(ecpSides[1]);
-					}
+					ecpSide = &(ecpSides[1]);
 				}
+
+				// gap analysis for 4 sides of the build area from baseTile
+				// if left (A) and right have min of max, then pick horizontal side
+				// if top (A) and bottom have min of max, then pick vertical side
+				// left side
+				//sideEndPoints.first.x() = baseTile.x() * 32;
+				//sideEndPoints.first.y() = baseTile.y() * 32;
+				//sideEndPoints.second.x() = sideEndPoints.first.x();
+				//sideEndPoints.second.y() = ((baseTile.y() + buildHeight) * 32) - 1;
+				//EnhancedSide left(sideEndPoints, EnhancedSide::left);
+				//maxTileGapSideA = left.checkMaxGap();
+				//// right side
+				//sideEndPoints.first.x() = ((baseTile.x() + buildWidth) * 32) - 1;
+				//sideEndPoints.first.y() = baseTile.y() * 32;
+				//sideEndPoints.second.x() = sideEndPoints.first.x();
+				//sideEndPoints.second.y() = ((baseTile.y() + buildHeight) * 32) - 1;
+				//EnhancedSide right(sideEndPoints, EnhancedSide::right);
+				//maxTileGapSideB = right.checkMaxGap();
+				//// top side
+				//sideEndPoints.first.x() = baseTile.x() * 32;
+				//sideEndPoints.first.y() = baseTile.y() * 32;
+				//sideEndPoints.second.x() = ((baseTile.x() + buildWidth) * 32) - 1;
+				//sideEndPoints.second.y() = sideEndPoints.first.y();
+				//EnhancedSide top(sideEndPoints, EnhancedSide::top);
+				//currentTileGapSideA = top.checkMaxGap();
+				//// bottom side
+				//sideEndPoints.first.x() = baseTile.x() * 32;
+				//sideEndPoints.first.y() = ((baseTile.y() + buildHeight) * 32) - 1;
+				//sideEndPoints.second.x() = ((baseTile.x() + buildWidth) * 32) - 1;
+				//sideEndPoints.second.y() = sideEndPoints.first.y();
+				//EnhancedSide bottom(sideEndPoints, EnhancedSide::bottom);
+				//currentTileGapSideB = bottom.checkMaxGap();
+				//// maxTileGapSide is vertical
+				//// currentTileGapSide is horizontal
+				//// pick horizontal side
+				//if (maxTileGapSideA + maxTileGapSideB > currentTileGapSideA + currentTileGapSideB) {
+				//	if (ecpSides[0].isHorizontal()) {
+				//		ecpSide = &(ecpSides[0]);
+				//	}
+				//	else {
+				//		ecpSide = &(ecpSides[1]);
+				//	}
+				//}
+				//// pick vertical side
+				//else {
+				//	if (!ecpSides[0].isHorizontal()) {
+				//		ecpSide = &(ecpSides[0]);
+				//	}
+				//	else {
+				//		ecpSide = &(ecpSides[1]);
+				//	}
+				//}
 			}
 		}
 	}
@@ -194,6 +760,7 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 		yGrowDirEndB = +1;
 		xShiftDir = -1;
 		yShiftDir = 0;
+		facingSideOrientation = EnhancedSide::right;
 	}
 	else if (orientation == EnhancedSide::top) {
 		// A is left end
@@ -203,6 +770,7 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 		yGrowDirEndB = 0;
 		xShiftDir = 0;
 		yShiftDir = -1;
+		facingSideOrientation = EnhancedSide::bottom;
 	}
 	else if (orientation == EnhancedSide::right) {
 		// A is top end
@@ -212,6 +780,7 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 		yGrowDirEndB = +1;
 		xShiftDir = +1;
 		yShiftDir = 0;
+		facingSideOrientation = EnhancedSide::left;
 	}
 	else if (orientation == EnhancedSide::bottom) {
 		// A is left end
@@ -221,7 +790,14 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 		yGrowDirEndB = 0;
 		xShiftDir = 0;
 		yShiftDir = +1;
+		facingSideOrientation = EnhancedSide::top;
 	}
+
+	// directions
+	sideGrowDirs.first.first = xGrowDirEndA;
+	sideGrowDirs.first.second = yGrowDirEndA;
+	sideGrowDirs.second.first = xGrowDirEndB;
+	sideGrowDirs.second.second = yGrowDirEndB;
 
 	// search for optimal build pattern which has
 	// complete coverage and no gap, if that can't
@@ -229,338 +805,369 @@ vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch
 
 	// start with base tile
 	endTiles.first = endTiles.second = baseTile;
-	// see if either side builds out too far
-	hitMax = false;
 
-	// try to grow on either end
-	// set growth limit of 4 on either end
-	// then check for hit max
+	// start growing, if coverage doesn't increase
+	// overall chances are growth needs to be in opposite
+	// direction of the chokepoint, so reverse
+	// Otherwise stop growing when coverage stops
+	// increasing or is complete (return length == 0) 
 
-	// grow end A
-	currentTile = baseTile;
-	canBuild = true;
-	buildCountSideA = 0;
+	// get initial coverage first (baseline)
+	// 	minLengthNotCovered = currentLengthNotCovered;
+	minLengthNotCovered = sideCoverage(ecpSide, endTiles);
+	poorCoverage = false;
+	reverseGrowDirection = false;
 
-	while (canBuild && buildCountSideA < 5) {
-		currentTile.x() += xGrowDirEndA * buildWidth;
-		currentTile.y() += yGrowDirEndA * buildHeight;
+	// grow
+	currentLengthNotCovered = growEndsByCoverage(ecpSide, endTiles, baseTile, minLengthNotCovered, sideGrowDirs);
 
-		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
-			endTiles.first = currentTile;
-			buildCountSideA++;
+	// set baselines
+	minLengthNotCovered = currentLengthNotCovered;
+	// check gap based on side ends
+	sideEndGaps = sideEndsMinGap(ecpSide->isHorizontal(), endTiles);
+	minTileGapSideA = sideEndGaps.first;
+	minTileGapSideB = sideEndGaps.second;
+	minTileFacingGapSideA = facingSideMinGap(facingSideOrientation, endTiles.first);
+	minTileFacingGapSideB = facingSideMinGap(facingSideOrientation, endTiles.second);
+
+	// poor coverage if nothing is covered, ie the length
+	if (currentLengthNotCovered == ecpSide->getLengthPixels()) {
+		poorCoverage = true;
+	}
+	else if (currentLengthNotCovered >= minLengthNotCovered) {
+		tryShifting = true;
+	}
+	else {
+
+		// if poor gap which is at least a build area's worth (still room to grow)
+		// gap is now mearsured in walkable tiles, where a build tile is 
+		// 4 walkable tiles wide
+		poorSideEndGap = false;
+		if (ecpSide->isHorizontal()) {
+			if (minTileGapSideA >= buildWidth * 4 || minTileGapSideB >= buildWidth * 4) {
+				poorSideEndGap = true;
+			}
 		}
 		else {
-			canBuild = false;
-			break;
+			if (minTileGapSideA >= buildHeight * 4 || minTileGapSideB >= buildHeight * 4) {
+				poorSideEndGap = true;
+			}
 		}
-	}
 
-	// grow end B
-	currentTile = baseTile;
-	canBuild = true;
-	buildCountSideB = 0;
+		// check for bump
+		if (!poorSideEndGap) {
+			growEndsByBumping(ecpSide->isHorizontal(), endTiles, sideGrowDirs, minTileGapSideA, minTileGapSideB);
+		}
 
-	while (canBuild && buildCountSideB < 5) {
-		currentTile.x() += xGrowDirEndB * buildWidth;
-		currentTile.y() += yGrowDirEndB * buildHeight;
+	} // end first grow attempt
 
-		if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
-			endTiles.second = currentTile;
-			buildCountSideB++;
+	// IF POOR COVERAGE DO A MAX GROW JUST IN CASE
+	// baseTile doesn't sit near the chokepoint side
+	// if that fails then do reverse grow
+	if (poorCoverage) {
+		numBuildTiles = growEndsByLength(endTiles, sideGrowDirs);
+		if (numBuildTiles > 4) {
+			maxGrow = true;
+			endTiles.first = endTiles.second = baseTile;
 		}
 		else {
-			canBuild = false;
-			break;
+			poorCoverage = false;
+			// check for bumping case
+			growEndsByBumping(ecpSide->isHorizontal(), endTiles, sideGrowDirs, minTileGapSideA, minTileGapSideB);
+		}
+
+		// THERE IS THE CASE THAT THERE IS ONLY 4 BUILD TILES, BUT IT'S THE WRONG DIR
+		// still need to check the facing side gap, if too much try reverse grow
+		currentTileFacingGapSideA = facingSideMinGap(facingSideOrientation, endTiles.first);
+		currentTileFacingGapSideB = facingSideMinGap(facingSideOrientation, endTiles.second);
+		if ((currentTileFacingGapSideA / 4) > 11 || (currentTileFacingGapSideB / 4) > 11) {
+			maxGrow = true;
 		}
 	}
 
-	// good indication need to search in other direction
-	// build counts don't usually count the baseTile,
-	// since they are searching out from it, so >3 is
-	// really >4
-	if (buildCountSideA + buildCountSideB > 3) {
-		hitMax = true;
-	}
 
-	// regrow in other direction if hitMax before analysis
+
+
+	// regrow in other direction
 	// ie if horizontal, do vertical
-	if (hitMax) {
+	if (maxGrow) {
+
+		reverseGrowDirection = true;
+		// not applicable anymore
+		poorCoverage = false;
+
 		// leaving out shift dir, since that is unknown now
 		if (ecpSide->isHorizontal()) {
 			xGrowDirEndA = 0;
 			yGrowDirEndA = -1;
 			xGrowDirEndB = 0;
 			yGrowDirEndB = +1;
+
+			// vertical growth
+			// compare ecpSide and baseTile x values
+			// to determine left or right for facing
+			// side orientation
+			if (ecpSide->getEndPoints().second.x() < baseTile.x() * 32) {
+				// it's left, so face left
+				facingSideOrientation = EnhancedSide::left;	
+				xShiftDir = 1;
+				yShiftDir = 0;
+			}
+			else {
+				facingSideOrientation = EnhancedSide::right;
+				xShiftDir = -1;
+				yShiftDir = 0;
+			}
 		}
 		else {
 			xGrowDirEndA = -1;
 			yGrowDirEndA = 0;
 			xGrowDirEndB = +1;
 			yGrowDirEndB = 0;
+
+			// horizontal growth
+			// compare ecpSide and baseTile y values
+			// to determine top or bottom for facing
+			// side orientation
+			if (ecpSide->getEndPoints().second.y() < baseTile.y() * 32) {
+				// it's above, so face top
+				facingSideOrientation = EnhancedSide::top;	
+				xShiftDir = 0;
+				yShiftDir = 1;
+			}
+			else {
+				facingSideOrientation = EnhancedSide::bottom;
+				xShiftDir = 0;
+				yShiftDir = -1;
+			}
 		}
+
+		sideGrowDirs.first.first = xGrowDirEndA;
+		sideGrowDirs.first.second = yGrowDirEndA;
+		sideGrowDirs.second.first = xGrowDirEndB;
+		sideGrowDirs.second.second = yGrowDirEndB;
 
 		// start with base tile
 		endTiles.first = endTiles.second = baseTile;
-		hitMaxReverse = false;
 
-		// now regrow end A
-		currentTile = baseTile;
-		canBuild = true;
-		buildCountSideA = 0;
-		while (canBuild && buildCountSideA < 5) {
-			currentTile.x() += xGrowDirEndA * buildWidth;
-			currentTile.y() += yGrowDirEndA * buildHeight;
-			if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
-				endTiles.first = currentTile;
-				buildCountSideA++;
-			}
-			else {
-				canBuild = false;
-				break;
-			}
-		}
-		// regrow end B
-		currentTile = baseTile;
-		canBuild = true;
-		buildCountSideB = 0;
-		while (canBuild && buildCountSideB < 5) {
-			currentTile.x() += xGrowDirEndB * buildWidth;
-			currentTile.y() += yGrowDirEndB * buildHeight;
-			if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
-				endTiles.second = currentTile;
-				buildCountSideB++;
-			}
-			else {
-				canBuild = false;
-				break;
-			}
-		}
-		if (buildCountSideA + buildCountSideB > 3) {
-			hitMaxReverse = true;
-		}
-	} // end hitMax regrow
+		// regrow
+		poorFacingSideGap = growEndsByGap(facingSideOrientation, endTiles, baseTile, 
+			sideGrowDirs, currentTileFacingGapSideA, currentTileFacingGapSideB);
 
+		// need to compare minTileFacingGapSideA, minTileFacingGapSideB
+		// if any improvement
 
-	// check coverage and gap based on side ends
-	// Note: currently gap tests are only done for 
-	// the side ends (the short ends), not the long ends
-	// so this won't cover the case where there is still room
-	// on either side of the side ends, but there isn't a gap on 
-	// the long edge, so the chokepoint is still walled off, 
-	// however this case will still come out as complete coverage
-	// so coverage is more for the special cases
-	if ((ecpSide->isHorizontal() && !hitMax) || (!ecpSide->isHorizontal() && hitMax)) {
-		//  -------------
-		//A |   |   |   | B
-		// left to right, top or bottom side doesn't matter
-		// get from endTiles, far left
-		sideEndPoints.first.x() = endTiles.first.x() * 32;
-		sideEndPoints.first.y() = endTiles.first.y() * 32;
-		// get from endTiles, far right
-		sideEndPoints.second.x() = ((endTiles.second.x() + buildWidth) * 32) - 1;
-		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
-		// check coverage
-		EnhancedSide coveringSide(sideEndPoints, EnhancedSide::top);
-		currentSidesNotCovered.clear();
-		currentLengthNotCovered = ecpSide->checkCoverage(coveringSide, &currentSidesNotCovered);
+		// set baselines
+		if (currentTileFacingGapSideA + currentTileFacingGapSideB <
+			minTileFacingGapSideA, minTileFacingGapSideB) {
 
-		// check side A gap
-		// first end point is still good from coverage
-		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
-		sideEndPoints.second.y() = sideEndPoints.first.y() + (buildHeight * 32) - 1;
-		EnhancedSide buildSideA(sideEndPoints, EnhancedSide::left);
-		currentTileGapSideA = buildSideA.checkGap();
+				maxGrow = false;
+				minTileFacingGapSideA = currentTileFacingGapSideA;
+				minTileFacingGapSideB = currentTileFacingGapSideB;
+				// use opposite of ecpSide
+				sideEndGaps = sideEndsMinGap(!ecpSide->isHorizontal(), endTiles);
+				minTileGapSideA = sideEndGaps.first;
+				minTileGapSideB = sideEndGaps.second;
 
-
-		// check side B gap
-		sideEndPoints.first.x() = ((endTiles.second.x() + buildWidth) * 32) - 1;
-		// sideEndPoints.first.y() same
-		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
-		// sideEndPoints.second.y() same
-		EnhancedSide buildSideB(sideEndPoints, EnhancedSide::right);
-		currentTileGapSideB = buildSideB.checkGap();
-	}
-	else if ( (!hitMax) || (ecpSide->isHorizontal() && hitMax) ){
-
-		// A
-		// ---
-		// |
-		// ---
-		// |
-		// ---
-		// |
-		// ---
-		// B
-		// get left side and compare for coverage
-		// endTile A (first) is top
-		sideEndPoints.first.x() = endTiles.first.x() * 32;
-		sideEndPoints.first.y() = endTiles.first.y() * 32;
-		// get from endTiles, far bottom
-		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
-		sideEndPoints.second.y() = ((endTiles.second + buildHeight) * 32) - 1;
-		// check coverage
-		EnhancedSide coveringSide(sideEndPoints, EnhancedSide::left);
-		currentSidesNotCovered.clear();
-		currentLengthNotCovered = ecpSide->checkCoverage(coveringSide, &currentSidesNotCovered);
-
-		// check side A gap
-		// first end point is still good from coverage
-		sideEndPoints.second.x() = sideEndPoints.first.x() + (buildWidth * 32) - 1;
-		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
-		EnhancedSide buildSideA(sideEndPoints, EnhancedSide::top);
-		currentTileGapSideA = buildSideA.checkGap();
-
-		// check side B gap
-		// sideEndPoints.first.x() same
-		sideEndPoints.first.y() = ((endTiles.second + buildHeight) * 32) - 1;
-		// sideEndPoints.second.x() same
-		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
-		EnhancedSide buildSideB(sideEndPoints, EnhancedSide::bottom);
-		currentTileGapSideB = buildSideB.checkGap();
-	}
-
-	// save round -- need to do some error checking here
-	currentTile = endTiles.first;
-	count = 0;
-	while (currentTile != endTiles.second) {
-		buildTiles.push_back(currentTile);
-		currentTile.x() += xGrowDirEndB * buildWidth;
-		currentTile.y() += yGrowDirEndB * buildHeight;
-		count++;
-		// check for overrun
-		if (count > 10) {
-			break;
-		}
-	}
-	buildTiles.push_back(endTiles.second);
-
-	// analyze coverage and side gaps
-	// if both are zero, done!
-	// make sure size isn't over 4, otherwise this may not be a good solution
-	if (currentLengthNotCovered < 32 && currentTileGapSideA + currentTileGapSideB == 0) {
-		if (buildTiles.size() < 5) {
-			return buildTiles;
-		}
-		else {
-			buildTiles.clear();
-			buildTiles.push_back(baseTile);
-			return buildTiles;
-		}
-	}
-
-	// if first round set mins to current
-	minLengthNotCovered = currentLengthNotCovered;
-	minTileGapSideA = currentTileGapSideA;
-	minTileGapSideB = currentTileGapSideB;
-
-	// check to see if bumping the set by 1 or 2 tiles 
-	// will open up another build position and close the gap
-	// if horizontal, look for gap total of 3
-	// if vertical, look for gap total of 2 (1 on either side)
-	if ((ecpSide->isHorizontal() && minTileGapSideA + minTileGapSideB == buildWidth) ||
-		(!ecpSide->isHorizontal() && minTileGapSideA + minTileGapSideB == buildHeight)) {
-			// shift left 1 or 2 tiles and try to grow the right side
-			currentTile.x() = endTiles.first.x() - minTileGapSideA;
-			if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
-				endTiles.first = currentTile;
-				// keep going and grow end B
-				canBuild = true;
-				buildCountSideB = 0;
-
-				while (canBuild && buildCountSideB < 4) {
-					currentTile.x() += xGrowDirEndB * buildWidth;
-					currentTile.y() += yGrowDirEndB * buildHeight;
-
-					if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
-						endTiles.second = currentTile;
-						buildCountSideB++;
+				if (poorFacingSideGap || minTileGapSideA / 4 > 0 || minTileGapSideB / 4 > 0) {
+					numBuildTiles = growEndsByLength(endTiles, sideGrowDirs);
+					if (numBuildTiles > 4) {
+						maxGrow = true;
+						endTiles.first = endTiles.second = baseTile;
 					}
 					else {
-						canBuild = false;
-						break;
+						// use opposite of ecpSide
+						growEndsByBumping(!ecpSide->isHorizontal(), endTiles, sideGrowDirs, minTileGapSideA, minTileGapSideB);
 					}
+					// if still issues, then try shifting, just can't do coverage
+
+				}
+		}
+	} // end reverse regrow
+
+
+	// if good coverage and poor side gap
+	// try to grow more but look at the facing gap
+	if (poorSideEndGap && !reverseGrowDirection) {
+		poorFacingSideGap = growEndsByGap(facingSideOrientation, endTiles, baseTile, 
+			sideGrowDirs, currentTileFacingGapSideA, currentTileFacingGapSideB);
+
+		// if this is ok the reset poorSideEndGap to TRUE!
+		if (!poorFacingSideGap) {
+			poorSideEndGap = false;
+			minTileFacingGapSideA = currentTileFacingGapSideA;
+			minTileFacingGapSideB = currentTileFacingGapSideB;
+
+			// check for bumping
+			growEndsByBumping(ecpSide->isHorizontal(), endTiles, sideGrowDirs, minTileGapSideA, minTileGapSideB);
+		}
+	}
+
+	// try MAX GROW and then reset poorSideEndGap and poorFacingSideGap 
+	// otherwise tryShifting
+	if (poorFacingSideGap) {
+		numBuildTiles = growEndsByLength(endTiles, sideGrowDirs);
+		if (numBuildTiles > 4) {
+			maxGrow = true;
+			endTiles.first = endTiles.second = baseTile;
+		}
+		else {
+			poorFacingSideGap = false;
+			poorSideEndGap = false;
+			// check for bumping
+			growEndsByBumping(ecpSide->isHorizontal(), endTiles, sideGrowDirs, minTileGapSideA, minTileGapSideB);
+		}
+	}
+
+
+
+	// try to shift and then grow again 
+	//(except if reverse - another special case)
+	// this will end up being a reverse shift
+	// can't use coverage on grow since it will always be wrong
+	// as growth is parallel to chokepoint side
+	if (tryShifting) {
+
+		// start with base tile
+		currentTile = baseTile;
+
+		for (int m = 0; m < 2 && tryShifting; ++m) {
+
+			currentTile.x() += xShiftDir;
+			currentTile.y() += yShiftDir;
+
+			// save previous, in case it get's worse
+			prevEndTiles = endTiles;
+			prevTileFacingGapSideA = minTileFacingGapSideA;
+			prevTileFacingGapSideB = minTileFacingGapSideB;
+			prevTileGapSideA = minTileGapSideA;
+			prevTileGapSideB = minTileGapSideB;
+
+			endTiles.first = endTiles.second = currentTile;
+			// should be the same with change of baseTile
+			minLengthNotCovered = sideCoverage(ecpSide, endTiles);
+			poorCoverage = false;
+			poorSideEndGap = false;
+			poorFacingSideGap = false;
+			tryShifting = false;
+
+			// check buildability of current tile first
+			if (BWAPI::Broodwar->canBuildHere(NULL, currentTile, BWAPI::UnitTypes::Terran_Supply_Depot, false)) {
+
+				if (!reverseGrowDirection) {
+					// use currentTile instead of baseTile for growEnds()
+					currentLengthNotCovered = growEndsByCoverage(ecpSide, endTiles, currentTile, minLengthNotCovered, sideGrowDirs);
+
+					if (currentLengthNotCovered >= minLengthNotCovered) {
+						tryShifting = true;
+					}
+					else {
+						minLengthNotCovered = currentLengthNotCovered;
+
+						// check gap based on side ends
+						sideEndGaps = sideEndsMinGap(ecpSide->isHorizontal(), endTiles);
+						minTileGapSideA = sideEndGaps.first;
+						minTileGapSideB = sideEndGaps.second;
+
+						// if poor gap which is at least a build area's worth (still room to grow)
+						if (ecpSide->isHorizontal()) {
+							if (minTileGapSideA >= buildWidth * 4 || minTileGapSideB >= buildWidth * 4) {
+								poorSideEndGap = true;
+							}
+						}
+						else {
+							if (minTileGapSideA >= buildHeight * 4 || minTileGapSideB >= buildHeight * 4) {
+								poorSideEndGap = true;
+							}
+						}
+
+					} // end good coverage
 				}
 			}
-	}
 
-	// check for gap improvement after bumping
+			// if good coverage and poor side gap after shift check
+			// try to grow more but look at the facing gap
+			if (poorSideEndGap || reverseGrowDirection) {
+				// use currentTile instead of baseTile for growEnds()
+				poorFacingSideGap = growEndsByGap(facingSideOrientation, endTiles, currentTile, sideGrowDirs, 
+					currentTileFacingGapSideA, currentTileFacingGapSideB);
 
-	if (ecpSide->isHorizontal()) {
-		// check side A gap
-		sideEndPoints.first.x() = endTiles.first.x() * 32;
-		sideEndPoints.first.y() = endTiles.first.y() * 32;
-		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
-		sideEndPoints.second.y() = sideEndPoints.first.y() + (buildHeight * 32) - 1;
-		EnhancedSide buildSideA(sideEndPoints, EnhancedSide::left);
-		currentTileGapSideA = buildSideA.checkGap();
+				// if this is ok the reset poorSideEndGap to TRUE!
+				if (!poorFacingSideGap) {
+					poorSideEndGap = false;
+					minTileFacingGapSideA = currentTileFacingGapSideA;
+					minTileFacingGapSideB = currentTileFacingGapSideB;
+				}
+			}
 
-		// check side B gap
-		sideEndPoints.first.x() = ((endTiles.second.x() + buildWidth) * 32) - 1;
-		// sideEndPoints.first.y() same
-		sideEndPoints.second.x() = sideEndPoints.first.x(); // same
-		// sideEndPoints.second.y() same
-		EnhancedSide buildSideB(sideEndPoints, EnhancedSide::right);
-		currentTileGapSideB = buildSideB.checkGap();
-	}
-	else {
-		// check side A gap
-		sideEndPoints.first.x() = endTiles.first.x() * 32;
-		sideEndPoints.first.y() = endTiles.first.y() * 32;
-		sideEndPoints.second.x() = sideEndPoints.first.x() + (buildWidth * 32) - 1;
-		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
-		EnhancedSide buildSideA(sideEndPoints, EnhancedSide::top);
-		currentTileGapSideA = buildSideA.checkGap();
+			// try MAX GROW and then reset poorSideEndGap and poorFacingSideGap 
+			// otherwise keep shifting
+			if (poorFacingSideGap) {
+				// endTiles should be in accordance with the shifted baseTile ?
+				numBuildTiles = growEndsByLength(endTiles, sideGrowDirs);
+				if (numBuildTiles > 4) {
+					maxGrow = true;
+					endTiles.first = endTiles.second = baseTile;
+				}
+				else {
+					poorFacingSideGap = false;
+					poorSideEndGap = false;
+				}
+			}
 
-		// check side B gap
-		// sideEndPoints.first.x() same
-		sideEndPoints.first.y() = ((endTiles.second + buildHeight) * 32) - 1;
-		// sideEndPoints.second.x() same
-		sideEndPoints.second.y() = sideEndPoints.first.y(); // same
-		EnhancedSide buildSideB(sideEndPoints, EnhancedSide::bottom);
-		currentTileGapSideB = buildSideB.checkGap();
-	}
+			// check for bumping
+			if (reverseGrowDirection) {
+				growEndsByBumping(!ecpSide->isHorizontal(), endTiles, sideGrowDirs, minTileGapSideA, minTileGapSideB);
+			}
+			else {
+				growEndsByBumping(ecpSide->isHorizontal(), endTiles, sideGrowDirs, minTileGapSideA, minTileGapSideB);
+			}
+			// check for side end or facing side gaps over a tile length,
+			// if an end has neither closed off, tryShifting again
+			// but reset if it gets worse (endTiles is overwritten)
+			if (reverseGrowDirection) {
+				sideEndGaps = sideEndsMinGap(!ecpSide->isHorizontal(), endTiles);
+			}
+			else {
+				sideEndGaps = sideEndsMinGap(ecpSide->isHorizontal(), endTiles);
+			}
+			currentTileGapSideA = sideEndGaps.first;
+			currentTileGapSideB = sideEndGaps.second;
+			currentTileFacingGapSideA = facingSideMinGap(facingSideOrientation, endTiles.first);
+			currentTileFacingGapSideB = facingSideMinGap(facingSideOrientation, endTiles.second);
 
-	if (currentTileGapSideA + currentTileGapSideB < minTileGapSideA + minTileGapSideB) {
 
-		// save new round
-		buildTiles.clear();
+		} // end for loop
+	} // end shift check
+
+
+	// -- get this section working first
+
+	// if still not optimal, try reverse shifting ( after reverse growing)
+
+	// if still not optimal, try staggered pattern
+
+	// if everything is good add to buildTiles
+	if (!poorCoverage && !poorSideEndGap && !poorFacingSideGap && !maxGrow) {
 		currentTile = endTiles.first;
 		count = 0;
+		buildTiles.clear();
 		while (currentTile != endTiles.second) {
 			buildTiles.push_back(currentTile);
 			currentTile.x() += xGrowDirEndB * buildWidth;
 			currentTile.y() += yGrowDirEndB * buildHeight;
 			count++;
-			// check for overrun, these tiles will then be thrown out
-			// in the size check 
+			// check for overrun
 			if (count > 10) {
 				break;
 			}
 		}
 		buildTiles.push_back(endTiles.second);
-
-
-
-		// NEED TO DO COVERAGE ANALYSIS AND
-		// SET LENGTH NOT COVERED AND MIN TILE GAPS
 	}
 
-	// -- get this section working first
 
-	// try to shift and then grow again
-
-	// compare coverage and gap
-
-	// if still not optimal, try opposite direction
-
-	// if still not optimal, try staggered pattern
-
-	// ensure size isn't to big
-	if (buildTiles.size() < 5) {
-		return buildTiles;
-	}
-	else {
-		buildTiles.clear();
+	// did we find anything ?
+	if ((int)buildTiles.size() == 0) {
 		buildTiles.push_back(baseTile);
 	}
 
