@@ -43,6 +43,16 @@ Squad& Squad::operator=(const Squad& rhs)
 void Squad::update()
 {
     assert(leader != NULL);
+	// Find a new leader if current one dies
+	if (leader->getUnit().getHitPoints() <= 0)
+	{
+		removeAgent(leader);
+		for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
+		{
+			leader = *it;
+			break;
+		}
+	}
 
     // Do what the leader is doing
     AgentSetIter it  = agents.begin();
@@ -66,8 +76,16 @@ void Squad::draw()
 	pt center = getCenter();
 	int radius = getRadius();
 
-	// Draw a box enclosing my squad
-	Broodwar->drawCircleMap(center.first, center.second, radius, Colors::Teal);
+	int leaderX = leader->getUnit().getPosition().x();
+	int leaderY = leader->getUnit().getPosition().y();
+
+	// Draw lines from Agents to their leader
+	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
+	{
+		int agentX = (*it)->getUnit().getPosition().x();
+		int agentY = (*it)->getUnit().getPosition().y();
+		Broodwar->drawLineMap(agentX, agentY, leaderX, leaderY, Colors::Teal);
+	}
 }
 
 
