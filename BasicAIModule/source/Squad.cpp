@@ -11,6 +11,7 @@
 using namespace BWAPI;
 using std::min;
 using std::max;
+using std::pair;
 
 Squad::Squad()
     : agents()
@@ -62,30 +63,45 @@ void Squad::update()
 
 void Squad::draw()
 {
+	pt center = getCenter();
+	int radius = getRadius();
+
 	// Draw a box enclosing my squad
-	int minX, maxX, minY, maxY;
-	minX = minY = 999999;
-	maxX = maxY = -1;
+	Broodwar->drawCircleMap(center.first, center.second, radius, Colors::Teal);
+}
+
+
+pt Squad::getCenter()
+{
 	int sumX, sumY;
+	int x0, y0;
 	sumX = sumY = 0;
+	x0 = y0 = 0;
+
 	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
 	{
 		int x = (*it)->getUnit().getPosition().x();
 		int y = (*it)->getUnit().getPosition().y();
 		sumX += x;
 		sumY += y;
-		minX = min(x, minX);
-		maxX = max(x, maxX);
-		minY = min(y, minY);
-		maxY = max(y, maxY);
 	}
-	int x0, y0;
+
 	if (agents.size())
 	{
 		x0 = sumX / agents.size();
 		y0 = sumY / agents.size();
-		Broodwar->drawEllipseMap(x0, y0, maxX-minX, maxY-minY, Colors::Cyan);
 	}
+	return pt(x0, y0);
 }
 
-
+int Squad::getRadius()
+{
+	pt center = getCenter();
+	Position centerPosition(center.first, center.second);
+	int r = 0;
+	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
+	{
+		r = (int)max(r, (*it)->getUnit().getDistance(centerPosition));
+	}
+	return r;
+}

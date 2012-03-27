@@ -5,6 +5,7 @@
 #include "Agent.h"
 #include "Common.h"
 
+typedef std::pair<int, int> pt;
 
 class Squad
 {
@@ -44,4 +45,10 @@ public:
             addAgent(agent);
         leader = agent;
     }
+
+	/* Get the center of this squad */
+	pt getCenter();
+
+	/* Get the radius from center needed to cover units */
+	int getRadius();
 };
