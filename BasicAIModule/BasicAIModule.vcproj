@@ -90,6 +90,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="Copy &quot;$(SolutionDir)$(ConfigurationName)\*.dll&quot; &quot;$(StarcraftAI)&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -168,6 +169,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="Copy &quot;$(SolutionDir)$(ConfigurationName)\*.dll&quot; &quot;$(StarcraftAI)&quot;"
 			/>
 		</Configuration>
 	</Configurations>
