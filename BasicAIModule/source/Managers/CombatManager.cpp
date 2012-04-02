@@ -105,12 +105,12 @@ void CombatManager::addNewAgents()
 			// Assign Agent to a Squad (only 1 atm)
 			if (squads.empty())
 			{
-				squads.push_back(new Squad());
+				squads.push_back(new Squad("test-squad"));
 			}
 			// Create a new squad if current is full
 			if (squads.back()->getAgents().size() > 10)
 			{
-				squads.push_back(new Squad());
+				squads.push_back(new Squad("test-squad"));
 			}
 			Squad *squad = squads.back();
 

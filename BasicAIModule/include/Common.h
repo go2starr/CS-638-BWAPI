@@ -4,11 +4,13 @@
  * 
  * Common typedefs and includes
  */
+#include <sstream>
+#include <string>
 #include <vector>
+#include <stack>
 #include <queue>
 #include <set>
 #include <map>
-#include <stack>
 
 class Agent;
 class Squad;
@@ -17,11 +19,13 @@ class Manager;
 
 namespace BWAPI { class Unit; }
 namespace BWAPI { class UnitType; }
+namespace BWAPI { class Position; }
+namespace BWAPI { class TilePosition; }
 
+using std::vector;
 using std::queue;
 using std::stack;
 using std::map;
-using std::vector;
 
 /* Commonly used typedefs */
 

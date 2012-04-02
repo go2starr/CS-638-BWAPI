@@ -10,11 +10,18 @@
 typedef std::pair<int, int> pt;
 
 /** Squad Composition structure */
-typedef struct 
+typedef struct squad_composition
 {
     BWAPI::UnitType type;
     int currentNumber;
     int expectedNumber;
+
+    squad_composition(const BWAPI::UnitType& type, 
+                      const int expectedNumber)
+        : type(type)
+        , currentNumber(0)
+        , expectedNumber(expectedNumber)
+    { }
 } SquadComposition;
 typedef std::vector<SquadComposition>    SquadCompVector;
 typedef SquadCompVector::iterator        SquadCompVectorIter;
@@ -36,29 +43,33 @@ extern const char* SquadTypeStrings[];
 class Squad
 {
 private:
-    int id;
+    static int nextAvailableId;
 
-    SquadType type;
+    std::string name;
 
+    int  id;
+    int  priority;
     bool active;
 
-    Agent* leader;
-    AgentSet agents;
+    Agent*          leader;
+    AgentSet        agents;
+    
+    SquadType       type;
+    SquadCompVector composition;
 
 public:
-    Squad();
-    Squad(const Squad& other);
-
-    ~Squad();
-
-    /* Assignment operator */
-    Squad& operator=(const Squad& rhs);
+    Squad(const std::string& name, 
+          const SquadType& type=attack, 
+          const int priority=50);
 
     /* Update this squad, called every frame */
     void update();
 
     /* Draw any squad related on-screen info */
 	void draw();
+
+    /* Add the specified requirement in terms a desired number of a particular unit type */
+    void addRequirement(const int numDesired, const BWAPI::UnitType& unitType);
 
     /* Add the specified agent to this squad */
     void addAgent(Agent* agent);
@@ -67,7 +78,10 @@ public:
     void removeAgent(Agent* agent);
 
     /* Is the specified agent already a part of this squad? */
-    bool isAssigned(Agent* agent);
+    bool isAssigned(Agent* agent) const;
+
+    /* Is this squad currently active? */
+    bool isActive() const;
 
     /* Set the leader of this squad, adding the specified agent if needed */
     void setLeader(Agent* agent);
@@ -83,4 +97,19 @@ public:
 
 	/* Get the radius from center needed to cover units */
 	int getRadius();
+
+    /* Get the name of this squad */
+    const std::string& getName() const;
+
+    /* Get the id for this squad */
+    const int getId() const;
+
+    /* Get the type for this squad */
+    const SquadType& getType() const;
+
+    /* Get the squad composition vector to look at */
+    const SquadCompVector& getComposition() const;
+
+private:
+    Squad(const Squad& other); // Non-copyable
 };

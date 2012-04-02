@@ -9,9 +9,12 @@
 #include <cassert>
 
 using namespace BWAPI;
+
+using std::string;
+using std::pair;
 using std::min;
 using std::max;
-using std::pair;
+
 
 
 const char* SquadTypeStrings[] = { "attack", "defend", "explore", "bunker" };
@@ -20,32 +23,20 @@ const char* SquadTypeStrings[] = { "attack", "defend", "explore", "bunker" };
 /************************************************************************/
 /* Squad class
 /************************************************************************/
-Squad::Squad()
-    : agents()
+int Squad::nextAvailableId = 1;
+
+Squad::Squad(const string& name, 
+             const SquadType& type, 
+             const int priority)
+    : name(name)
+    , id(nextAvailableId++)
+    , priority(priority)
+    , active(true)
     , leader(NULL)
+    , agents()
+    , type(type)
+    , composition()
 { }
-
-Squad::Squad(const Squad& other)
-    : agents(other.agents)
-    , leader(other.leader)
-{ }
-
-Squad::~Squad()
-{
-    agents.clear();
-    leader = NULL;
-}
-
-Squad& Squad::operator=(const Squad& rhs)
-{
-    if( this != &rhs )
-    {
-        agents.clear();
-        agents = rhs.agents;
-        leader = rhs.leader;
-    }
-    return *this;
-}
 
 void Squad::update()
 {
@@ -95,6 +86,11 @@ void Squad::draw()
 	}
 }
 
+void Squad::addRequirement(const int numDesired, const UnitType& unitType)
+{
+    composition.push_back(SquadComposition(numDesired, unitType));
+}
+
 void Squad::addAgent(Agent* agent)
 {
     agents.insert(agent);
@@ -105,9 +101,14 @@ inline void Squad::removeAgent(Agent* agent)
     agents.erase(agent);
 }
 
-inline bool Squad::isAssigned(Agent* agent)
+inline bool Squad::isAssigned(Agent* agent) const
 { 
     return (agents.find(agent) != agents.end());
+}
+
+inline bool Squad::isActive() const
+{
+    return active;
 }
 
 void Squad::setLeader(Agent* agent)
@@ -162,4 +163,24 @@ int Squad::getRadius()
 		r = (int)max(r, (*it)->getUnit().getDistance(centerPosition));
 	}
 	return r;
+}
+
+inline const string& Squad::getName() const
+{
+    return name;
+}
+
+inline const int Squad::getId() const
+{
+    return id;
+}
+
+inline const SquadType& Squad::getType() const
+{
+    return type;
+}
+
+inline const SquadCompVector& Squad::getComposition() const
+{
+    return composition;
 }
