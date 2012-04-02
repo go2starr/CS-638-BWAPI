@@ -13,6 +13,13 @@ using std::min;
 using std::max;
 using std::pair;
 
+
+const char* SquadTypeStrings[] = { "attack", "defend", "explore", "bunker" };
+
+
+/************************************************************************/
+/* Squad class
+/************************************************************************/
 Squad::Squad()
     : agents()
     , leader(NULL)
@@ -88,6 +95,39 @@ void Squad::draw()
 	}
 }
 
+void Squad::addAgent(Agent* agent)
+{
+    agents.insert(agent);
+}
+
+inline void Squad::removeAgent(Agent* agent)
+{
+    agents.erase(agent);
+}
+
+inline bool Squad::isAssigned(Agent* agent)
+{ 
+    return (agents.find(agent) != agents.end());
+}
+
+void Squad::setLeader(Agent* agent)
+{
+    if( leader == agent ) 
+        return;
+    if( !isAssigned(agent) )
+        addAgent(agent);
+    leader = agent;
+}
+
+Agent* Squad::getLeader() 
+{
+    return leader;
+}
+
+AgentSet& Squad::getAgents()
+{
+    return agents;   
+}
 
 pt Squad::getCenter()
 {

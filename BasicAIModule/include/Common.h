@@ -16,6 +16,7 @@ class Task;
 class Manager;
 
 namespace BWAPI { class Unit; }
+namespace BWAPI { class UnitType; }
 
 using std::queue;
 using std::stack;
