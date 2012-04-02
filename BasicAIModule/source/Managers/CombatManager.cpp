@@ -5,6 +5,7 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 
+#include <algorithm>
 #include <string>
 
 using namespace BWAPI;
@@ -40,6 +41,12 @@ void CombatManager::onMatchStart()
 
         enemyBase = Position(target);
     }
+}
+
+void CombatManager::onMatchEnd(bool isWinner)
+{
+    for_each(squads.begin(), squads.end(), DeleteObjectFunctor());
+    squads.clear();
 }
 
 void CombatManager::update()

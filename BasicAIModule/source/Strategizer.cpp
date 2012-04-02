@@ -111,6 +111,8 @@ void Strategizer::onEvent(GameEvent &e)
 */
 void Strategizer::onMatchEnd(bool isWinner)
 {
+    combatManager.onMatchEnd(isWinner);
+
 	// Cleanup agents
 	// Note: this is the safe way to do this
 	// erasing by iterator invalidates the iterator, 

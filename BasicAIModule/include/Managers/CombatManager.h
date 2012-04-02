@@ -20,6 +20,7 @@ private:
 
 public: 
     virtual void onMatchStart();
+    virtual void onMatchEnd(bool isWinner);
 	virtual void update();
     virtual void draw();
 

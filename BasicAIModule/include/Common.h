@@ -49,3 +49,13 @@ typedef AgentManagerMap::iterator       AgentManagerMapIter;
 typedef AgentManagerMap::const_iterator AgentManagerMapConstIter;
 
 typedef std::priority_queue<Task*>  TaskQueue;
+
+
+struct DeleteObjectFunctor 
+{
+    template<class T>
+    void operator()(T* ptr) const 
+    {
+        delete ptr;
+    }
+};

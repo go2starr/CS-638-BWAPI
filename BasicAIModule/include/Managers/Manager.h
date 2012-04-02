@@ -27,6 +27,8 @@ public:
 
     /* onMatchStart - Called when a new match begins */
     virtual void onMatchStart() { }
+    /* onMatchEnd - Called when the current match ends */
+    virtual void onMatchEnd() { }
 
     /* update - Called on each frame */
 	virtual void update();
