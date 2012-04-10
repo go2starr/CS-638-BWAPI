@@ -116,7 +116,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -133,7 +133,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../lib/gmock.lib ../lib/gmock_main.lib ../../lib/BWAPId.lib ../../lib/BWTAd.lib ../../lib/tinyxmld.lib ../../lib/CGAL-vc90-mt-gd.lib ../../lib/libboost_thread-vc90-mt-gd-1_40.lib ../../lib/gmp-vc90-mt-gd.lib ../../lib/mpfr-vc90-mt-gd.lib"
+				AdditionalDependencies="../lib/MD/gmock.lib ../lib/MD/gmock_main.lib ../../BasicAIModule/Release/BasicAIModule.lib ../../lib/BWAPI.lib ../../lib/BWTA.lib ../../lib/tinyxml.lib ../../lib/CGAL-vc90-mt.lib ../../lib/libboost_thread-vc90-mt-1_40.lib ../../lib/gmp-vc90-mt.lib ../../lib/mpfr-vc90-mt.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -178,7 +178,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\MockUnit.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\MyTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\StrategizerTest.cpp"
 				>
 			</File>
 		</Filter>
@@ -187,6 +195,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\include\MockUnit.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

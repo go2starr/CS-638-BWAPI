@@ -1,11 +1,14 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "BasicAIModule.h"
 
 #include <iostream>
 #include <string>
 
 using std::string;
 using std::cin;
+
+namespace BWAPI { Game* Broodwar; }
 
 int main(int argc, char** argv) {
 
