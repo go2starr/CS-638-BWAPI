@@ -64,6 +64,7 @@ void Agent::draw()
 
     // Note: drawing this stuff all the time clutters things up massively, but can be useful
     // TODO: look into adding a global chat flag to toggle this stuff (/debuginfo or something)
+    /*
     if( 1 ) //unit.isSelected() )
     {
         Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);
@@ -96,7 +97,7 @@ void Agent::draw()
             }
         }
     }
-
+    */
 	/*
 	if (state == AttackState)
 	{
@@ -110,7 +111,9 @@ void Agent::draw()
 	*/
 
 	// Draw our current target position
+    /*
 	Position targetPosition = unit.getTargetPosition();
 	Broodwar->drawLineMap(unit.getPosition().x(), unit.getPosition().y(),
 		targetPosition.x(), targetPosition.y(), Colors::Yellow);
+    */
 }

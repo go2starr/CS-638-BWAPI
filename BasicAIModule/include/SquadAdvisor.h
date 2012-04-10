@@ -13,7 +13,13 @@ class SquadAdvisor
 {
 public:
 
-    static BWAPI::TilePosition getFarthestEnemyStartLocation(const BWAPI::TilePosition& pos);
+    static BWAPI::Unit* getNearestUnit(const BWAPI::TilePosition& pos
+                                     , const UnitSet& unitSet);
+    static BWAPI::Unit* getNearestUnit(const BWAPI::TilePosition& pos
+                                     , const BWAPI::UnitType& type
+                                     , const UnitSet& unitSet);
+
+    static BWAPI::TilePosition getFarthestEnemyBase(const BWAPI::TilePosition& pos);
     static BWAPI::TilePosition getClosestStartLocation(const BWAPI::TilePosition& pos);
     static BWAPI::TilePosition getNextStartLocation();
 

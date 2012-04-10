@@ -96,7 +96,7 @@ public:
     int getSize() const;
 
 	/* Get the center of this squad */
-	pt getCenter();
+    BWAPI::Position getCenter();
 
 	/* Get the radius from center needed to cover units */
 	int getRadius();
@@ -118,6 +118,7 @@ public:
 
 private:
     Squad(const Squad& other); // Non-copyable
+    void gatherTogether();
 };
 
 

@@ -22,7 +22,7 @@ void CombatManager::onMatchStart()
     if( enemy != NULL )
     {
         const TilePosition& myBase(Broodwar->self()->getStartLocation());
-        enemyBase = Position(SquadAdvisor::getFarthestEnemyStartLocation(myBase));
+        enemyBase = Position(SquadAdvisor::getFarthestEnemyBase(myBase));
     }
 }
 
@@ -110,12 +110,16 @@ void CombatManager::addNewAgents()
 				squads.push_back(new Squad("test-squad"));
 			}
 			// Create a new squad if current is full
+            // TODO: if current squad has filled its requirements...
 			if (squads.back()->getAgents().size() > 10)
 			{
 				squads.push_back(new Squad("test-squad"));
 			}
 			Squad *squad = squads.back();
 
+            // TODO: only add the agent if we have (or can create)
+            // a squad that has an unfulfilled requirement for this type of unit,
+            // otherwise leave it in the unassigned set
 			squad->addAgent(*it);
 			if (squad->getLeader() == NULL)
 			{
@@ -172,46 +176,4 @@ void CombatManager::discoverEnemyUnit(Unit* unit)
     {
         enemyActors.insert(unit);
     }
-}
-
-// TODO: move this sort of thing to an advisor and pass in the UnitSet to search in
-Unit* CombatManager::findEnemyUnit(const UnitType& type)
-{
-    Unit *unit = NULL;
-
-    UnitSetConstIter it  = enemyUnits.begin();
-    UnitSetConstIter end = enemyUnits.end();
-    for(; it != end; ++it)
-    {
-        if( *it == unit )
-        {
-            unit = *it;
-            break;
-        }
-    }
-
-    return unit;
-}
-
-// TODO: move this sort of thing to an advisor and pass in the UnitSet to search in
-Unit* CombatManager::findNearestEnemyBuilding(const TilePosition& pos)
-{
-    Unit *unit = NULL;
-
-    int minDistance = numeric_limits<int>::max();
-
-    UnitSetConstIter it  = enemyBuildings.begin();
-    UnitSetConstIter end = enemyBuildings.end();
-    for(; it != end; ++it)
-    {
-        Unit *u = *it;
-        const int distance = u->getDistance(Position(pos));
-        if( distance < minDistance )
-        {
-            unit = u;
-            minDistance = distance;
-        }
-    }
-
-    return unit;
 }

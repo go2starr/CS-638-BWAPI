@@ -11,11 +11,53 @@
 #include <limits>
 
 
+using BWAPI::Unit;
+using BWAPI::UnitType;
 using BWAPI::Broodwar;
 using BWAPI::Position;
 using BWAPI::TilePosition;
 using BWTA::BaseLocation;
 
+
+// TODO: this is a lot of boiler plate, it would be nice if this could be made more generic
+// passing in a comparison functor object in order to do the test maybe?
+Unit* SquadAdvisor::getNearestUnit(const TilePosition& pos, const UnitSet& unitSet)
+{
+    Unit *nearestUnit = NULL;
+    int minDistance = std::numeric_limits<int>::max();
+    UnitSetConstIter it  = unitSet.begin();
+    UnitSetConstIter end = unitSet.end();
+    for(; it != end; ++it)
+    {
+        Unit *unit = *it;
+        const int distance = unit->getDistance(Position(pos));
+        if( distance < minDistance )
+        {
+            minDistance = distance;
+            nearestUnit = unit;
+        }
+    }
+    return nearestUnit;
+}
+
+Unit* SquadAdvisor::getNearestUnit(const TilePosition& pos, const UnitType& type, const UnitSet& unitSet)
+{
+    Unit *nearestUnit = NULL;
+    int minDistance = std::numeric_limits<int>::max();
+    UnitSetConstIter it  = unitSet.begin();
+    UnitSetConstIter end = unitSet.end();
+    for(; it != end; ++it)
+    {
+        Unit *unit = *it;
+        const int distance = unit->getDistance(Position(pos));
+        if( distance < minDistance && type.getID() == unit->getType().getID() )
+        {
+            minDistance = distance;
+            nearestUnit = unit;
+        }
+    }
+    return nearestUnit;
+}
 
 TilePosition SquadAdvisor::getClosestStartLocation(const TilePosition& pos)
 {
@@ -39,7 +81,7 @@ TilePosition SquadAdvisor::getClosestStartLocation(const TilePosition& pos)
     return startLocation;
 }
 
-TilePosition SquadAdvisor::getFarthestEnemyStartLocation(const TilePosition& pos)
+TilePosition SquadAdvisor::getFarthestEnemyBase(const TilePosition& pos)
 {
     TilePosition myStart(pos);
     TilePosition target;

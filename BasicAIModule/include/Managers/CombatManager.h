@@ -37,7 +37,4 @@ public:
 private:
 	void addNewAgents();
     int numLivingAgents() const;
-
-    BWAPI::Unit* findEnemyUnit(const BWAPI::UnitType& type);
-    BWAPI::Unit* findNearestEnemyBuilding(const BWAPI::TilePosition& pos);
 };
