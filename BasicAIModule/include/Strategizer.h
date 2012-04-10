@@ -44,12 +44,15 @@ public:
 	/* onMatchStart - Called by AI Module when a new match begins */
 	void onMatchStart();
 
-    /* onMatchEnd - Called by AI Module whena  new match ends */
+    /* onMatchEnd - Called by AI Module when the current match ends */
     void onMatchEnd(bool isWinner);
 
 	/* onEvent - Called by EventProducer when a new event is detected */
 	void onEvent(GameEvent& e);
   
+    /* onUnitDiscovered() - Called by AI Module when a new unit is discovered */
+    void onUnitDiscovered(BWAPI::Unit* unit);
+
 private:  
 	// Strategizer is singleton, hence private ctors/assignment
 	Strategizer() { }

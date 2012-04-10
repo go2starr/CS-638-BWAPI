@@ -58,6 +58,10 @@ typedef std::set<BWTA::BaseLocation*>   BaseLocationSet;
 typedef BaseLocationSet::iterator       BaseLocationSetIter;
 typedef BaseLocationSet::const_iterator BaseLocationSetConstIter;
 
+typedef std::set<BWAPI::TilePosition>   TilePosSet;
+typedef TilePosSet::iterator            TilePosSetIter;
+typedef TilePosSet::const_iterator      TilePosSetConstIter;
+
 typedef std::priority_queue<Task*>  TaskQueue;
 
 

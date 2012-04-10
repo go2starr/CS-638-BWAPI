@@ -17,7 +17,7 @@ using BWAPI::TilePosition;
 using BWTA::BaseLocation;
 
 
-TilePosition SquadAdvisor::getClosestStartLocation( const TilePosition& pos )
+TilePosition SquadAdvisor::getClosestStartLocation(const TilePosition& pos)
 {
     double minDistance = std::numeric_limits<int>::max();
     TilePosition startLocation(pos);
@@ -37,6 +37,30 @@ TilePosition SquadAdvisor::getClosestStartLocation( const TilePosition& pos )
     }
 
     return startLocation;
+}
+
+TilePosition SquadAdvisor::getFarthestEnemyStartLocation(const TilePosition& pos)
+{
+    TilePosition myStart(pos);
+    TilePosition target;
+
+    double maxDistance = 0.0;
+
+    TilePosSet& startPositions = Broodwar->getStartLocations();
+    TilePosSetConstIter it  = startPositions.begin();
+    TilePosSetConstIter end = startPositions.end();
+    for(; it != end; ++it)
+    {
+        TilePosition position = *it;
+        const double distance = position.getDistance(myStart);
+        if( distance > maxDistance )
+        {
+            target = position;
+            maxDistance = distance;
+        }
+    }
+
+    return target;
 }
 
 TilePosition SquadAdvisor::getNextStartLocation()

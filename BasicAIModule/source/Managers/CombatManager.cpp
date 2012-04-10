@@ -1,4 +1,5 @@
 #include "CombatManager.h"
+#include "SquadAdvisor.h"
 #include "Common.h"
 #include "Squad.h"
 
@@ -19,27 +20,7 @@ void CombatManager::onMatchStart()
     Player* enemy = Broodwar->enemy();
     if( enemy != NULL )
     {
-        // Get the likely enemy base location (furthest from myStart)
-        // TODO - this should probably be calculated only once, 
-        // maybe we should have a Manager::onMatchStart() method?
-        TilePosition myStart = Broodwar->self()->getStartLocation();
-        TilePosition target;
-        double maxDistance = 0.0;
-        set<TilePosition>& startPositions = Broodwar->getStartLocations();
-        set<TilePosition>::iterator pit  = startPositions.begin();
-        set<TilePosition>::iterator pend = startPositions.end();
-        for(; pit != pend; ++pit)
-        {
-            TilePosition pos = *pit;
-            const double distance = pos.getDistance(myStart);
-            if( distance > maxDistance )
-            {
-                target = pos;
-                maxDistance = distance;
-            }
-        }
-
-        enemyBase = Position(target);
+        enemyBase = Position(SquadAdvisor::getFarthestEnemyStartLocation(Broodwar->self()->getStartLocation()));
     }
 }
 
@@ -128,11 +109,11 @@ void CombatManager::addNewAgents()
 void CombatManager::draw()
 {
 	Broodwar->drawTextScreen(2, 20, 
-       "\x11 CM : (SCV=%d) (Marine=%d) (Firebat=%d) (Medic=%d)", 
-	numAgents(UnitTypes::Terran_SCV), 
-	numAgents(UnitTypes::Terran_Marine), 
-    numAgents(UnitTypes::Terran_Firebat), 
-    numAgents(UnitTypes::Terran_Medic));
+        "\x11 CM : (Enemies=%d) : (Marine=%d) (Firebat=%d) (Medic=%d)", 
+	    enemyUnits.size(), 
+	    numAgents(UnitTypes::Terran_Marine), 
+        numAgents(UnitTypes::Terran_Firebat), 
+        numAgents(UnitTypes::Terran_Medic));
 
 	for (SquadVectorIter it = squads.begin(); it != squads.end(); it++)
 	{
@@ -140,4 +121,27 @@ void CombatManager::draw()
 	}
 
 	Manager::draw();
+}
+
+void CombatManager::discoverEnemyUnit(Unit* unit)
+{
+    enemyUnits.insert(unit);
+}
+
+Unit* CombatManager::findEnemyUnit(const UnitType& type)
+{
+    Unit *unit = NULL;
+
+    UnitSetConstIter it  = enemyUnits.begin();
+    UnitSetConstIter end = enemyUnits.end();
+    for(; it != end; ++it)
+    {
+        if( *it == unit )
+        {
+            unit = *it;
+            break;
+        }
+    }
+
+    return unit;
 }

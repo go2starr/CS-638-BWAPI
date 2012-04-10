@@ -17,8 +17,10 @@ private:
     AgentSet assignedAgents;
     SquadVector squads;
     BWAPI::Position enemyBase;
+    UnitSet enemyUnits;
 
 public: 
+    void discoverEnemyUnit(BWAPI::Unit* unit);
     virtual void onMatchStart();
     virtual void onMatchEnd(bool isWinner);
 	virtual void update();
@@ -32,4 +34,6 @@ public:
 
 private:
 	void addNewAgents();
+
+    BWAPI::Unit* findEnemyUnit(const BWAPI::UnitType& type);
 };
