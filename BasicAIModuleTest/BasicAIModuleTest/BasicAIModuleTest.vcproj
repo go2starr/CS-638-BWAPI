@@ -114,7 +114,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;"
+				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -133,7 +133,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../lib/gmock.lib ../lib/gmock_main.lib"
+				AdditionalDependencies="../lib/gmock.lib ../lib/gmock_main.lib ../../lib/BWAPId.lib ../../lib/BWTAd.lib ../../lib/tinyxmld.lib ../../lib/CGAL-vc90-mt-gd.lib ../../lib/libboost_thread-vc90-mt-gd-1_40.lib ../../lib/gmp-vc90-mt-gd.lib ../../lib/mpfr-vc90-mt-gd.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
