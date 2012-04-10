@@ -18,6 +18,8 @@ private:
     SquadVector squads;
     BWAPI::Position enemyBase;
     UnitSet enemyUnits;
+    UnitSet enemyActors;
+    UnitSet enemyBuildings;
 
 public: 
     void discoverEnemyUnit(BWAPI::Unit* unit);
@@ -34,6 +36,8 @@ public:
 
 private:
 	void addNewAgents();
+    int numLivingAgents() const;
 
     BWAPI::Unit* findEnemyUnit(const BWAPI::UnitType& type);
+    BWAPI::Unit* findNearestEnemyBuilding(const BWAPI::TilePosition& pos);
 };

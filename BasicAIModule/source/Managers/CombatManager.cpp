@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <string>
+#include <limits>
 
 using namespace BWAPI;
 using BWTA::Chokepoint;
@@ -20,7 +21,8 @@ void CombatManager::onMatchStart()
     Player* enemy = Broodwar->enemy();
     if( enemy != NULL )
     {
-        enemyBase = Position(SquadAdvisor::getFarthestEnemyStartLocation(Broodwar->self()->getStartLocation()));
+        const TilePosition& myBase(Broodwar->self()->getStartLocation());
+        enemyBase = Position(SquadAdvisor::getFarthestEnemyStartLocation(myBase));
     }
 }
 
@@ -38,8 +40,8 @@ void CombatManager::update()
 	// TODO : Merge squads
 
 	// Attack?
-	const int numTroops = agents.size();
-    const int threshold = 70;
+	const int numTroops = numLivingAgents();
+    const int threshold = 10;
 
     if( numTroops >= threshold )
     {
@@ -60,6 +62,25 @@ void CombatManager::update()
 	{
 		(*it)->update();
 	}
+
+    // Clean up squads where everyone is dead 
+    vector<SquadVectorIter> itersToErase;
+    for(SquadVectorIter it = squads.begin(); it != squads.end(); ++it)
+    {
+        Squad *squad = *it;
+        if( squad->numAlive() == 0 )
+        {
+            delete squad;
+            itersToErase.push_back(it);
+        }
+    }
+    for(vector<SquadVectorIter>::iterator it = itersToErase.begin();
+        it != itersToErase.end(); ++it)
+    {
+        squads.erase(*it);
+    }
+
+
 	/* Base class updates Agents */
 	Manager::update();
 }
@@ -109,8 +130,9 @@ void CombatManager::addNewAgents()
 void CombatManager::draw()
 {
 	Broodwar->drawTextScreen(2, 20, 
-        "\x11 CM : (Enemies=%d) : (Marine=%d) (Firebat=%d) (Medic=%d)", 
+        "\x11 CM : (Enemies=%d) (Squads=%d) : (Mar=%d) (Fire=%d) (Med=%d)", 
 	    enemyUnits.size(), 
+        squads.size(),
 	    numAgents(UnitTypes::Terran_Marine), 
         numAgents(UnitTypes::Terran_Firebat), 
         numAgents(UnitTypes::Terran_Medic));
@@ -123,11 +145,36 @@ void CombatManager::draw()
 	Manager::draw();
 }
 
+int CombatManager::numLivingAgents() const
+{
+    int num = 0;
+
+    AgentSetConstIter it  = agents.begin();
+    AgentSetConstIter end = agents.end();
+    for(; it != end; ++it)
+    {
+        const Agent *agent = *it;
+        if( agent->getUnit().getHitPoints() > 0 ) 
+            ++num;
+    }
+
+    return num;
+}
+
 void CombatManager::discoverEnemyUnit(Unit* unit)
 {
     enemyUnits.insert(unit);
+    if( unit->getType().isBuilding() )
+    {
+        enemyBuildings.insert(unit);
+    }
+    else
+    {
+        enemyActors.insert(unit);
+    }
 }
 
+// TODO: move this sort of thing to an advisor and pass in the UnitSet to search in
 Unit* CombatManager::findEnemyUnit(const UnitType& type)
 {
     Unit *unit = NULL;
@@ -140,6 +187,29 @@ Unit* CombatManager::findEnemyUnit(const UnitType& type)
         {
             unit = *it;
             break;
+        }
+    }
+
+    return unit;
+}
+
+// TODO: move this sort of thing to an advisor and pass in the UnitSet to search in
+Unit* CombatManager::findNearestEnemyBuilding(const TilePosition& pos)
+{
+    Unit *unit = NULL;
+
+    int minDistance = numeric_limits<int>::max();
+
+    UnitSetConstIter it  = enemyBuildings.begin();
+    UnitSetConstIter end = enemyBuildings.end();
+    for(; it != end; ++it)
+    {
+        Unit *u = *it;
+        const int distance = u->getDistance(Position(pos));
+        if( distance < minDistance )
+        {
+            unit = u;
+            minDistance = distance;
         }
     }
 

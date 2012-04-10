@@ -113,6 +113,9 @@ public:
     /* Get the squad composition vector to look at */
     const SquadCompVector& getComposition() const;
 
+    /* Get the number of living members in this squad */
+    int numAlive() const;
+
 private:
     Squad(const Squad& other); // Non-copyable
 };
@@ -128,3 +131,16 @@ inline const std::string&     Squad::getName()  const { return name; }
 inline const int              Squad::getId()    const { return id; }
 inline const SquadType&       Squad::getType()  const { return type; }
 inline const SquadCompVector& Squad::getComposition() const { return composition; }
+inline int Squad::numAlive() const 
+{
+    int num = 0;
+    AgentSetConstIter it  = agents.begin();
+    AgentSetConstIter end = agents.end();
+    for(; it != end; ++it)
+    {
+        Agent *agent = *it;
+        if( agent->getUnit().getHitPoints() > 0 )
+            ++num;
+    }
+    return num;
+}

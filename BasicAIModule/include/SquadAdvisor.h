@@ -16,7 +16,7 @@ public:
     static BWAPI::TilePosition getFarthestEnemyStartLocation(const BWAPI::TilePosition& pos);
     static BWAPI::TilePosition getClosestStartLocation(const BWAPI::TilePosition& pos);
     static BWAPI::TilePosition getNextStartLocation();
-    
+
     static BWAPI::TilePosition findVulnerableBase();
 
     static bool isVisible(const BWAPI::TilePosition& pos
