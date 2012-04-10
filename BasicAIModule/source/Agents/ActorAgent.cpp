@@ -5,10 +5,13 @@
 #include "Agent.h"
 #include "Common.h"
 #include <BWAPI.h>
+#include <BWTA.h>
 
+using namespace BWTA;
 using namespace BWAPI;
-using std::pair;
 
+using std::pair;
+using std::set;
 
 ActorAgent::ActorAgent(Unit &u)
 	: Agent(u)
@@ -45,7 +48,31 @@ void ActorAgent::update()
 		if (!unit.isAttacking() && !unit.isMoving())
 			unit.attack(positionTarget); 
 		break;
-    }
+
+	case ScoutState:
+		{
+			TilePosition myStart = Broodwar->self()->getStartLocation();
+			TilePosition target;
+			double maxDistance = 0.0;
+			set<TilePosition>& startPositions = Broodwar->getStartLocations();
+			set<TilePosition>::iterator pit  = startPositions.begin();
+			set<TilePosition>::iterator pend = startPositions.end();
+			for(; pit != pend; ++pit)
+			{
+				TilePosition pos = *pit;
+				const double distance = pos.getDistance(myStart);
+				if( distance > maxDistance )
+				{
+					target = pos;
+					maxDistance = distance;
+				}
+			}
+
+			//enemyBase = Position(target);
+			unit.move(Position(target));
+		}
+		break;
+	}
 
 	Agent::update();
 }

@@ -263,6 +263,13 @@ void Strategizer::updateAgentManagerMap()
 	{
 		remap(UnitTypes::Terran_SCV, buildManager, gasManager);
 	}
+
+	// take one of the resourceManger's SCV's and give to the scout manager
+	if (Broodwar->self()->supplyUsed() >= 20 && 
+		scoutManager.numAgents(UnitTypes::Terran_SCV) < 1)
+	{
+		remap(UnitTypes::Terran_SCV, buildManager, scoutManager);
+	}
 }
 
 /*
@@ -318,6 +325,7 @@ void Strategizer::draw()
 	gasManager.draw();
 	resourceManager.draw();
 	supplyManager.draw();
+	scoutManager.draw();
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)

@@ -8,6 +8,7 @@ class ScoutManager : public Manager
 {
 public: 
 	void update();
+	void draw();
 
     virtual const std::string& getName() const 
     { 
