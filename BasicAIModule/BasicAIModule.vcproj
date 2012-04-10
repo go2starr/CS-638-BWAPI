@@ -49,7 +49,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="4"
+				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -126,7 +126,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -211,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\source\Squad.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\SquadAdvisor.cpp"
 				>
 			</File>
 			<File
@@ -379,6 +383,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Squad.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\SquadAdvisor.h"
 				>
 			</File>
 			<File

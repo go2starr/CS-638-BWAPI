@@ -21,6 +21,7 @@ namespace BWAPI { class Unit; }
 namespace BWAPI { class UnitType; }
 namespace BWAPI { class Position; }
 namespace BWAPI { class TilePosition; }
+namespace BWTA  { class BaseLocation; }
 
 using std::vector;
 using std::queue;
@@ -52,6 +53,10 @@ typedef UnitAgentMap::const_iterator    UnitAgentMapConstIter;
 typedef std::map<Agent*, Manager*>      AgentManagerMap;
 typedef AgentManagerMap::iterator       AgentManagerMapIter;
 typedef AgentManagerMap::const_iterator AgentManagerMapConstIter;
+
+typedef std::set<BWTA::BaseLocation*>   BaseLocationSet;
+typedef BaseLocationSet::iterator       BaseLocationSetIter;
+typedef BaseLocationSet::const_iterator BaseLocationSetConstIter;
 
 typedef std::priority_queue<Task*>  TaskQueue;
 

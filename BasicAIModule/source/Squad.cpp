@@ -31,7 +31,7 @@ Squad::Squad(const string& name,
     : name(name)
     , id(nextAvailableId++)
     , priority(priority)
-    , active(true)
+    , active(false)
     , leader(NULL)
     , agents()
     , type(type)
@@ -96,21 +96,6 @@ void Squad::addAgent(Agent* agent)
     agents.insert(agent);
 }
 
-inline void Squad::removeAgent(Agent* agent)
-{
-    agents.erase(agent);
-}
-
-inline bool Squad::isAssigned(Agent* agent) const
-{ 
-    return (agents.find(agent) != agents.end());
-}
-
-inline bool Squad::isActive() const
-{
-    return active;
-}
-
 void Squad::setLeader(Agent* agent)
 {
     if( leader == agent ) 
@@ -118,16 +103,6 @@ void Squad::setLeader(Agent* agent)
     if( !isAssigned(agent) )
         addAgent(agent);
     leader = agent;
-}
-
-Agent* Squad::getLeader() 
-{
-    return leader;
-}
-
-AgentSet& Squad::getAgents()
-{
-    return agents;   
 }
 
 pt Squad::getCenter()
@@ -163,24 +138,4 @@ int Squad::getRadius()
 		r = (int)max(r, (*it)->getUnit().getDistance(centerPosition));
 	}
 	return r;
-}
-
-inline const string& Squad::getName() const
-{
-    return name;
-}
-
-inline const int Squad::getId() const
-{
-    return id;
-}
-
-inline const SquadType& Squad::getType() const
-{
-    return type;
-}
-
-inline const SquadCompVector& Squad::getComposition() const
-{
-    return composition;
 }

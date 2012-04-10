@@ -49,7 +49,7 @@ private:
 
     int  id;
     int  priority;
-    bool active;
+    bool active;    // only full squads should be active
 
     Agent*          leader;
     AgentSet        agents;
@@ -92,6 +92,9 @@ public:
     /* Gets the set of agents that are part of this squad */
     AgentSet& getAgents();
 
+    /* Gets the number of agents that are a part of this squad */
+    int getSize() const;
+
 	/* Get the center of this squad */
 	pt getCenter();
 
@@ -113,3 +116,21 @@ public:
 private:
     Squad(const Squad& other); // Non-copyable
 };
+
+
+inline void Squad::removeAgent(Agent* agent) { agents.erase(agent); }
+inline bool Squad::isAssigned(Agent* agent) const 
+{
+    return (agents.find(agent) != agents.end());
+}
+inline bool               Squad::isActive() const { return active; }
+inline Agent*             Squad::getLeader() { return leader; }
+inline AgentSet&          Squad::getAgents() { return agents; }
+inline int                Squad::getSize() const { return agents.size(); }
+inline const std::string& Squad::getName() const { return name; }
+inline const int          Squad::getId()   const { return id; }
+inline const SquadType&   Squad::getType() const { return type; }
+inline const SquadCompVector& Squad::getComposition() const 
+{ 
+    return composition; 
+}
