@@ -6,10 +6,9 @@
 #include "ActorAgent.h"
 
 
-TEST(StrategizerTest, agentConstructorTest)
+TEST(StrategizerTest, testTest)
 {
-	BWAPI::MockUnit mUnit;
-	ActorAgent agent(mUnit);
-    EXPECT_TRUE(&(agent.getUnit()) == &mUnit);
+    // TODO... write some tests for Strategizer
+    EXPECT_TRUE(4 == 4);  
 }
 

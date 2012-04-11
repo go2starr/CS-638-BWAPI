@@ -16,7 +16,8 @@ enum State
 	ResearchState,
 	ScoutState,
 	TrainState,
-	UpgradeState
+	UpgradeState, 
+    NUM_STATES
 };
 
 extern const char* StateStrings[];
