@@ -4,11 +4,13 @@
  * 
  * Common typedefs and includes
  */
+#include <sstream>
+#include <string>
 #include <vector>
+#include <stack>
 #include <queue>
 #include <set>
 #include <map>
-#include <stack>
 
 class Agent;
 class Squad;
@@ -16,11 +18,15 @@ class Task;
 class Manager;
 
 namespace BWAPI { class Unit; }
+namespace BWAPI { class UnitType; }
+namespace BWAPI { class Position; }
+namespace BWAPI { class TilePosition; }
+namespace BWTA  { class BaseLocation; }
 
+using std::vector;
 using std::queue;
 using std::stack;
 using std::map;
-using std::vector;
 
 /* Commonly used typedefs */
 
@@ -47,6 +53,14 @@ typedef UnitAgentMap::const_iterator    UnitAgentMapConstIter;
 typedef std::map<Agent*, Manager*>      AgentManagerMap;
 typedef AgentManagerMap::iterator       AgentManagerMapIter;
 typedef AgentManagerMap::const_iterator AgentManagerMapConstIter;
+
+typedef std::set<BWTA::BaseLocation*>   BaseLocationSet;
+typedef BaseLocationSet::iterator       BaseLocationSetIter;
+typedef BaseLocationSet::const_iterator BaseLocationSetConstIter;
+
+typedef std::set<BWAPI::TilePosition>   TilePosSet;
+typedef TilePosSet::iterator            TilePosSetIter;
+typedef TilePosSet::const_iterator      TilePosSetConstIter;
 
 typedef std::priority_queue<Task*>  TaskQueue;
 

@@ -31,6 +31,8 @@ TAGS
 *.ilk
 *.log
 *.lib
+!gmock.lib
+!gmock_main.lib
 *.sbr
 *.sdf
 *.opensdf

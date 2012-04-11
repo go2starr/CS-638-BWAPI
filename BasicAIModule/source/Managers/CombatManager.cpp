@@ -1,4 +1,5 @@
 #include "CombatManager.h"
+#include "SquadAdvisor.h"
 #include "Common.h"
 #include "Squad.h"
 
@@ -7,6 +8,7 @@
 
 #include <algorithm>
 #include <string>
+#include <limits>
 
 using namespace BWAPI;
 using BWTA::Chokepoint;
@@ -19,27 +21,8 @@ void CombatManager::onMatchStart()
     Player* enemy = Broodwar->enemy();
     if( enemy != NULL )
     {
-        // Get the likely enemy base location (furthest from myStart)
-        // TODO - this should probably be calculated only once, 
-        // maybe we should have a Manager::onMatchStart() method?
-        TilePosition myStart = Broodwar->self()->getStartLocation();
-        TilePosition target;
-        double maxDistance = 0.0;
-        set<TilePosition>& startPositions = Broodwar->getStartLocations();
-        set<TilePosition>::iterator pit  = startPositions.begin();
-        set<TilePosition>::iterator pend = startPositions.end();
-        for(; pit != pend; ++pit)
-        {
-            TilePosition pos = *pit;
-            const double distance = pos.getDistance(myStart);
-            if( distance > maxDistance )
-            {
-                target = pos;
-                maxDistance = distance;
-            }
-        }
-
-        enemyBase = Position(target);
+        const TilePosition& myBase(Broodwar->self()->getStartLocation());
+        enemyBase = Position(SquadAdvisor::getFarthestEnemyBase(myBase));
     }
 }
 
@@ -57,8 +40,8 @@ void CombatManager::update()
 	// TODO : Merge squads
 
 	// Attack?
-	const int numTroops = agents.size();
-    const int threshold = 70;
+	const int numTroops = numLivingAgents();
+    const int threshold = 10;
 
     if( numTroops >= threshold )
     {
@@ -79,6 +62,25 @@ void CombatManager::update()
 	{
 		(*it)->update();
 	}
+
+    // Clean up squads where everyone is dead 
+    vector<SquadVectorIter> itersToErase;
+    for(SquadVectorIter it = squads.begin(); it != squads.end(); ++it)
+    {
+        Squad *squad = *it;
+        if( squad->numAlive() == 0 )
+        {
+            delete squad;
+            itersToErase.push_back(it);
+        }
+    }
+    for(vector<SquadVectorIter>::iterator it = itersToErase.begin();
+        it != itersToErase.end(); ++it)
+    {
+        squads.erase(*it);
+    }
+
+
 	/* Base class updates Agents */
 	Manager::update();
 }
@@ -105,15 +107,19 @@ void CombatManager::addNewAgents()
 			// Assign Agent to a Squad (only 1 atm)
 			if (squads.empty())
 			{
-				squads.push_back(new Squad());
+				squads.push_back(new Squad("test-squad"));
 			}
 			// Create a new squad if current is full
+            // TODO: if current squad has filled its requirements...
 			if (squads.back()->getAgents().size() > 10)
 			{
-				squads.push_back(new Squad());
+				squads.push_back(new Squad("test-squad"));
 			}
 			Squad *squad = squads.back();
 
+            // TODO: only add the agent if we have (or can create)
+            // a squad that has an unfulfilled requirement for this type of unit,
+            // otherwise leave it in the unassigned set
 			squad->addAgent(*it);
 			if (squad->getLeader() == NULL)
 			{
@@ -128,11 +134,12 @@ void CombatManager::addNewAgents()
 void CombatManager::draw()
 {
 	Broodwar->drawTextScreen(2, 20, 
-       "\x11 CM : (SCV=%d) (Marine=%d) (Firebat=%d) (Medic=%d)", 
-	numAgents(UnitTypes::Terran_SCV), 
-	numAgents(UnitTypes::Terran_Marine), 
-    numAgents(UnitTypes::Terran_Firebat), 
-    numAgents(UnitTypes::Terran_Medic));
+        "\x11 CM : (Enemies=%d) (Squads=%d) : (Mar=%d) (Fire=%d) (Med=%d)", 
+	    enemyUnits.size(), 
+        squads.size(),
+	    numAgents(UnitTypes::Terran_Marine), 
+        numAgents(UnitTypes::Terran_Firebat), 
+        numAgents(UnitTypes::Terran_Medic));
 
 	for (SquadVectorIter it = squads.begin(); it != squads.end(); it++)
 	{
@@ -140,4 +147,33 @@ void CombatManager::draw()
 	}
 
 	Manager::draw();
+}
+
+int CombatManager::numLivingAgents() const
+{
+    int num = 0;
+
+    AgentSetConstIter it  = agents.begin();
+    AgentSetConstIter end = agents.end();
+    for(; it != end; ++it)
+    {
+        const Agent *agent = *it;
+        if( agent->getUnit().getHitPoints() > 0 ) 
+            ++num;
+    }
+
+    return num;
+}
+
+void CombatManager::discoverEnemyUnit(Unit* unit)
+{
+    enemyUnits.insert(unit);
+    if( unit->getType().isBuilding() )
+    {
+        enemyBuildings.insert(unit);
+    }
+    else
+    {
+        enemyActors.insert(unit);
+    }
 }

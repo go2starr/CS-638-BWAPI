@@ -12,6 +12,7 @@
 
 using namespace BWAPI;
 
+using std::string;
 using std::pair;
 
 
@@ -130,6 +131,40 @@ void Strategizer::onMatchEnd(bool isWinner)
 	}
 }
 
+/*
+ * onUnitDiscovered()
+ * 
+ * Called by the AI module when a new unit is first discovered
+ */
+void Strategizer::onUnitDiscovered( Unit* unit )
+{
+    const string& name   = unit->getType().getName();
+    const int     typeID = unit->getType().getID();
+    const bool    isSelf = unit->getPlayer() == Broodwar->self();
+
+    if( typeID == UnitTypes::Resource_Mineral_Field 
+     || typeID == UnitTypes::Resource_Mineral_Field_Type_2
+     || typeID == UnitTypes::Resource_Mineral_Field_Type_3 )
+    {
+        // TODO: pass unit on to resource adviser
+        return;
+    }
+
+    if( typeID == UnitTypes::Resource_Vespene_Geyser )
+    {
+        // TODO: pass unit on to gas adviser
+        return;
+    }
+
+    if( isSelf ) 
+    {
+        // TODO: pass along any of our units on to whoever might need them
+    }
+    else
+    {
+        combatManager.discoverEnemyUnit(unit);
+    }
+}
 
 /*
 *  updateUnitAgentMap()

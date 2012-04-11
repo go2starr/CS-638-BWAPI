@@ -7,38 +7,37 @@
 
 #include <algorithm>
 #include <cassert>
+#include <limits>
 
 using namespace BWAPI;
+
+using std::string;
+using std::pair;
 using std::min;
 using std::max;
-using std::pair;
 
-Squad::Squad()
-    : agents()
+
+
+const char* SquadTypeStrings[] = { "attack", "defend", "explore", "bunker" };
+
+
+/************************************************************************/
+/* Squad class
+/************************************************************************/
+int Squad::nextAvailableId = 1;
+
+Squad::Squad(const string& name, 
+             const SquadType& type, 
+             const int priority)
+    : name(name)
+    , id(nextAvailableId++)
+    , priority(priority)
+    , active(false)
     , leader(NULL)
+    , agents()
+    , type(type)
+    , composition()
 { }
-
-Squad::Squad(const Squad& other)
-    : agents(other.agents)
-    , leader(other.leader)
-{ }
-
-Squad::~Squad()
-{
-    agents.clear();
-    leader = NULL;
-}
-
-Squad& Squad::operator=(const Squad& rhs)
-{
-    if( this != &rhs )
-    {
-        agents.clear();
-        agents = rhs.agents;
-        leader = rhs.leader;
-    }
-    return *this;
-}
 
 void Squad::update()
 {
@@ -54,43 +53,99 @@ void Squad::update()
 		}
 	}
 
-    // Do what the leader is doing
-    AgentSetIter it  = agents.begin();
-    AgentSetIter end = agents.end();
-    for(; it != end; ++it)
+    if( getRadius() > 100 ) // && Broodwar->getFrameCount() % 20 == 0 )
     {
-        Agent *agent = *it;
-        if( agent != leader ) 
+        gatherTogether();
+    }
+    else 
+    {
+        // Do what the leader is doing
+        AgentSetIter it  = agents.begin();
+        AgentSetIter end = agents.end();
+        for(; it != end; ++it)
         {
-            // agent->setState(leader->getState());
-			agent->setState(AttackState);
-			agent->setPositionTarget(leader->getPositionTarget());
-            agent->setUnitTarget(leader->getUnitTarget());
-            agent->setUnitTypeTarget(leader->getUnitTypeTarget());
+            Agent *agent = *it;
+            if( agent != leader ) 
+            {
+                // agent->setState(leader->getState());
+                agent->setState(AttackState);
+                agent->setPositionTarget(leader->getPositionTarget());
+                agent->setUnitTarget(leader->getUnitTarget());
+                agent->setUnitTypeTarget(leader->getUnitTypeTarget());
+            }
         }
     }
 }
 
 void Squad::draw()
 {
-	pt center = getCenter();
-	int radius = getRadius();
+    // Draw  a circle around the group
+    const Position center = getCenter();
+    const int groupRadius = getRadius();
+    Broodwar->drawCircleMap(center.x(), center.y(), groupRadius, Colors::Grey);
 
-	int leaderX = leader->getUnit().getPosition().x();
-	int leaderY = leader->getUnit().getPosition().y();
+    // Draw a circle around the leader
+    const Unit& leaderUnit = leader->getUnit();
+	const int leaderX = leaderUnit.getPosition().x();
+	const int leaderY = leaderUnit.getPosition().y();
+    const int radius = leaderUnit.getRight() - leaderUnit.getPosition().x();
+    Broodwar->drawCircleMap(leaderX, leaderY, radius + 2, Colors::Red);
+    Broodwar->drawCircleMap(leaderX, leaderY, radius - 2, Colors::Orange);
 
-	// Draw lines from Agents to their leader
-	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
-	{
-		int agentX = (*it)->getUnit().getPosition().x();
-		int agentY = (*it)->getUnit().getPosition().y();
-		Broodwar->drawLineMap(agentX, agentY, leaderX, leaderY, Colors::Teal);
-	}
+    // Draw lines from Agents to their leader
+// 	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
+// 	{
+// 		int agentX = (*it)->getUnit().getPosition().x();
+// 		int agentY = (*it)->getUnit().getPosition().y();
+// 		Broodwar->drawLineMap(agentX, agentY, leaderX, leaderY, Colors::Teal);
+// 	}
 }
 
-
-pt Squad::getCenter()
+void Squad::addRequirement(const int numDesired, const UnitType& unitType)
 {
+    composition.push_back(SquadComposition(numDesired, unitType));
+}
+
+void Squad::addAgent(Agent* agent)
+{
+    agents.insert(agent);
+}
+
+void Squad::setLeader(Agent* agent)
+{
+    if( leader == agent ) 
+        return;
+    if( !isAssigned(agent) )
+        addAgent(agent);
+    leader = agent;
+}
+
+Position Squad::getCenter()
+{
+    if( agents.empty() )
+        return Position(-1, -1);
+
+    int x0, y0, x1, y1;
+    x0 = y0 = std::numeric_limits<int>::max();
+    x1 = y1 = std::numeric_limits<int>::min();
+
+    AgentSetConstIter it  = agents.begin();
+    AgentSetConstIter end = agents.end();
+    for(; it != end; ++it)
+    {
+        const Unit& unit = (*it)->getUnit();
+        const int x = unit.getPosition().x();
+        const int y = unit.getPosition().y();
+
+        if( x < x0 && x >= 0 ) x0 = x;
+        if( y < y0 && y >= 0 ) y0 = y;
+        if( x > x1 && x >= 0 ) x1 = x;
+        if( y > y1 && y >= 0 ) y1 = y;
+    }
+
+    return Position(x0 + ((x1 - x0) / 2)
+                  , y0 + ((y1 - y0) / 2));
+/*
 	int sumX, sumY;
 	int x0, y0;
 	sumX = sumY = 0;
@@ -110,16 +165,39 @@ pt Squad::getCenter()
 		y0 = sumY / agents.size();
 	}
 	return pt(x0, y0);
+*/
 }
 
 int Squad::getRadius()
 {
-	pt center = getCenter();
-	Position centerPosition(center.first, center.second);
+	Position center(getCenter());
 	int r = 0;
-	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
+	for (AgentSetConstIter it = agents.begin(); it != agents.end(); it++)
 	{
-		r = (int)max(r, (*it)->getUnit().getDistance(centerPosition));
+        const Unit& unit = (*it)->getUnit();
+		r = (int)max(r, unit.getDistance(center));
 	}
 	return r;
+}
+
+void Squad::gatherTogether()
+{
+    const Position center(getCenter());
+    if( center.x() < 0 || center.y() < 0 ) 
+        return;
+
+    AgentSetIter it  = agents.begin();
+    AgentSetIter end = agents.end();
+    for(; it != end; ++it)
+    {
+        Agent *agent = *it;
+        Unit  &unit  = agent->getUnit();
+        if( agent == leader )
+            unit.stop();
+        else
+        {
+            const Unit& leaderUnit = leader->getUnit();
+            unit.move(leaderUnit.getPosition());
+        }
+    }
 }
