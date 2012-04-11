@@ -251,6 +251,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\BasicAIModule\include\SquadAdvisor.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\BasicAIModule\include\Strategizer.h"
 					>
 				</File>
@@ -548,6 +552,10 @@
 				</File>
 				<File
 					RelativePath="..\..\BasicAIModule\source\Squad.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\BasicAIModule\source\SquadAdvisor.cpp"
 					>
 				</File>
 				<File
