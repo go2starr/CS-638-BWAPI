@@ -10,6 +10,7 @@ using std::cin;
 
 namespace BWAPI { Game* Broodwar; }
 
+
 int main(int argc, char** argv) {
 
 	int ret;
