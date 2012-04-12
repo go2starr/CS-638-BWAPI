@@ -41,13 +41,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -60,10 +61,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="2"
+				AdditionalDependencies="../lib/MDd/gmock.lib ../lib/MDd/gmock_main.lib ../../lib/BWAPId.lib ../../lib/BWTAd.lib ../../lib/tinyxmld.lib ../../lib/CGAL-vc90-mt-gd.lib ../../lib/libboost_thread-vc90-mt-gd-1_40.lib ../../lib/gmp-vc90-mt-gd.lib ../../lib/mpfr-vc90-mt-gd.lib"
+				LinkIncremental="1"
+				IgnoreDefaultLibraryNames="LIBCMTD"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
+				Profile="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -139,9 +143,10 @@
 				IgnoreDefaultLibraryNames="LIBCMT"
 				GenerateDebugInformation="true"
 				SubSystem="1"
-				OptimizeReferences="2"
+				OptimizeReferences="1"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
+				Profile="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
