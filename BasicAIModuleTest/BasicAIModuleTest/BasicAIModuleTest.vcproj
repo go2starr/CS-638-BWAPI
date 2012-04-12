@@ -184,11 +184,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\source\MockUnit.cpp"
+				RelativePath="..\source\ManagerTest.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\source\MyTest.cpp"
+				RelativePath="..\source\MockUnit.cpp"
 				>
 			</File>
 			<File
