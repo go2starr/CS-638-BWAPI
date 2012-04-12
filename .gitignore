@@ -31,8 +31,6 @@ TAGS
 *.ilk
 *.log
 *.lib
-!gmock.lib
-!gmock_main.lib
 *.sbr
 *.sdf
 *.opensdf
@@ -60,3 +58,7 @@ _ReSharper*/
 
 #NuGet
 packages/
+
+#Gmock libs
+gmock.lib
+gmock_main.lib
