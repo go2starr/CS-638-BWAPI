@@ -214,10 +214,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\source\SquadAdvisor.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\source\Strategizer.cpp"
 				>
 			</File>
@@ -325,6 +321,18 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="Advisors"
+				>
+				<File
+					RelativePath=".\source\Advisors\MapAdvisor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Advisors\SquadAdvisor.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -383,10 +391,6 @@
 			</File>
 			<File
 				RelativePath=".\include\Squad.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\SquadAdvisor.h"
 				>
 			</File>
 			<File
@@ -558,6 +562,18 @@
 				</File>
 				<File
 					RelativePath=".\include\EventProducer\GameEvent.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Advisors"
+				>
+				<File
+					RelativePath=".\include\Advisors\MapAdvisor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Advisors\SquadAdvisor.h"
 					>
 				</File>
 			</Filter>

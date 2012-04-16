@@ -21,3 +21,5 @@ void ScoutManager::draw()
 	Broodwar->drawTextScreen(2, 50, "\x10 SM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
 	Manager::draw();
 }
+
+

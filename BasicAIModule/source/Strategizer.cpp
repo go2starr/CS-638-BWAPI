@@ -95,6 +95,14 @@ void Strategizer::onMatchStart()
 	buildManager.build(UnitTypes::Terran_Starport);
 	buildManager.build(UnitTypes::Terran_Battlecruiser);
 
+	// Map Manager Init
+//TODO:	mapManager.init(Broodwar->mapWidth(), Broodwar->mapHeight());
+
+//	x = Game::
+
+
+	//	mapManager.init(BWAPI::Game::mapWidth(), BWAPI::Game::mapHeight());
+
 }
 
 /* 
