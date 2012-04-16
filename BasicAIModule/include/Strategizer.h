@@ -5,6 +5,7 @@
 #include "GameEvent.h"
 // #include "GameStateDB.h"
 #include "IncludeAllManagers.h"
+#include "IncludeAllAdvisors.h"
 #include "Common.h"
 
 #include "TacticalBuildingPlacer.h"

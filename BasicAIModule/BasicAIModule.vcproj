@@ -120,7 +120,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories=".;./include/EventProducer;./include/Managers;./include/Agents/UnitAgents;./include/Agents;./include;../Util/Source;../include"
+				AdditionalIncludeDirectories=".;./include/EventProducer;./include/Managers;./include/Agents/UnitAgents;./include/Advisors;./include/Agents;./include;../Util/Source;../include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_SECURE_SCL 0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -568,6 +568,10 @@
 			<Filter
 				Name="Advisors"
 				>
+				<File
+					RelativePath=".\include\Advisors\IncludeAllAdvisors.h"
+					>
+				</File>
 				<File
 					RelativePath=".\include\Advisors\MapAdvisor.h"
 					>
