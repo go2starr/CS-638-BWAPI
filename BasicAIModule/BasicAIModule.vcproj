@@ -249,10 +249,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\source\Managers\ResourceManager.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\source\Managers\ScoutManager.cpp"
 					>
 				</File>
@@ -326,6 +322,10 @@
 				>
 				<File
 					RelativePath=".\source\Advisors\MapAdvisor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Advisors\ResourceAdvisor.cpp"
 					>
 				</File>
 				<File
@@ -505,10 +505,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\Managers\ResourceManager.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\Managers\ScoutManager.h"
 					>
 				</File>
@@ -574,6 +570,10 @@
 				</File>
 				<File
 					RelativePath=".\include\Advisors\MapAdvisor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Advisors\ResourceAdvisor.h"
 					>
 				</File>
 				<File

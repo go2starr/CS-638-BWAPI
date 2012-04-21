@@ -61,7 +61,6 @@ void Strategizer::onMatchStart()
     combatManager.onMatchStart();
     gasManager.onMatchStart();
     productionManager.onMatchStart();
-    resourceManager.onMatchStart();
     scoutManager.onMatchStart();
     supplyManager.onMatchStart();
 
@@ -293,13 +292,6 @@ void Strategizer::updateAgentManagerMap()
 	}
 	*/
 
-	// If we have enough SCVs, let's try creating a Barracks/Army
-// 	if (Broodwar->self()->supplyUsed() >= 20 &&
-// 		combatManager.numAgents(UnitTypes::Terran_SCV) < 1 )
-// 	{
-// 		remap(UnitTypes::Terran_SCV, resourceManager, combatManager);
-// 	}
-
 	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
 		gasManager.numAgents(UnitTypes::Terran_SCV) < 1)
@@ -329,7 +321,6 @@ void Strategizer::redistributeAgents()
 	combatManager.removeAllAgents();
 	gasManager.removeAllAgents();
 	productionManager.removeAllAgents(); // remove once build mgr is more complete
-	resourceManager.removeAllAgents();
 	scoutManager.removeAllAgents();
 	supplyManager.removeAllAgents();
 
@@ -356,7 +347,6 @@ void Strategizer::updateManagers()
 	combatManager.update();
 	gasManager.update();
 	productionManager.update(); // remove once build mgr is more complete
-	resourceManager.update();
 	scoutManager.update();
 	supplyManager.update();
 }
@@ -366,7 +356,6 @@ void Strategizer::draw()
 	buildManager.draw();
 	combatManager.draw();
 	gasManager.draw();
-	resourceManager.draw();
 	supplyManager.draw();
 	scoutManager.draw();
 }

@@ -20,7 +20,6 @@ public:
 	CombatManager     combatManager;
 	GasManager        gasManager;
 	ProductionManager productionManager;    // TODO: remove this once BuildMgr is more complete
-	ResourceManager   resourceManager;
 	ScoutManager      scoutManager;
 	SupplyManager     supplyManager;
 
