@@ -12,7 +12,7 @@
 
 
 // Information needed to complete a build request
-typedef struct MapBlock {
+struct MapBlock {
 	int upperLeftX;
 	int upperLeftY;
 	int lengthX;
@@ -23,7 +23,7 @@ typedef struct MapBlock {
 	int controlLevel;
 	int controlValue;
 	// TODO: Add base reference
-} MapBlock;
+} ;
 
 
 class MapAdvisor
@@ -32,13 +32,20 @@ private:
 
     static void drawDebugText();
 
+//	static const int blockXCount = 16;
+//	static const int blockYCount = 16;
+
 public: 
-	static int blockXCount;		// Number of blocks in the X direction
-	static int blockYCount;		// Number of blocks in the Y direction
+
+	// the block?Count should be a factor of 32.
+	// Also, needs to match the array size for mapBlocks in MapAdvisor.h
+	static const int blockXCount = 16;		// Number of blocks in the X direction
+	static const int blockYCount = 16;		// Number of blocks in the Y direction
+
 	static int blockXLength;	// Number of tiles in each block in the X direction
 	static int blockYLength;	// Number of tiles in each block in the Y direction
 
-	static MapBlock mapBlocks[16][16];
+	static MapBlock mapBlocks[blockXCount][blockYCount];
 
 	static void init(int mapX, int mapY);
 	static MapBlock tileToBlock(int x, int y);
