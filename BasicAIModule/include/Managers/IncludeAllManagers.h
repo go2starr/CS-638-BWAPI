@@ -9,4 +9,3 @@
 #include "CombatManager.h"
 #include "GasManager.h"
 #include "ScoutManager.h"
-#include "SupplyManager.h"
