@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;"
+				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;../../BasicAIModule/include/Advisors"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;"
+				AdditionalIncludeDirectories="../include;../../include;../../BasicAIModule/include;../../BasicAIModule/include/EventProducer;../../BasicAIModule/include/Managers;../../BasicAIModule/include/Agents/UnitAgents;../../BasicAIModule/include/Agents;../../BasicAIModule/include/Advisors"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="true"
@@ -447,10 +447,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\BasicAIModule\include\Managers\ConstructionManager.h"
-						>
-					</File>
-					<File
 						RelativePath="..\..\BasicAIModule\include\Managers\GasManager.h"
 						>
 					</File>
@@ -460,14 +456,6 @@
 					</File>
 					<File
 						RelativePath="..\..\BasicAIModule\include\Managers\Manager.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\BasicAIModule\include\Managers\ProductionManager.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\BasicAIModule\include\Managers\ResourceManager.h"
 						>
 					</File>
 					<File
@@ -524,6 +512,26 @@
 					</File>
 					<File
 						RelativePath="..\..\BasicAIModule\include\EventProducer\GameEvent.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Advisors"
+					>
+					<File
+						RelativePath="..\..\BasicAIModule\include\Advisors\IncludeAllAdvisors.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\BasicAIModule\include\Advisors\MapAdvisor.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\BasicAIModule\include\Advisors\ResourceAdvisor.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\BasicAIModule\include\Advisors\SquadAdvisor.h"
 						>
 					</File>
 				</Filter>
@@ -643,10 +651,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\BasicAIModule\source\Managers\ConstructionManager.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\..\BasicAIModule\source\Managers\GasManager.cpp"
 						>
 					</File>
@@ -655,19 +659,27 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\BasicAIModule\source\Managers\ProductionManager.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\BasicAIModule\source\Managers\ResourceManager.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\..\BasicAIModule\source\Managers\ScoutManager.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\..\BasicAIModule\source\Managers\SupplyManager.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Advisors"
+					>
+					<File
+						RelativePath="..\..\BasicAIModule\source\Advisors\MapAdvisor.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\BasicAIModule\source\Advisors\ResourceAdvisor.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\BasicAIModule\source\Advisors\SquadAdvisor.cpp"
 						>
 					</File>
 				</Filter>

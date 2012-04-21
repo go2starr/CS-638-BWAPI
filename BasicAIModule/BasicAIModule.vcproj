@@ -233,23 +233,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\source\Managers\ConstructionManager.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\source\Managers\GasManager.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\source\Managers\Manager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\source\Managers\ProductionManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\source\Managers\ResourceManager.cpp"
 					>
 				</File>
 				<File
@@ -326,6 +314,10 @@
 				>
 				<File
 					RelativePath=".\source\Advisors\MapAdvisor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Advisors\ResourceAdvisor.cpp"
 					>
 				</File>
 				<File
@@ -485,10 +477,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\Managers\ConstructionManager.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\Managers\GasManager.h"
 					>
 				</File>
@@ -498,14 +486,6 @@
 				</File>
 				<File
 					RelativePath=".\include\Managers\Manager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\Managers\ProductionManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\Managers\ResourceManager.h"
 					>
 				</File>
 				<File
@@ -574,6 +554,10 @@
 				</File>
 				<File
 					RelativePath=".\include\Advisors\MapAdvisor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Advisors\ResourceAdvisor.h"
 					>
 				</File>
 				<File

@@ -3,9 +3,7 @@
  * Strategizer.h
  */
 #include "GameEvent.h"
-// #include "GameStateDB.h"
 #include "IncludeAllManagers.h"
-#include "IncludeAllAdvisors.h"
 #include "Common.h"
 
 #include "TacticalBuildingPlacer.h"
@@ -19,17 +17,12 @@ public:
 	BuildManager      buildManager;
 	CombatManager     combatManager;
 	GasManager        gasManager;
-	ProductionManager productionManager;    // TODO: remove this once BuildMgr is more complete
-	ResourceManager   resourceManager;
 	ScoutManager      scoutManager;
 	SupplyManager     supplyManager;
 
 private:
 	UnitAgentMap      unitAgentMap;
 	AgentManagerMap   agentManagerMap;
-
-	// Game State analysis
-	// GameStateDB gsdb;
 
 public:
 	

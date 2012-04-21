@@ -2,10 +2,9 @@
  *  BuildManager.cpp
  *  
  *  Used to produce new units, buildings and add-ons
- *  Passes tasks down to the Construction or Production Managers
  */
 #include "BuildManager.h"
-#include "ResourceManager.h"
+#include "ResourceAdvisor.h"
 #include "Common.h"
 #include "Agent.h"
 #include "State.h"
@@ -185,7 +184,7 @@ void BuildManager::update()
         Agent& agent = **worker;
         if( agent.getState() == IdleState ) 
         {
-            ResourceManager::makeAgentGatherMinerals(agent);
+            ResourceAdvisor::makeAgentGatherMinerals(agent);
         }
     }
 }
