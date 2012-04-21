@@ -3,6 +3,7 @@
 */
 #include "Strategizer.h"
 #include "IncludeAllManagers.h"
+#include "IncludeAllAdvisors.h"
 #include "IncludeAllUnitAgents.h"
 #include "TacticalBuildingPlacer.h"
 #include "GameEvent.h"
@@ -26,8 +27,12 @@ void Strategizer::update()
 	// Draw "GUI"
 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
 	Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
-	TacticalBuildingPlacer::instance().update(); // draw reserved map
-	draw();  // draw managers
+
+	// Draw reserved map
+	TacticalBuildingPlacer::instance().update();
+
+	// Draw managers
+	draw();
 
 	if (Broodwar->getFrameCount() % 10 == 0)
 	{
@@ -43,6 +48,10 @@ void Strategizer::update()
 		// Let Managers manager
 		updateManagers();
 
+		// Update any advisors that might need updating
+		SupplyAdvisor::update();
+
+		// Forfeit the match if conditions warrant
         if( checkForfeit() )
         {
             Broodwar->sendText("Surrendering match...");
@@ -60,10 +69,9 @@ void Strategizer::onMatchStart()
     buildManager.onMatchStart();
     combatManager.onMatchStart();
     gasManager.onMatchStart();
-    productionManager.onMatchStart();
-    resourceManager.onMatchStart();
     scoutManager.onMatchStart();
-    supplyManager.onMatchStart();
+
+	buildManager.build(UnitTypes::Terran_SCV);
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Initial troops
@@ -154,13 +162,13 @@ void Strategizer::onUnitDiscovered( Unit* unit )
      || typeID == UnitTypes::Resource_Mineral_Field_Type_2
      || typeID == UnitTypes::Resource_Mineral_Field_Type_3 )
     {
-        // TODO: pass unit on to resource adviser
+		ResourceAdvisor::discoverMineralPatch(*unit);
         return;
     }
 
     if( typeID == UnitTypes::Resource_Vespene_Geyser )
     {
-        // TODO: pass unit on to gas adviser
+		ResourceAdvisor::discoverVespeneGeyser(*unit);
         return;
     }
 
@@ -245,22 +253,20 @@ void Strategizer::updateAgentManagerMap()
 		// if Agent hasn't been assigned a manager
 		if (agentManagerMap[a] == NULL) {
 
+			// Note: apparently we're only really going to be 
+			// making use of the Build/Combat managers...
+
 			// Resources:
-			// SCV -> ResourceManager
+			// SCV -> Build Manager 
 			if (a->getUnit().getType().isWorker())
 				agentManagerMap[a] = &buildManager;
 			// Refinery -> Gas Manager
 			else if (ut.isRefinery())
 				agentManagerMap[a] = &gasManager;
 
-			// Command Center -> Production Manager
-            // TODO: this is the wrong ProductionManager
-            // we want to assign it to the one in BuildManager
-			//
-			// Left here until we find a way to generate SCVs in BM.
-			// -mike
+			// Command Center -> Build Manager
 			else if (ut.isResourceDepot())
-				agentManagerMap[a] = &productionManager;
+				agentManagerMap[a] = &buildManager;
 
 			// Army:
 			// Barracks -> BuildManager
@@ -283,22 +289,6 @@ void Strategizer::updateAgentManagerMap()
 				agentManagerMap[a] = &combatManager;
 		}
 	}
-
-	// If we are running low on supply, give an SCV to the SupplyManager
-	/*
-	const int remainingSupply = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
-	if (remainingSupply < 6 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
-	{
-		remap(UnitTypes::Terran_SCV, resourceManager, supplyManager);
-	}
-	*/
-
-	// If we have enough SCVs, let's try creating a Barracks/Army
-// 	if (Broodwar->self()->supplyUsed() >= 20 &&
-// 		combatManager.numAgents(UnitTypes::Terran_SCV) < 1 )
-// 	{
-// 		remap(UnitTypes::Terran_SCV, resourceManager, combatManager);
-// 	}
 
 	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
@@ -328,10 +318,7 @@ void Strategizer::redistributeAgents()
 	buildManager.removeAllAgents();
 	combatManager.removeAllAgents();
 	gasManager.removeAllAgents();
-	productionManager.removeAllAgents(); // remove once build mgr is more complete
-	resourceManager.removeAllAgents();
 	scoutManager.removeAllAgents();
-	supplyManager.removeAllAgents();
 
 	// Redistribute agents
     AgentManagerMapIter it  = agentManagerMap.begin();
@@ -355,10 +342,7 @@ void Strategizer::updateManagers()
 	buildManager.update();
 	combatManager.update();
 	gasManager.update();
-	productionManager.update(); // remove once build mgr is more complete
-	resourceManager.update();
 	scoutManager.update();
-	supplyManager.update();
 }
 
 void Strategizer::draw()
@@ -366,9 +350,10 @@ void Strategizer::draw()
 	buildManager.draw();
 	combatManager.draw();
 	gasManager.draw();
-	resourceManager.draw();
-	supplyManager.draw();
 	scoutManager.draw();
+
+	Broodwar->drawTextScreen(2, 0, "\x1E SM : %d planned"
+						   , SupplyAdvisor::plannedSupply() / 2);
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
@@ -391,8 +376,6 @@ bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
 
 bool Strategizer::checkForfeit()
 {
-    // TODO: will eventually be using productionMgr inside buildMgr?
-    // if so, that change will mess this up
-    AgentSet pmCC(productionManager.getAgentsOfType(UnitTypes::Terran_Command_Center));
+    AgentSet pmCC(buildManager.getAgentsOfType(UnitTypes::Terran_Command_Center));
     return pmCC.size() == 0;
 }

@@ -233,10 +233,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\source\Managers\ConstructionManager.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\source\Managers\GasManager.cpp"
 					>
 				</File>
@@ -245,19 +241,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\source\Managers\ProductionManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\source\Managers\ResourceManager.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\source\Managers\ScoutManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\source\Managers\SupplyManager.cpp"
 					>
 				</File>
 			</Filter>
@@ -329,7 +313,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\source\Advisors\ResourceAdvisor.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\source\Advisors\SquadAdvisor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Advisors\SupplyAdvisor.cpp"
 					>
 				</File>
 			</Filter>
@@ -485,10 +477,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\Managers\ConstructionManager.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\Managers\GasManager.h"
 					>
 				</File>
@@ -501,19 +489,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\Managers\ProductionManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\Managers\ResourceManager.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\Managers\ScoutManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\Managers\SupplyManager.h"
 					>
 				</File>
 				<Filter
@@ -577,7 +553,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Advisors\ResourceAdvisor.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Advisors\SquadAdvisor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Advisors\SupplyAdvisor.h"
 					>
 				</File>
 			</Filter>
