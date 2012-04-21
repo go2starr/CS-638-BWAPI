@@ -2,7 +2,6 @@
  *  BuildManager.cpp
  *  
  *  Used to produce new units, buildings and add-ons
- *  Passes tasks down to the Construction or Production Managers
  */
 #include "BuildManager.h"
 #include "ResourceAdvisor.h"

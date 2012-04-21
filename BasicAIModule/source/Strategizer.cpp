@@ -3,6 +3,7 @@
 */
 #include "Strategizer.h"
 #include "IncludeAllManagers.h"
+#include "IncludeAllAdvisors.h"
 #include "IncludeAllUnitAgents.h"
 #include "TacticalBuildingPlacer.h"
 #include "GameEvent.h"
@@ -60,9 +61,10 @@ void Strategizer::onMatchStart()
     buildManager.onMatchStart();
     combatManager.onMatchStart();
     gasManager.onMatchStart();
-    productionManager.onMatchStart();
     scoutManager.onMatchStart();
     supplyManager.onMatchStart();
+
+	buildManager.build(UnitTypes::Terran_SCV);
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Initial troops
@@ -244,22 +246,20 @@ void Strategizer::updateAgentManagerMap()
 		// if Agent hasn't been assigned a manager
 		if (agentManagerMap[a] == NULL) {
 
+			// Note: apparently we're only really going to be 
+			// making use of the Build/Combat managers...
+
 			// Resources:
-			// SCV -> ResourceManager
+			// SCV -> Build Manager 
 			if (a->getUnit().getType().isWorker())
 				agentManagerMap[a] = &buildManager;
 			// Refinery -> Gas Manager
 			else if (ut.isRefinery())
 				agentManagerMap[a] = &gasManager;
 
-			// Command Center -> Production Manager
-            // TODO: this is the wrong ProductionManager
-            // we want to assign it to the one in BuildManager
-			//
-			// Left here until we find a way to generate SCVs in BM.
-			// -mike
+			// Command Center -> Build Manager
 			else if (ut.isResourceDepot())
-				agentManagerMap[a] = &productionManager;
+				agentManagerMap[a] = &buildManager;
 
 			// Army:
 			// Barracks -> BuildManager
@@ -320,7 +320,6 @@ void Strategizer::redistributeAgents()
 	buildManager.removeAllAgents();
 	combatManager.removeAllAgents();
 	gasManager.removeAllAgents();
-	productionManager.removeAllAgents(); // remove once build mgr is more complete
 	scoutManager.removeAllAgents();
 	supplyManager.removeAllAgents();
 
@@ -346,7 +345,6 @@ void Strategizer::updateManagers()
 	buildManager.update();
 	combatManager.update();
 	gasManager.update();
-	productionManager.update(); // remove once build mgr is more complete
 	scoutManager.update();
 	supplyManager.update();
 }
@@ -380,8 +378,6 @@ bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
 
 bool Strategizer::checkForfeit()
 {
-    // TODO: will eventually be using productionMgr inside buildMgr?
-    // if so, that change will mess this up
-    AgentSet pmCC(productionManager.getAgentsOfType(UnitTypes::Terran_Command_Center));
+    AgentSet pmCC(buildManager.getAgentsOfType(UnitTypes::Terran_Command_Center));
     return pmCC.size() == 0;
 }
