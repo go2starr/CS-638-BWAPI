@@ -153,13 +153,13 @@ void Strategizer::onUnitDiscovered( Unit* unit )
      || typeID == UnitTypes::Resource_Mineral_Field_Type_2
      || typeID == UnitTypes::Resource_Mineral_Field_Type_3 )
     {
-        // TODO: pass unit on to resource adviser
+		ResourceAdvisor::discoverMineralPatch(*unit);
         return;
     }
 
     if( typeID == UnitTypes::Resource_Vespene_Geyser )
     {
-        // TODO: pass unit on to gas adviser
+		ResourceAdvisor::discoverVespeneGeyser(*unit);
         return;
     }
 
