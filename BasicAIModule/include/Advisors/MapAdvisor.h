@@ -12,16 +12,25 @@
 
 
 // Information needed to complete a build request
+struct Coordinate {
+	int x;
+	int y;
+};
+
 struct MapBlock {
-	int upperLeftX;
-	int upperLeftY;
-	int lengthX;
-	int lengthY;
-	
+	Coordinate upperLeftCoordinate;
+	Coordinate mainCoordinate;
+
 //	BWAPI::UnitType type;
 //	BWAPI::Player controlPlayer;
-	int controlLevel;
-	int controlValue;
+	int controlLevel;		//The strength of the strongest presence in the block
+	int controlValue;		//The stratigic value of the block
+	int lastVisibileFrame;	//The last frame for which the main tile was visible
+	int gasAvailable;		//The amount of gas available in the square
+	int mineralsAvailable;	//The amount of minerals available in the square
+	bool chokePoint;		//If the block contains a choke point
+	bool startLocation;		//If the block contains a start location
+	// TODO: track existance / ownership of gas extractor
 	// TODO: Add base reference
 } ;
 
@@ -30,10 +39,20 @@ class MapAdvisor
 {
 private:
 
+	static const int CHOKEPOINTVALUE = 20;
+	static const int STARTLOCATIONVALUE = 50;
+	static const int GASVALUE = 1000;
+	static const int MINERALSVALUE = 1000;
+	static const int LOCATIONVALUE = 2;
+
+
     static void drawDebugText();
 
-//	static const int blockXCount = 16;
-//	static const int blockYCount = 16;
+	static int getControlValue(MapBlock mapBlock);
+	static int getControlLevel(MapBlock mapBlock);
+
+	static int getLocationControl(int x, int y);
+
 
 public: 
 

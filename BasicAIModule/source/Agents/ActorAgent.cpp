@@ -4,6 +4,8 @@
 #include "ActorAgent.h"
 #include "Agent.h"
 #include "Common.h"
+#include "IncludeAllManagers.h"
+#include "Strategizer.h"
 #include <BWAPI.h>
 #include <BWTA.h>
 
@@ -51,6 +53,7 @@ void ActorAgent::update()
 
 	case ScoutState:
 		{
+			/*
 			TilePosition myStart = Broodwar->self()->getStartLocation();
 			TilePosition target;
 			double maxDistance = 0.0;
@@ -69,6 +72,17 @@ void ActorAgent::update()
 			}
 
 			//enemyBase = Position(target);
+			*/
+//			BWAPI::TilePosition target = ScoutManager::getScoutTilePosition(unit.getTilePosition());
+//			ScoutManager scoutManager = Strategizer::scoutManager;
+//			BWAPI::TilePosition target = scoutManager.getScoutTilePosition(unit.getTilePosition());
+
+//			BWAPI::TilePosition target = Strategizer::instance()::ScoutManager::getScoutTilePosition(unit.getTilePosition());
+
+			BWAPI::TilePosition target = Strategizer::instance().scoutManager.getScoutTilePosition(unit.getTilePosition());
+
+//			Strategizer::instance().scoutManager.scratch();
+
 			unit.move(Position(target));
 		}
 		break;
