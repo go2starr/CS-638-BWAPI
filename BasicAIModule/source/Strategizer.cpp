@@ -27,8 +27,12 @@ void Strategizer::update()
 	// Draw "GUI"
 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
 	Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
-	TacticalBuildingPlacer::instance().update(); // draw reserved map
-	draw();  // draw managers
+
+	// Draw reserved map
+	TacticalBuildingPlacer::instance().update();
+
+	// Draw managers
+	draw();
 
 	if (Broodwar->getFrameCount() % 10 == 0)
 	{
@@ -44,6 +48,10 @@ void Strategizer::update()
 		// Let Managers manager
 		updateManagers();
 
+		// Update any advisors that might need updating
+		SupplyAdvisor::update();
+
+		// Forfeit the match if conditions warrant
         if( checkForfeit() )
         {
             Broodwar->sendText("Surrendering match...");
@@ -64,6 +72,7 @@ void Strategizer::onMatchStart()
     scoutManager.onMatchStart();
     supplyManager.onMatchStart();
 	MapAdvisor::init(Broodwar->mapWidth() * 4, Broodwar->mapHeight() * 4);
+
 
 	buildManager.build(UnitTypes::Terran_SCV);
 
@@ -284,15 +293,6 @@ void Strategizer::updateAgentManagerMap()
 		}
 	}
 
-	// If we are running low on supply, give an SCV to the SupplyManager
-	/*
-	const int remainingSupply = Broodwar->self()->supplyTotal() - Broodwar->self()->supplyUsed();
-	if (remainingSupply < 6 && supplyManager.numAgents(UnitTypes::Terran_SCV) < 1)
-	{
-		remap(UnitTypes::Terran_SCV, resourceManager, supplyManager);
-	}
-	*/
-
 	// take one of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
 		gasManager.numAgents(UnitTypes::Terran_SCV) < 1)
@@ -322,7 +322,6 @@ void Strategizer::redistributeAgents()
 	combatManager.removeAllAgents();
 	gasManager.removeAllAgents();
 	scoutManager.removeAllAgents();
-	supplyManager.removeAllAgents();
 
 	// Redistribute agents
     AgentManagerMapIter it  = agentManagerMap.begin();
@@ -349,15 +348,17 @@ void Strategizer::updateManagers()
 	scoutManager.update();
 	supplyManager.update();
 	MapAdvisor::update();
-}
+
 
 void Strategizer::draw()
 {
 	buildManager.draw();
 	combatManager.draw();
 	gasManager.draw();
-	supplyManager.draw();
 	scoutManager.draw();
+
+	Broodwar->drawTextScreen(2, 0, "\x1E SM : %d planned"
+						   , SupplyAdvisor::plannedSupply() / 2);
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)

@@ -18,7 +18,6 @@ public:
 	CombatManager     combatManager;
 	GasManager        gasManager;
 	ScoutManager      scoutManager;
-	SupplyManager     supplyManager;
 
 private:
 	UnitAgentMap      unitAgentMap;

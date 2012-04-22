@@ -244,10 +244,6 @@
 					RelativePath=".\source\Managers\ScoutManager.cpp"
 					>
 				</File>
-				<File
-					RelativePath=".\source\Managers\SupplyManager.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Agents"
@@ -322,6 +318,10 @@
 				</File>
 				<File
 					RelativePath=".\source\Advisors\SquadAdvisor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\source\Advisors\SupplyAdvisor.cpp"
 					>
 				</File>
 			</Filter>
@@ -492,10 +492,6 @@
 					RelativePath=".\include\Managers\ScoutManager.h"
 					>
 				</File>
-				<File
-					RelativePath=".\include\Managers\SupplyManager.h"
-					>
-				</File>
 				<Filter
 					Name="Tasks"
 					>
@@ -562,6 +558,10 @@
 				</File>
 				<File
 					RelativePath=".\include\Advisors\SquadAdvisor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Advisors\SupplyAdvisor.h"
 					>
 				</File>
 			</Filter>
