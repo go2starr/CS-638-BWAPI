@@ -3,6 +3,7 @@
  */
 #include "Agent.h"
 #include "Manager.h"
+#include "DebugFlags.h"
 
 #include <string>
 
@@ -52,21 +53,22 @@ const std::string Agent::getParentManagerName() const
 
 void Agent::draw()
 {
+	if( DebugFlags::instance().getFlag(none) )
+		return;
+
 	const int px = unit.getPosition().x();
 	const int py = unit.getPosition().y();
 	const int radius = unit.getRight() - px;
 
 	// Draw owner, state, type
-	if (state != GatherState)
+	if (state != GatherState 
+	 && DebugFlags::instance().getFlag(agent_details) )
 		Broodwar->drawTextMap(px, py, "(%s, %s%s)", getParentManagerName().c_str(),
 			StateStrings[state], unitTypeTargetValid() ? (string(", ") += string(UnitTypeStrings[unitTypeTarget.getID()])).c_str()
 														:	"");
-
-    // Note: drawing this stuff all the time clutters things up massively, but can be useful
-    // TODO: look into adding a global chat flag to toggle this stuff (/debuginfo or something)
-    /*
-    if( 1 ) //unit.isSelected() )
-    {
+	// Targets
+	if( DebugFlags::instance().getFlag(agent_targets) )
+	{
         Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);
 
         // Draw line to position target if its valid
@@ -97,7 +99,7 @@ void Agent::draw()
             }
         }
     }
-    */
+
 	/*
 	if (state == AttackState)
 	{
@@ -109,11 +111,4 @@ void Agent::draw()
 		Broodwar->drawCircle(CoordinateType::Map, x, y, attackRadius, BWAPI::Colors::White);
 	}
 	*/
-
-	// Draw our current target position
-    /*
-	Position targetPosition = unit.getTargetPosition();
-	Broodwar->drawLineMap(unit.getPosition().x(), unit.getPosition().y(),
-		targetPosition.x(), targetPosition.y(), Colors::Yellow);
-    */
 }

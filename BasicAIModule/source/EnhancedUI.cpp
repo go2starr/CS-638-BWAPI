@@ -2,6 +2,7 @@
  * EnhancedUI.cpp
  */
 #include "EnhancedUI.h"
+#include "DebugFlags.h"
 
 using namespace BWAPI;
 //using namespace BWSAL;
@@ -9,9 +10,15 @@ using namespace BWAPI;
 
 void EnhancedUI::update() const
 {
-	drawTerrain();
-	drawBases();
-	//  drawProgress();
+	if( DebugFlags::instance().getFlag(none) )
+		return;
+
+	if( DebugFlags::instance().getFlag(map_bounds) )
+	{
+		drawTerrain();
+		drawBases();
+		//  drawProgress();
+	}
 }
 
 void EnhancedUI::drawTilePosition(BWAPI::TilePosition tPos, BWAPI::Color color) 

@@ -4,6 +4,7 @@
 #include "Squad.h"
 #include "Agent.h"
 #include "Common.h"
+#include "DebugFlags.h"
 
 #include <algorithm>
 #include <cassert>
@@ -79,6 +80,12 @@ void Squad::update()
 
 void Squad::draw()
 {
+	if( DebugFlags::instance().getFlag(none) )
+		return;
+
+	if( !DebugFlags::instance().getFlag(squad_details) )
+		return;
+
     // Draw  a circle around the group
     const Position center = getCenter();
     const int groupRadius = getRadius();

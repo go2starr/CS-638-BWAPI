@@ -3,7 +3,7 @@
  */
 #include "BasicAIModule.h"
 #include "Strategizer.h"
-
+#include "DebugFlags.h"
 
 #include <BWAPI.h>
 #include <BWTA.h>
@@ -114,7 +114,16 @@ void BasicAIModule::onUnitDestroy(Unit* unit)
  */
 void BasicAIModule::onSendText(string text)
 {
-
+	for(int i = 0; i < NUM_DEBUG_FLAGS; ++i)
+	{
+		const string& flag = DebugFlagStrings[i];
+		if( text == flag )
+		{
+			const DebugFlag dflag = static_cast<DebugFlag>(i);
+			DebugFlags::instance().toggleFlag(dflag);
+			break;
+		}
+	}
 }
 
 /* 

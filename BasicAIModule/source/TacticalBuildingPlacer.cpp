@@ -2,11 +2,12 @@
 /*
 * TacticalBuildingPlacer.cpp
 */
+#include "TacticalBuildingPlacer.h"
+#include "DebugFlags.h"
+#include "Common.h"
 
-#include <TacticalBuildingPlacer.h>
-#include <BWSAL/BFSBuildingPlacer.h>
 #include <BWAPI.h>
-#include <Common.h>
+#include <BWSAL/BFSBuildingPlacer.h>
 
 #include <algorithm>
 
@@ -1182,6 +1183,12 @@ void TacticalBuildingPlacer::analyze(void)
 
 void TacticalBuildingPlacer::draw(void)
 {
+	if( DebugFlags::instance().getFlag(none) )
+		return;
+
+	if( !DebugFlags::instance().getFlag(reserve_map) )
+		return;
+
 	BWTA::Region * region;
 	vector<EnhancedChokepoint> * chokepoints;
 	EnhancedUI * eui = new EnhancedUI();
@@ -1219,6 +1226,12 @@ void TacticalBuildingPlacer::draw(void)
 // draw reserved tiles
 void TacticalBuildingPlacer::update(void)
 {
+	if( DebugFlags::instance().getFlag(none) )
+		return;
+
+	if( !DebugFlags::instance().getFlag(reserve_map) )
+		return;
+
 	for (int x = 0; x < BWAPI::Broodwar->mapWidth(); x++)
 		for (int y = 0; y < BWAPI::Broodwar->mapHeight(); y++)
 			if (BWSAL::ReservedMap::getInstance()->isReserved(x, y))
