@@ -15,6 +15,8 @@ enum DebugFlag
 	agent_targets, 
 	build_queue, 
 	build_stack, 
+	reserve_map,
+	map_bounds,
 	NUM_DEBUG_FLAGS
 };
 extern const std::string DebugFlagStrings[];
@@ -33,6 +35,9 @@ private:
 
 	bool drawBuildQueue;    // Draw the BuildManager's current queue
 	bool drawBuildStack;    // Draw the BuildManager's current stack
+
+	bool drawReserveMap;    // Draw the TacticalBuildingPlacer reserve tiles/chokepoints
+	bool drawMapBounds;     // Draw the map collision boundaries
 
 public:
 	friend class Manager;

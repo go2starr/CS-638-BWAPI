@@ -25,12 +25,6 @@ using std::pair;
 */
 void Strategizer::update()
 {
-// 	// Draw "GUI"
-// 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
-// 	Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
-
-	// TODO: make a debug draw flag for this
-	// Draw reserved map
 	TacticalBuildingPlacer::instance().update();
 
 	// Draw managers
@@ -351,9 +345,6 @@ void Strategizer::draw()
 	scoutManager.draw();
 
 	DebugFlags::instance().draw();
-
-// 	Broodwar->drawTextScreen(2, 0, "\x1E SM : %d planned"
-// 						   , SupplyAdvisor::plannedSupply() / 2);
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)

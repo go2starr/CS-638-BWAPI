@@ -20,7 +20,9 @@ const std::string DebugFlagStrings[] =
 	"drawAgentDetails", 
 	"drawAgentTargets", 
 	"drawBuildQueue", 
-	"drawBuildStack"
+	"drawBuildStack",
+	"drawReserveMap",
+	"drawMapBounds"
 };
 
 
@@ -32,6 +34,8 @@ DebugFlags::DebugFlags()
 , drawAgentTargets  (false)
 , drawBuildQueue    (false)
 , drawBuildStack    (false)
+, drawReserveMap    (false)
+, drawMapBounds     (false)
 { }
 
 void DebugFlags::draw()
@@ -83,26 +87,36 @@ void DebugFlags::draw()
 		Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
 	}
 
-	if( drawSquadDetails )
-	{
-		// TODO
-	}
+// 	if( drawSquadDetails )
+// 	{
+// 		// Handled in Squad::draw()
+// 	}
 
-	if( drawAgentDetails )
-	{
-		// TODO
-	}
+// 	if( drawAgentDetails )
+// 	{
+// 		// Handled in Agent::draw()
+// 	}
 
-	if( drawAgentTargets )
-	{
-		// TODO
-	}
+// 	if( drawAgentTargets )
+// 	{
+// 		// Handled in Agent::draw()
+// 	}
 
 	// TODO: split this, drawing them individually
 	if( drawBuildQueue || drawBuildStack )
 	{
 		strategizer.buildManager.drawDebugText();
 	}
+
+// 	if( drawReserveMap )
+// 	{
+// 		// Handled in TacticalBuildingPlacer::update()/draw()
+// 	}
+
+// 	if( drawMapBounds )
+// 	{
+// 		// Handled in EnhancedUI::update()
+// 	}
 }
 
 bool DebugFlags::getFlag( const DebugFlag& flag ) const
@@ -117,6 +131,8 @@ bool DebugFlags::getFlag( const DebugFlag& flag ) const
 	case agent_targets:  state = drawAgentTargets;  break;
 	case build_queue:    state = drawBuildQueue;    break;
 	case build_stack:    state = drawBuildStack;    break;
+	case reserve_map:    state = drawReserveMap;    break;
+	case map_bounds:     state = drawMapBounds;     break;
 	}
 	return state;
 }
@@ -132,6 +148,8 @@ void DebugFlags::setFlag( const DebugFlag& flag, const bool state )
 	case agent_targets:  drawAgentTargets  = state; break;
 	case build_queue:    drawBuildQueue    = state; break;
 	case build_stack:    drawBuildStack    = state; break;
+	case reserve_map:    drawReserveMap    = state; break;
+	case map_bounds:     drawMapBounds     = state; break;
 	}
 }
 
@@ -146,5 +164,7 @@ void DebugFlags::toggleFlag( const DebugFlag& flag )
 	case agent_targets:  drawAgentTargets  = !drawAgentTargets;  break;
 	case build_queue:    drawBuildQueue    = !drawBuildQueue;    break;
 	case build_stack:    drawBuildStack    = !drawBuildStack;    break;
+	case reserve_map:    drawReserveMap    = !drawReserveMap;    break;
+	case map_bounds:     drawMapBounds     = !drawMapBounds;     break;
 	}
 }
