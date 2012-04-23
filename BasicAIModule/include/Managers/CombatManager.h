@@ -28,6 +28,11 @@ public:
 	virtual void update();
     virtual void draw();
 
+	int numSquads() const;
+	int numEnemyUnits() const;
+	int numEnemyActors() const;
+	int numEnemyBuildings() const;
+
     virtual const std::string& getName() const 
     { 
         static const std::string name("CombatMgr");
@@ -38,3 +43,8 @@ private:
 	void addNewAgents();
     int numLivingAgents() const;
 };
+
+inline int CombatManager::numSquads()         const { return squads.size(); }
+inline int CombatManager::numEnemyUnits()     const { return enemyUnits.size(); }
+inline int CombatManager::numEnemyActors()    const { return enemyActors.size(); }
+inline int CombatManager::numEnemyBuildings() const { return enemyBuildings.size(); }

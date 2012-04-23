@@ -34,11 +34,10 @@ private:
     queue<BuildReq> buildQueue;
     stack<BuildReq> buildStack;  // Active requests can be recursive (dependencies)
 
-    void drawDebugText();
-
 public: 
 	void update();
 	void draw();
+    void drawDebugText();
 
 	void build(BWAPI::UnitType type, bool immediate=false);
 	void build(BWAPI::UnitType type, BWAPI::TilePosition goalPosition, bool immediate=false);

@@ -190,6 +190,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\DebugFlags.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\Dll.cpp"
 				>
 			</File>
@@ -363,6 +367,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Common.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\DebugFlags.h"
 				>
 			</File>
 			<File

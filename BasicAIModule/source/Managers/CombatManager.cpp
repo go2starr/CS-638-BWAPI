@@ -133,13 +133,13 @@ void CombatManager::addNewAgents()
 
 void CombatManager::draw()
 {
-	Broodwar->drawTextScreen(2, 20, 
-        "\x11 CM : (Enemies=%d) (Squads=%d) : (Mar=%d) (Fire=%d) (Med=%d)", 
-	    enemyUnits.size(), 
-        squads.size(),
-	    numAgents(UnitTypes::Terran_Marine), 
-        numAgents(UnitTypes::Terran_Firebat), 
-        numAgents(UnitTypes::Terran_Medic));
+// 	Broodwar->drawTextScreen(2, 20, 
+//         "\x11 CM : (Enemies=%d) (Squads=%d) : (Mar=%d) (Fire=%d) (Med=%d)", 
+// 	    enemyUnits.size(), 
+//         squads.size(),
+// 	    numAgents(UnitTypes::Terran_Marine), 
+//         numAgents(UnitTypes::Terran_Firebat), 
+//         numAgents(UnitTypes::Terran_Medic));
 
 	for (SquadVectorIter it = squads.begin(); it != squads.end(); it++)
 	{

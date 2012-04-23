@@ -102,6 +102,6 @@ int GasManager::getNumWorkersGathering() const
 
 void GasManager::draw()
 {
-	Broodwar->drawTextScreen(2, 30, "\x10 GM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));
+/*	Broodwar->drawTextScreen(2, 30, "\x10 GM : (SCV=%d)", numAgents(UnitTypes::Terran_SCV));*/
 	Manager::draw();
 }

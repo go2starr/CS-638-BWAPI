@@ -24,10 +24,11 @@ using std::pair;
 */
 void Strategizer::update()
 {
-	// Draw "GUI"
-	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
-	Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
+// 	// Draw "GUI"
+// 	Broodwar->drawTextScreen(300, 0, "\x17 APM=%d", Broodwar->getAPM());
+// 	Broodwar->drawTextScreen(300,10, "\x17 FPS=%d", Broodwar->getFPS());
 
+	// TODO: make a debug draw flag for this
 	// Draw reserved map
 	TacticalBuildingPlacer::instance().update();
 
@@ -87,7 +88,7 @@ void Strategizer::onMatchStart()
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
 
-	// Secondary tropps
+	// Secondary troops
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Firebat);
 	buildManager.build(UnitTypes::Terran_Factory);
@@ -348,8 +349,8 @@ void Strategizer::draw()
 	gasManager.draw();
 	scoutManager.draw();
 
-	Broodwar->drawTextScreen(2, 0, "\x1E SM : %d planned"
-						   , SupplyAdvisor::plannedSupply() / 2);
+// 	Broodwar->drawTextScreen(2, 0, "\x1E SM : %d planned"
+// 						   , SupplyAdvisor::plannedSupply() / 2);
 }
 
 bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
@@ -373,5 +374,5 @@ bool Strategizer::remap(BWAPI::UnitType type, Manager &src, Manager &dst)
 bool Strategizer::checkForfeit()
 {
     AgentSet pmCC(buildManager.getAgentsOfType(UnitTypes::Terran_Command_Center));
-    return pmCC.size() == 0;
+    return   pmCC.empty();
 }

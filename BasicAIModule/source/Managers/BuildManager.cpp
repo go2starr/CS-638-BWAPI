@@ -264,12 +264,12 @@ void BuildManager::drawDebugText()
 
 void BuildManager::draw()
 {
-	Broodwar->drawTextScreen(2, 40, "\x07 BM : (SCV=%d) (CC=%d) (MS=%d)", 
-	numAgents(UnitTypes::Terran_SCV),
-	numAgents(UnitTypes::Terran_Command_Center),
-	numAgents(UnitTypes::Terran_Machine_Shop));
+// 	Broodwar->drawTextScreen(2, 40, "\x07 BM : (SCV=%d) (CC=%d) (MS=%d)", 
+// 	numAgents(UnitTypes::Terran_SCV),
+// 	numAgents(UnitTypes::Terran_Command_Center),
+// 	numAgents(UnitTypes::Terran_Machine_Shop));
 
-    drawDebugText();
+//    drawDebugText();
 
 	Manager::draw();
 }
