@@ -80,10 +80,10 @@ void Squad::update()
 
 void Squad::draw()
 {
-	if( DebugFlags::instance().getFlag(DebugFlags::none) )
+	if( DebugFlags::instance().getFlag(none) )
 		return;
 
-	if( !DebugFlags::instance().getFlag(DebugFlags::squad_details) )
+	if( !DebugFlags::instance().getFlag(squad_details) )
 		return;
 
     // Draw  a circle around the group

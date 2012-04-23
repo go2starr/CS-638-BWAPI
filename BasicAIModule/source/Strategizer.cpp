@@ -6,6 +6,7 @@
 #include "IncludeAllAdvisors.h"
 #include "IncludeAllUnitAgents.h"
 #include "TacticalBuildingPlacer.h"
+#include "DebugFlags.h"
 #include "GameEvent.h"
 #include "Common.h"
 
@@ -348,6 +349,8 @@ void Strategizer::draw()
 	combatManager.draw();
 	gasManager.draw();
 	scoutManager.draw();
+
+	DebugFlags::instance().draw();
 
 // 	Broodwar->drawTextScreen(2, 0, "\x1E SM : %d planned"
 // 						   , SupplyAdvisor::plannedSupply() / 2);

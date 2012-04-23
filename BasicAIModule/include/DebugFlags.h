@@ -4,6 +4,21 @@
  */
 #include "Manager.h"
 
+#include <string>
+
+enum DebugFlag
+{ 
+	none, 
+	system_details,
+	squad_details,
+	agent_details, 
+	agent_targets, 
+	build_queue, 
+	build_stack, 
+	NUM_DEBUG_FLAGS
+};
+extern const std::string DebugFlagStrings[];
+
 
 class DebugFlags
 {
@@ -22,25 +37,13 @@ private:
 public:
 	friend class Manager;
 
-	enum Flag
-	{ 
-		none, 
-		system_details,
-		squad_details,
-		agent_details, 
-		agent_targets, 
-		build_queue, 
-		build_stack, 
-		NUM_FLAGS
-	};
-
 	static DebugFlags& instance() { static DebugFlags df; return df; }
 
 	void draw();
 
-	bool getFlag(const Flag& flag) const;
-	void setFlag(const Flag& flag, const bool state);
-	void toggleFlag(const Flag& flag);
+	bool getFlag(const DebugFlag& flag) const;
+	void setFlag(const DebugFlag& flag, const bool state);
+	void toggleFlag(const DebugFlag& flag);
 
 private:
 	// DebugFlags is singleton, hence private ctors/assignment

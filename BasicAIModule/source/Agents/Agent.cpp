@@ -53,18 +53,21 @@ const std::string Agent::getParentManagerName() const
 
 void Agent::draw()
 {
+	if( DebugFlags::instance().getFlag(none) )
+		return;
+
 	const int px = unit.getPosition().x();
 	const int py = unit.getPosition().y();
 	const int radius = unit.getRight() - px;
 
 	// Draw owner, state, type
 	if (state != GatherState 
-	 && DebugFlags::instance().getFlag(DebugFlags::agent_details) )
+	 && DebugFlags::instance().getFlag(agent_details) )
 		Broodwar->drawTextMap(px, py, "(%s, %s%s)", getParentManagerName().c_str(),
 			StateStrings[state], unitTypeTargetValid() ? (string(", ") += string(UnitTypeStrings[unitTypeTarget.getID()])).c_str()
 														:	"");
 	// Targets
-	if( DebugFlags::instance().getFlag(DebugFlags::agent_targets) )
+	if( DebugFlags::instance().getFlag(agent_targets) )
 	{
         Broodwar->drawCircleMap(px, py, radius, Colors::Yellow);
 

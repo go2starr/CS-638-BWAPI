@@ -8,7 +8,20 @@
 
 #include <BWAPI.h>
 
+#include <string>
+
 using namespace BWAPI;
+
+const std::string DebugFlagStrings[] = 
+{
+	"drawNone", 
+	"drawSystemDetails",
+	"drawSquadDetails",
+	"drawAgentDetails", 
+	"drawAgentTargets", 
+	"drawBuildQueue", 
+	"drawBuildStack"
+};
 
 
 DebugFlags::DebugFlags()
@@ -92,7 +105,7 @@ void DebugFlags::draw()
 	}
 }
 
-bool DebugFlags::getFlag( const Flag& flag ) const
+bool DebugFlags::getFlag( const DebugFlag& flag ) const
 {
 	bool state = false;
 	switch(flag)
@@ -108,7 +121,7 @@ bool DebugFlags::getFlag( const Flag& flag ) const
 	return state;
 }
 
-void DebugFlags::setFlag( const Flag& flag, const bool state )
+void DebugFlags::setFlag( const DebugFlag& flag, const bool state )
 {
 	switch(flag)
 	{
@@ -122,7 +135,7 @@ void DebugFlags::setFlag( const Flag& flag, const bool state )
 	}
 }
 
-void DebugFlags::toggleFlag( const Flag& flag )
+void DebugFlags::toggleFlag( const DebugFlag& flag )
 {
 	switch(flag)
 	{
