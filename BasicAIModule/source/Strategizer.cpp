@@ -50,6 +50,7 @@ void Strategizer::update()
 
 		// Update any advisors that might need updating
 		SupplyAdvisor::update();
+		MapAdvisor::update();
 
 		// Forfeit the match if conditions warrant
         if( checkForfeit() )
@@ -70,7 +71,7 @@ void Strategizer::onMatchStart()
     combatManager.onMatchStart();
     gasManager.onMatchStart();
     scoutManager.onMatchStart();
-    supplyManager.onMatchStart();
+
 	MapAdvisor::init(Broodwar->mapWidth() * 4, Broodwar->mapHeight() * 4);
 
 
@@ -105,15 +106,6 @@ void Strategizer::onMatchStart()
 
 	buildManager.build(UnitTypes::Terran_Starport);
 	buildManager.build(UnitTypes::Terran_Battlecruiser);
-
-	// Map Manager Init
-//TODO:	mapManager.init(Broodwar->mapWidth(), Broodwar->mapHeight());
-
-//	x = Game::
-
-
-	//	mapManager.init(BWAPI::Game::mapWidth(), BWAPI::Game::mapHeight());
-
 }
 
 /* 
@@ -346,8 +338,7 @@ void Strategizer::updateManagers()
 	combatManager.update();
 	gasManager.update();
 	scoutManager.update();
-	supplyManager.update();
-	MapAdvisor::update();
+}
 
 
 void Strategizer::draw()
