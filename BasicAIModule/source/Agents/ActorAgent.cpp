@@ -79,7 +79,7 @@ void ActorAgent::update()
 
 //			BWAPI::TilePosition target = Strategizer::instance()::ScoutManager::getScoutTilePosition(unit.getTilePosition());
 
-			BWAPI::TilePosition target = Strategizer::instance().scoutManager.getScoutTilePosition(unit.getTilePosition());
+			BWAPI::TilePosition target = Strategizer::instance().scoutManager.getScoutTilePosition(unit.getTilePosition(), unit.getType().isFlyer());
 
 //			Strategizer::instance().scoutManager.scratch();
 

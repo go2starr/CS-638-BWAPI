@@ -13,12 +13,12 @@ private:
 
 public: 
 	static const int CONTROLVALUEVALUE = 10;
-	static const int DISTANCEVALUE = 1;
+	static const int DISTANCEVALUE = 10;
 	static const int FRAMECOUNTVALUE = 100;
 
 	void update();
 	void draw();
-	BWAPI::TilePosition getScoutTilePosition(BWAPI::TilePosition tilePosition);
+	BWAPI::TilePosition getScoutTilePosition(BWAPI::TilePosition tilePosition, bool isFlyer);
 
 	void scratch();
 
