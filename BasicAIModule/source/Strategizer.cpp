@@ -136,6 +136,8 @@ void Strategizer::onMatchEnd(bool isWinner)
 		agentManagerMap.erase(it++);
 		delete agent;
 	}
+
+	scoutManager.onMatchEnd();
 }
 
 /*

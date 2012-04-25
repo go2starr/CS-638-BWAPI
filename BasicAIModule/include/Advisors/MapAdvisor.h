@@ -43,7 +43,7 @@ private:
 	static const int STARTLOCATIONVALUE = 50;
 	static const int GASVALUE = 1000;
 	static const int MINERALSVALUE = 1000;
-	static const int LOCATIONVALUE = 2;
+	static const int LOCATIONVALUE = 20;
 
 
     static void drawDebugText();
