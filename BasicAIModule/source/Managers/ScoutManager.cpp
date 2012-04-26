@@ -5,30 +5,46 @@
 #include "Agents/State.h"
 #include "MapAdvisor.h"
 
+#include <windows.h>
+#include <iostream>
+#include <shlobj.h>
 
 using namespace BWAPI;
 
 
-//MapBlock MapAdvisor::mapBlocks[MapAdvisor::blockXCount][MapAdvisor::blockYCount];
-//ScoutMapBlock ScoutManager::scoutMapBlocks[MapAdvisor::blockXCount][MapAdvisor::blockYCount];
+#pragma comment(lib, "shell32.lib")
+
 
 
 void ScoutManager::onMatchStart()
 {
+	// Get Path to My Documents
+//	TCHAR my_documents[MAX_PATH];
+//   HRESULT result SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+
+	TCHAR szPath[MAX_PATH];
+
+if(SUCCEEDED(SHGetFolderPath(NULL, 
+                             CSIDL_PERSONAL|CSIDL_FLAG_CREATE, 
+                             NULL, 
+                             0, 
+							 szPath))){} 
+
 	// check for file existance
+
 
 	// delete if it exists
 	
 	// Open file
-//	scoutManagerLogFile.open("scoutManager.log");
+	scoutManagerLogFile.open("c:\\scoutManager.log");
 	// Write Intro line
-//	scoutManagerLogFile << "Intro";
+	scoutManagerLogFile << "Intro";
 }
 
 void ScoutManager::onMatchEnd()
 {
 	// close file
-//	scoutManagerLogFile.close();
+	scoutManagerLogFile.close();
 }
 
 void ScoutManager::update()
@@ -69,7 +85,7 @@ BWAPI::TilePosition ScoutManager::getScoutTilePosition(BWAPI::TilePosition tileP
 			// Get the scouting value of the current block
 
 			// Value based on the strategic value of the block
-			stratigicValue = (MapAdvisor::mapBlocks[i][j].controlValue * ScoutManager::CONTROLVALUEVALUE);
+			stratigicValue = (MapAdvisor::mapBlocks[i][j].stratigicValue * ScoutManager::CONTROLVALUEVALUE);
 
 			// Reduce the value for blocks that are further away
 			distanceValue = (tilePosition.getDistance(tempTilePosition) / ScoutManager::DISTANCEVALUE);
@@ -120,16 +136,49 @@ BWAPI::TilePosition ScoutManager::getScoutTilePosition(BWAPI::TilePosition tileP
 	
 	// Log the results
 	ScoutManager::scoutMapBlocks[xMapBlock][yMapBlock].selected = true;
-	ScoutManager::log(xMapBlock, yMapBlock);
+	if (Broodwar->getFrameCount() % 1000 == 0)
+		ScoutManager::log(xMapBlock, yMapBlock);
 
 	return scoutTilePosition;
 
 }
 
 void ScoutManager::log(int x, int y){
-	std::string writeString;
+	scoutManagerLogFile << "\n\nFrame:	" ;
+	scoutManagerLogFile << Broodwar->getFrameCount();
+	scoutManagerLogFile << "\nSelected:	" << x << ", " << y;
+	for (int j = 0 ; j < MapAdvisor::blockYCount ; j++)
+	{
+		scoutManagerLogFile << "\nMapBlock       :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			scoutManagerLogFile << "	" << i << ", " << j;
+
+		scoutManagerLogFile << "\nStratigic Value:";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			scoutManagerLogFile << "	" << ScoutManager::scoutMapBlocks[i][j].stratigicValue;
+
+		scoutManagerLogFile << "\nVisible Value  :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			scoutManagerLogFile << "	" << ScoutManager::scoutMapBlocks[i][j].lastVisibleValue;
+
+		scoutManagerLogFile << "\nDistance Value :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			scoutManagerLogFile << "	" << ScoutManager::scoutMapBlocks[i][j].distanceValue;
+		
+		scoutManagerLogFile << "\nReachable Value:";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			scoutManagerLogFile << "	" << ScoutManager::scoutMapBlocks[i][j].reachable;
+
+		scoutManagerLogFile << "\nTotal Value    :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			scoutManagerLogFile << "	" << ScoutManager::scoutMapBlocks[i][j].Value;
 
 
+		scoutManagerLogFile << "\n";
+
+
+		
+	}
 
 
 }

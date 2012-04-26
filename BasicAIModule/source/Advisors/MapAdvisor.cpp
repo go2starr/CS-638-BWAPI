@@ -45,24 +45,24 @@ int MapAdvisor::getLocationControl(int x, int y)
 	return controlValue;
 }
 // Determines and returns the current control value for the block
-int MapAdvisor::getControlValue(MapBlock mapBlock){
+int MapAdvisor::getStratigicValue(MapBlock mapBlock){
 
-	int controlValue = 0;
+	int stratigicValue = 0;
 
 	// is there a choice point on the block?
-	controlValue += mapBlock.chokePoint * MapAdvisor::CHOKEPOINTVALUE;
+	stratigicValue += mapBlock.chokePoint * MapAdvisor::CHOKEPOINTVALUE;
 
 	// is there a starting location on the block?
-	controlValue += mapBlock.startLocation * MapAdvisor::STARTLOCATIONVALUE;
+	stratigicValue += mapBlock.startLocation * MapAdvisor::STARTLOCATIONVALUE;
 
 	// are there any resources on the map
-	controlValue += mapBlock.gasAvailable / MapAdvisor::GASVALUE;
-	controlValue += mapBlock.mineralsAvailable / MapAdvisor::MINERALSVALUE;
+	stratigicValue += mapBlock.gasAvailable / MapAdvisor::GASVALUE;
+	stratigicValue += mapBlock.mineralsAvailable / MapAdvisor::MINERALSVALUE;
 
 	// Location value
-	controlValue += MapAdvisor::getLocationControl(mapBlock.upperLeftCoordinate.x / MapAdvisor::blockXLength, mapBlock.upperLeftCoordinate.y / MapAdvisor::blockYLength);
+	stratigicValue += MapAdvisor::getLocationControl(mapBlock.upperLeftCoordinate.x / MapAdvisor::blockXLength, mapBlock.upperLeftCoordinate.y / MapAdvisor::blockYLength);
 
-	return controlValue;
+	return stratigicValue;
 }
 
 // Determines and returns the level of control in the block
@@ -98,7 +98,7 @@ void MapAdvisor::init(int mapX, int mapY){
 			mapBlock.mainCoordinate.x = mapBlock.upperLeftCoordinate.x + (MapAdvisor::blockXLength / 2);
 			mapBlock.mainCoordinate.y = mapBlock.upperLeftCoordinate.y + (MapAdvisor::blockYLength / 2);
 			mapBlock.controlLevel = 0;
-			mapBlock.controlValue = 0;
+			mapBlock.stratigicValue = 0;
 		}
 
 		// Cycle through regions..
@@ -120,13 +120,14 @@ void MapAdvisor::update()
 		{
 			MapBlock& mapBlock = mapBlocks[i][j];
 
+			// Update stratigicValue
+			mapBlock.stratigicValue = MapAdvisor::getStratigicValue(mapBlock);
+
 			// See if it's visible
 			if(Broodwar->isVisible(mapBlock.mainCoordinate.x, mapBlock.mainCoordinate.y))
 			{
 				// Update lastVisibleFrame
 				mapBlock.lastVisibileFrame = Broodwar->getFrameCount();
-				// If visible, update controlValue
-				mapBlock.controlValue = MapAdvisor::getControlValue(mapBlock);
 				// Update control Level (start with simple count)
 				mapBlock.controlLevel = MapAdvisor::getControlLevel(mapBlock);
 

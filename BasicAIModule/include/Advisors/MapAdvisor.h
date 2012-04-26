@@ -9,6 +9,8 @@
 #include "Common.h"
 
 #include <BWAPI.h>
+#include <iostream>
+#include <fstream>
 
 
 // Information needed to complete a build request
@@ -24,7 +26,7 @@ struct MapBlock {
 //	BWAPI::UnitType type;
 //	BWAPI::Player controlPlayer;
 	int controlLevel;		//The strength of the strongest presence in the block
-	int controlValue;		//The stratigic value of the block
+	int stratigicValue;		//The stratigic value of the block
 	int lastVisibileFrame;	//The last frame for which the main tile was visible
 	int gasAvailable;		//The amount of gas available in the square
 	int mineralsAvailable;	//The amount of minerals available in the square
@@ -43,12 +45,12 @@ private:
 	static const int STARTLOCATIONVALUE = 50;
 	static const int GASVALUE = 1000;
 	static const int MINERALSVALUE = 1000;
-	static const int LOCATIONVALUE = 20;
+	static const int LOCATIONVALUE = 25;
 
 
     static void drawDebugText();
 
-	static int getControlValue(MapBlock mapBlock);
+	static int getStratigicValue(MapBlock mapBlock);
 	static int getControlLevel(MapBlock mapBlock);
 
 	static int getLocationControl(int x, int y);
@@ -56,6 +58,8 @@ private:
 
 public: 
 
+	
+	static std::ofstream scoutManagerLogFile;
 	// the block?Count should be a factor of 32.
 	// Also, needs to match the array size for mapBlocks in MapAdvisor.h
 	static const int blockXCount = 16;		// Number of blocks in the X direction

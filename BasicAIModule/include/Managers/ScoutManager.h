@@ -10,10 +10,8 @@
 
 struct ScoutMapBlock {
 	double stratigicValue;
-	double controlValue;
 	double lastVisibleValue;
 	double distanceValue;
-	double frameCountValue;
 	double Value;
 	bool reachable;
 	bool selected;
@@ -30,13 +28,14 @@ public:
 	static const int CONTROLVALUEVALUE = 10;
 	static const int DISTANCEVALUE = 100;
 	static const int FRAMECOUNTVALUE = 100;
+	static const int LOGFREQUENCY = 1000;
 
 	void onMatchStart();
 	void onMatchEnd();
 	void update();
 	void draw();
 
-	//std::ofstream scoutManagerLogFile;
+	std::ofstream scoutManagerLogFile;
 	BWAPI::TilePosition getScoutTilePosition(BWAPI::TilePosition tilePosition, bool isFlyer);
 
 	ScoutMapBlock scoutMapBlocks[MapAdvisor::blockXCount][MapAdvisor::blockYCount];	
