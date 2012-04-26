@@ -138,6 +138,7 @@ void Strategizer::onMatchEnd(bool isWinner)
 	}
 
 	scoutManager.onMatchEnd();
+	MapAdvisor::onMatchEnd();
 }
 
 /*

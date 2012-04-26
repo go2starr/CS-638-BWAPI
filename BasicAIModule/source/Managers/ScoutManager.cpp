@@ -5,14 +5,14 @@
 #include "Agents/State.h"
 #include "MapAdvisor.h"
 
-#include <windows.h>
-#include <iostream>
+// #include <windows.h>
+// #include <iostream>
 #include <shlobj.h>
 
 using namespace BWAPI;
 
 
-#pragma comment(lib, "shell32.lib")
+//#pragma comment(lib, "shell32.lib")
 
 
 
@@ -37,8 +37,6 @@ if(SUCCEEDED(SHGetFolderPath(NULL,
 	
 	// Open file
 	scoutManagerLogFile.open("c:\\scoutManager.log");
-	// Write Intro line
-	scoutManagerLogFile << "Intro";
 }
 
 void ScoutManager::onMatchEnd()
@@ -173,11 +171,7 @@ void ScoutManager::log(int x, int y){
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			scoutManagerLogFile << "	" << ScoutManager::scoutMapBlocks[i][j].Value;
 
-
 		scoutManagerLogFile << "\n";
-
-
-		
 	}
 
 

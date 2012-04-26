@@ -48,6 +48,9 @@ private:
 	static const int LOCATIONVALUE = 25;
 
 
+//	static std::ofstream mapAdvisorLogFile;
+
+
     static void drawDebugText();
 
 	static int getStratigicValue(MapBlock mapBlock);
@@ -59,7 +62,6 @@ private:
 public: 
 
 	
-	static std::ofstream scoutManagerLogFile;
 	// the block?Count should be a factor of 32.
 	// Also, needs to match the array size for mapBlocks in MapAdvisor.h
 	static const int blockXCount = 16;		// Number of blocks in the X direction
@@ -74,5 +76,7 @@ public:
 	static MapBlock tileToBlock(int x, int y);
 	static void update();
 	static void draw();
+	static void onMatchEnd();
+	static void mapLog();
 
 };

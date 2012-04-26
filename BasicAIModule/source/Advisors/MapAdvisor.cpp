@@ -8,6 +8,7 @@
 
 #include <BWAPI.h>
 #include <BWTA.h>
+#include <shlobj.h>
 
 using namespace BWAPI;
 
@@ -15,12 +16,9 @@ using std::deque;
 using std::map;
 
 
-	// the block?Count should be a factor of 32.
-	// Also, needs to match the array size for mapBlocks in MapAdvisor.h
-//	int MapAdvisor::blockXCount = 16;
-//	int MapAdvisor::blockYCount = 16;
 	int MapAdvisor::blockXLength = -1;
 	int MapAdvisor::blockYLength = -1;
+	std::ofstream mapAdvisorLogFile;
 
 MapBlock MapAdvisor::mapBlocks[MapAdvisor::blockXCount][MapAdvisor::blockYCount];
 
@@ -38,8 +36,22 @@ int MapAdvisor::getLocationControl(int x, int y)
 {
 	int controlValue = 0;
 
-	controlValue += std::min(x, MapAdvisor::blockXCount - x - 1);
-	controlValue += std::min(y, MapAdvisor::blockYCount - y - 1);
+	int xRight = MapAdvisor::blockXCount -x -1;
+	int yBottom = MapAdvisor::blockYCount -y -1;
+
+//	controlValue += std::min(x, xRight);
+//	controlValue += std::min(y, yBottom);
+	if (x < xRight) 
+		controlValue += x;
+	else
+		controlValue += xRight;
+
+	if (y < yBottom)
+		controlValue += y;
+	else
+		controlValue += yBottom;
+
+
 	controlValue *= MapAdvisor::LOCATIONVALUE;
 
 	return controlValue;
@@ -110,6 +122,14 @@ void MapAdvisor::init(int mapX, int mapY){
 
 			// Cycle through start points
 			//TODO
+
+	// Create Log file.
+	mapAdvisorLogFile.open("c:\\MapAdvisor.log");
+}
+
+void MapAdvisor::onMatchEnd()
+{
+	mapAdvisorLogFile.close();
 }
 
 void MapAdvisor::update()
@@ -134,7 +154,60 @@ void MapAdvisor::update()
 			}
 		}
 
+	if (Broodwar->getFrameCount() % 1000 == 0)
+		MapAdvisor::mapLog();
+
 }
 
 void MapAdvisor::draw(){}
 
+void MapAdvisor::mapLog()
+{
+	
+	mapAdvisorLogFile << "\n\nFrame:	" ;
+	mapAdvisorLogFile << Broodwar->getFrameCount();
+	for (int j = 0 ; j < MapAdvisor::blockYCount ; j++)
+	{
+		mapAdvisorLogFile << "\nMapBlock       :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << i << ", " << j;
+
+		mapAdvisorLogFile << "\nControl Value  :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].controlLevel;
+
+		mapAdvisorLogFile << "\nStratigic Value:";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].stratigicValue;
+
+		mapAdvisorLogFile << "\nVisible Frame  :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].lastVisibileFrame;
+		
+		mapAdvisorLogFile << "\nGas Available  :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].gasAvailable;
+
+		mapAdvisorLogFile << "\nMineral Avail. :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].mineralsAvailable;
+
+		mapAdvisorLogFile << "\nChoke Point    :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].chokePoint;
+		
+		mapAdvisorLogFile << "\nStart Location :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].startLocation;
+
+		mapAdvisorLogFile << "\nUL Coordinates :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].upperLeftCoordinate.x << "," << MapAdvisor::mapBlocks[i][j].upperLeftCoordinate.y;
+		
+		mapAdvisorLogFile << "\nCtr Coordinates:";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].mainCoordinate.x << "," << MapAdvisor::mapBlocks[i][j].mainCoordinate.y;
+		mapAdvisorLogFile << "\n";
+	}
+	
+}
