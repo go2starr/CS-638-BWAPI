@@ -1,6 +1,9 @@
 #include <StructureAgent.h>
 #include <BWTA.h>
 
+// currenty is set up to produce / train agents
+// this should be moved to production agent or something
+// which would also inherit from structure agent
 void StructureAgent::update()
 {
 	// Send Units to nearest chokepoint

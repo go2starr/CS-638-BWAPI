@@ -77,6 +77,7 @@ void Strategizer::onMatchStart()
 	// Initial troops
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Bunker);
 	buildManager.build(UnitTypes::Terran_Barracks);
 	buildManager.build(UnitTypes::Terran_Marine);
 

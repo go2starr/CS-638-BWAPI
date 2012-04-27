@@ -580,6 +580,9 @@ bool TacticalBuildingPlacer::growEndsByBumping(bool horizontalGrowth, pair<BWAPI
 
 
 // search for optimal build pattern to wall off chokepoint in a region
+// search is off the base tile, ie baseTile = ecpoint.getBuildTile(region);
+// so for a given enhanced chokepoint and a region, use the base tile
+// as a starting point to search from
 vector<BWAPI::TilePosition> TacticalBuildingPlacer::chokepointBuildPatternSearch(
 	EnhancedChokepoint ecpoint, BWTA::Region * region) 
 {
@@ -1232,12 +1235,14 @@ void TacticalBuildingPlacer::update(void)
 	if( !DebugFlags::instance().getFlag(reserve_map) )
 		return;
 
+	// draw reserved tiles
 	for (int x = 0; x < BWAPI::Broodwar->mapWidth(); x++)
 		for (int y = 0; y < BWAPI::Broodwar->mapHeight(); y++)
 			if (BWSAL::ReservedMap::getInstance()->isReserved(x, y))
 				BWAPI::Broodwar->drawBoxMap(x*32, y*32, x*32+31, y*32+31, BWAPI::Colors::Red);
 }
 
+// this is also the entry point for special building placement
 BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType unitType, BWAPI::TilePosition seedLocation, BWAPI::Unit *builder)
 {
 	BWAPI::TilePosition loc;
@@ -1288,8 +1293,34 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 				loc = (*it)->getTilePosition();
 			}
 		}
-
 	}
+	// Bunkers
+	else if (unitType == BWAPI::UnitTypes::Terran_Bunker)
+	{
+		pair<BWTA::Region *, vector<EnhancedChokepoint>> regionChokepoints;
+		BWTA::BaseLocation * baseLoc;
+		BWTA::Region * baseRegion;
+
+		baseLoc = BWTA::getStartLocation(BWAPI::Broodwar->self());
+		baseRegion = baseLoc->getRegion();
+
+		// check for base region chokepoints, currently this is the only one
+		if (regionsToChokepoints[0].first == baseRegion) {
+			regionChokepoints = regionsToChokepoints[0];
+			for (int m = 0; m < (int) regionChokepoints.second.size(); ++m) {
+				// EnhancedChokepoint build tiles are setup for supply depots, so for now
+				// a bunker will be able to fit into that space
+				BWAPI::TilePosition buildPosition = regionChokepoints.second[m].getBuildTile(regionChokepoints.first);
+				// see if tile position has already been reserved
+				if (!BWSAL::ReservedMap::getInstance()->isReserved(buildPosition)) {
+					loc = buildPosition;
+					break;
+				}
+			}
+		}
+	}
+
+	// reserve location 
 	BWSAL::ReservedMap::getInstance()->reserveTiles(loc, unitType, unitType.tileWidth(), unitType.tileHeight());
 
 	return loc;
