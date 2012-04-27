@@ -68,7 +68,7 @@ void Strategizer::onMatchStart()
     gasManager.onMatchStart();
     scoutManager.onMatchStart();
 
-	MapAdvisor::init(Broodwar->mapWidth() * 4, Broodwar->mapHeight() * 4);
+	MapAdvisor::init(Broodwar->mapWidth(), Broodwar->mapHeight());
 
 
 	buildManager.build(UnitTypes::Terran_SCV);
