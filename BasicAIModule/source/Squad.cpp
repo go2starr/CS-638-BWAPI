@@ -75,17 +75,21 @@ void Squad::update()
 		for(; it != end; ++it)
 		{
 			Agent *agent = *it;
+
+			// command bunker squads to load into bunkers
+			// TODO: check if already loaded
+			if (type == bunker && bunkerTarget != NULL)
+			{
+				agent->getUnit().load(bunkerTarget);
+			}
+
+			// set non-leaders in squad
 			if( agent != leader ) 
 			{
 				// agent->setState(leader->getState());
 				if (type == attack)
 				{
 					agent->setState(AttackState);
-				}
-				else if (type == bunker && bunkerTarget != NULL)
-				{
-					agent->getUnit().load(bunkerTarget);
-					//bunkerTarget->load(&agent->getUnit());
 				}
 				agent->setPositionTarget(leader->getPositionTarget());
 				agent->setUnitTarget(leader->getUnitTarget());
