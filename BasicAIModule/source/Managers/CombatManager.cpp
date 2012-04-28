@@ -15,6 +15,9 @@ using BWTA::Chokepoint;
 
 using namespace std;
 
+// how large to make attack squads
+// and when to attack with them
+static int AttackSquadSize = 10;
 
 void CombatManager::onMatchStart()
 {
@@ -45,12 +48,13 @@ void CombatManager::update()
 
 	// Attack?
 	const int numTroops = numLivingAgents();
-	const int threshold = 10;
+	//const int threshold = 15;
 
-	if( numTroops >= threshold )
+
+	// Attack with full squad force (adjust to lower)
+	for (SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); it++)
 	{
-		// Attack with full force (adjust to lower)
-		for (SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); it++)
+		if ((*it)->getSize() == AttackSquadSize)
 		{
 			Agent *a = (*it)->getLeader();
 			if (a != NULL)
@@ -60,6 +64,8 @@ void CombatManager::update()
 			}
 		}
 	}
+
+
 
 	// Move marines from defense squad to bunker squad if one available
 	if ((int)bunkerAgents.size() > 0 
@@ -208,9 +214,12 @@ void CombatManager::addNewAgents()
 			else 
 			{
 				// if there isn't an attack squad make one
-				if ((int)attackSquads.size() == 0 || attackSquads.back()->getSize() == 10)
+				if ((int)attackSquads.size() == 0 
+					|| attackSquads.back()->getSize() == AttackSquadSize)
 				{
 					attackSquads.push_back(new Squad("attack-squad", attack));
+					// increase squad strength for each new squad
+					AttackSquadSize += 5;
 				}
 				squad = attackSquads.back();
 			}
