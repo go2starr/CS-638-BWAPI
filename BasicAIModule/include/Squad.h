@@ -57,6 +57,8 @@ private:
     SquadType       type;
     SquadCompVector composition;
 
+	BWAPI::Unit * bunkerTarget;
+
 public:
     Squad(const std::string& name, 
           const SquadType& type=attack, 
@@ -76,6 +78,9 @@ public:
 
     /* Remove the specified agent from this squad */
     void removeAgent(Agent* agent);
+
+	/* Move or transfer an agent from this squad to another */
+	void moveAgent(Agent* agent, Squad * toSquad);
 
     /* Is the specified agent already a part of this squad? */
     bool isAssigned(Agent* agent) const;
@@ -116,6 +121,10 @@ public:
     /* Get the number of living members in this squad */
     int numAlive() const;
 
+	/* bunker squads need a bunker target to load into or unload from */
+	void setBunkerTarget(BWAPI::Unit *target);
+	BWAPI::Unit* getBunkerTarget() const;
+
 private:
     Squad(const Squad& other); // Non-copyable
     void gatherTogether();
@@ -132,6 +141,10 @@ inline const std::string&     Squad::getName()  const { return name; }
 inline const int              Squad::getId()    const { return id; }
 inline const SquadType&       Squad::getType()  const { return type; }
 inline const SquadCompVector& Squad::getComposition() const { return composition; }
+
+inline void Squad::setBunkerTarget(BWAPI::Unit *target) { bunkerTarget = target; }
+inline BWAPI::Unit* Squad::getBunkerTarget() const { return bunkerTarget; }
+
 inline int Squad::numAlive() const 
 {
     int num = 0;

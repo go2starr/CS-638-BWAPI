@@ -15,7 +15,11 @@ class CombatManager : public Manager
 private:
     AgentSet unassignedAgents;
     AgentSet assignedAgents;
-    SquadVector squads;
+	AgentSet bunkerAgents;
+	// manage squad types separately
+    SquadVector attackSquads;
+	SquadVector defendSquads;
+	SquadVector bunkerSquads;
     BWAPI::Position enemyBase;
     UnitSet enemyUnits;
     UnitSet enemyActors;
@@ -44,7 +48,10 @@ private:
     int numLivingAgents() const;
 };
 
-inline int CombatManager::numSquads()         const { return squads.size(); }
+inline int CombatManager::numSquads() const 
+{ 
+	return attackSquads.size() +  defendSquads.size() + bunkerSquads.size();
+}
 inline int CombatManager::numEnemyUnits()     const { return enemyUnits.size(); }
 inline int CombatManager::numEnemyActors()    const { return enemyActors.size(); }
 inline int CombatManager::numEnemyBuildings() const { return enemyBuildings.size(); }

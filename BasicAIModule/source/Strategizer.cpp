@@ -215,10 +215,13 @@ void Strategizer::updateUnitAgentMap()
 				a = new FirebatAgent(*u);
 			else if (ut == UnitTypes::Terran_Medic)
 				a = new MedicAgent(*u);
-			else if (ut.isBuilding())
+			// bunker has it's own agent
+			else if (ut.isBuilding() && ut != UnitTypes::Terran_Bunker)
 				a = new StructureAgent(*u);
 			else if (ut.isAddon())
 				a = new StructureAgent(*u);
+			else if (ut == UnitTypes::Terran_Bunker)
+				a = new BunkerAgent(*u);
 			else
 				a = new ActorAgent(*u);
 
@@ -267,7 +270,8 @@ void Strategizer::updateAgentManagerMap()
 			// Barracks -> BuildManager
 			else if (ut == UnitTypes::Terran_Barracks)
 				agentManagerMap[a] = &buildManager;
-			else if (ut.isBuilding())
+			// bunker agent goes to the combat manager
+			else if (ut.isBuilding() && ut != UnitTypes::Terran_Bunker)
 				agentManagerMap[a] = &buildManager;
 
 			// Combat:
@@ -280,6 +284,9 @@ void Strategizer::updateAgentManagerMap()
             // Medic -> CombatManager
             else if (ut == UnitTypes::Terran_Medic)
                 agentManagerMap[a] = &combatManager;
+			// Bunker -> CombatManager
+			else if (ut == UnitTypes::Terran_Bunker)
+				agentManagerMap[a] = &combatManager;
 			else
 				agentManagerMap[a] = &combatManager;
 		}
