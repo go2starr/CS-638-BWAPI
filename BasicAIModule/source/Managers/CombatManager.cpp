@@ -59,7 +59,7 @@ void CombatManager::update()
 
 		// Attack with full squad force (adjust to lower)
 		// Otherwise while we are filling up, look mean
-		if ((*it)->getSize() == AttackSquadSize && leader != NULL)
+		if ((*it)->getSize() == AttackSquadSize && leader != NULL && numTroops > 50)
 		{
 			leader->setState(AttackState);
 			leader->setPositionTarget(enemyBase);

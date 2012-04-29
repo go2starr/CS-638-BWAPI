@@ -63,7 +63,8 @@ void Squad::update()
 		}
 	}
 
-	if( getRadius() > 100 ) // && Broodwar->getFrameCount() % 20 == 0 )
+	// Regather every so often
+	if( getRadius() > 100  && Broodwar->getFrameCount() % 10000 == 0 )
 	{
 		gatherTogether();
 	}
