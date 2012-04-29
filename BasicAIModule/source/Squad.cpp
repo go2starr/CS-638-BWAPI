@@ -123,6 +123,17 @@ void Squad::draw()
 	Broodwar->drawCircleMap(leaderX, leaderY, radius + 2, Colors::Red);
 	Broodwar->drawCircleMap(leaderX, leaderY, radius - 2, Colors::Orange);
 
+	BWAPI::Unit * unitTarget;
+	// Draw squad leader enemy target
+	if ((unitTarget = leader->getUnitTarget()) != NULL)
+	{
+		const int enemyX = unitTarget->getPosition().x();
+		const int enemyY = unitTarget->getPosition().y();
+		const int enemyRadius = unitTarget->getRight() - unitTarget->getPosition().x();
+		Broodwar->drawCircleMap(enemyX, enemyY, enemyRadius + 2, Colors::Green);
+		Broodwar->drawCircleMap(enemyX, enemyY, enemyRadius - 2, Colors::Yellow);
+	}
+
 	// Draw lines from Agents to their leader
 	// 	for (AgentSetIter it = agents.begin(); it != agents.end(); it++)
 	// 	{
@@ -258,6 +269,11 @@ void Squad::gatherTogether()
 		else
 		{
 			const Unit& leaderUnit = leader->getUnit();
+			// set this so if in attack state and agent gets updated 
+			// it doesn't keep going to enemey base and when radius is
+			// low again it's position target will get set to the 
+			// leader's again
+			agent->setPositionTarget(leaderUnit.getPosition());
 			unit.move(leaderUnit.getPosition());
 		}
 	}

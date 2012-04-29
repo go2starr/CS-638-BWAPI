@@ -17,7 +17,7 @@ using namespace std;
 
 // how large to make attack squads
 // and when to attack with them
-static int AttackSquadSize = 10;
+static int AttackSquadSize = 15;
 
 void CombatManager::onMatchStart()
 {
@@ -51,20 +51,80 @@ void CombatManager::update()
 	//const int threshold = 15;
 
 
-	// Attack with full squad force (adjust to lower)
+	// Update squad leaders
 	for (SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); it++)
 	{
-		if ((*it)->getSize() == AttackSquadSize)
+		Agent *leader = (*it)->getLeader();
+		BWAPI::Unit * leaderUnit = &(leader->getUnit());
+
+		// Attack with full squad force (adjust to lower)
+		// Otherwise while we are filling up, look mean
+		if ((*it)->getSize() == AttackSquadSize && leader != NULL)
 		{
-			Agent *a = (*it)->getLeader();
-			if (a != NULL)
+			leader->setState(AttackState);
+			leader->setPositionTarget(enemyBase);
+		}
+		else if (leader != NULL){
+			leader->setState(AttackState);
+			// keep position target at base chokepoint
+		}
+
+		// check for enemy unit targets in range of leader
+		// TODO: set this up for closest weakest enemy
+
+		//BWAPI::WeaponType wt = leader->getUnitWeaponType();
+		// TODO: add more weapon types
+		//set<BWAPI::Unit *> unitsInRange = leaderUnit->getUnitsInWeaponRange(wt);
+
+		// hopefully this covers the back of the squad better (furthest from leader)
+		int killZoneRadius = leaderUnit->getType().sightRange() + (*it)->getRadius();
+		set<BWAPI::Unit *> unitsInRange = leaderUnit->getUnitsInRadius(killZoneRadius);
+
+		if ((int)unitsInRange.size() > 0)
+		{
+			int hitPoints = 99999;
+			BWAPI::Unit * enemyTargetInRange = NULL;
+
+			// get weakest enemy or a medic target
+			for (UnitSetIter unitIt = unitsInRange.begin(); unitIt != unitsInRange.end(); unitIt++)
 			{
-				a->setState(AttackState);
-				a->setPositionTarget(enemyBase);
+				// check for enemy
+				if ((*unitIt)->getPlayer() != Broodwar->self() 
+					&& ((*unitIt)->getType().canAttack() 
+					|| (*unitIt)->getType() == BWAPI::UnitTypes::Terran_Medic
+					|| (*unitIt)->getType() == BWAPI::UnitTypes::Terran_Bunker))
+				{
+					// also check shields
+					int tempHitPoints = (*unitIt)->getHitPoints() + (*unitIt)->getShields();
+
+					if (tempHitPoints == 0)
+						continue;
+
+					if ((*unitIt)->getType() == BWAPI::UnitTypes::Terran_Medic)
+					{
+						enemyTargetInRange = *unitIt;
+						break;
+					}
+					else if (tempHitPoints < hitPoints)
+					{
+						hitPoints = tempHitPoints;
+						enemyTargetInRange = *unitIt;
+					}
+				}
+			}
+			// find a target?
+			if (enemyTargetInRange != NULL)
+			{
+				leader->setState(AttackState);
+				leader->setUnitTarget(enemyTargetInRange);
+			}
+			else 
+			{
+				// reset if no targets in range
+				leader->setUnitTarget(NULL);
 			}
 		}
-	}
-
+	} // end squad leader update
 
 
 	// Move marines from defense squad to bunker squad if one available
@@ -218,8 +278,6 @@ void CombatManager::addNewAgents()
 					|| attackSquads.back()->getSize() == AttackSquadSize)
 				{
 					attackSquads.push_back(new Squad("attack-squad", attack));
-					// increase squad strength for each new squad
-					AttackSquadSize += 5;
 				}
 				squad = attackSquads.back();
 			}
@@ -228,6 +286,11 @@ void CombatManager::addNewAgents()
 			// a squad that has an unfulfilled requirement for this type of unit,
 			// otherwise leave it in the unassigned set
 			squad->addAgent(*it);
+
+			// For now this should always be set, giving them the ability
+			// to look for nearby enemy targets
+			(*it)->setState(AttackState);
+
 			if (squad->getLeader() == NULL)
 			{
 				squad->setLeader(*it);
