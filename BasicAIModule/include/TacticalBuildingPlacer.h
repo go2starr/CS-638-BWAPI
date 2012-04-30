@@ -58,6 +58,7 @@ private:
 											 pair<pair<int,int>,pair<int,int>> sideGrowDirs, int & minTileGapSideA,
 											 int & minTileGapSideB);
 
+	// each region will have a number of chokepoints
 	vector<pair<BWTA::Region *, vector<EnhancedChokepoint>>> regionsToChokepoints;
 	// for chokepointBuildPatternSearch() return
 	vector<vector<BWAPI::TilePosition>> chokepointBuildLocations;

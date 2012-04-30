@@ -59,6 +59,31 @@ public:
     void setParentManager(Manager *manager);
     const std::string getParentManagerName() const;
 
+	// some units have more than one weapon, such as the goliath
+	// where its per air or ground, this does not take the target
+	// into account
+	inline BWAPI::WeaponType getUnitWeaponType ()
+	{
+		BWAPI::UnitType ut = unit.getType();
+
+		// common combat agents and their weapons
+		// TODO: add more as needed
+		if (ut == BWAPI::UnitTypes::Terran_Marine)
+			return BWAPI::WeaponTypes::Gauss_Rifle;
+		else if (ut == BWAPI::UnitTypes::Terran_Firebat)
+			return BWAPI::WeaponTypes::Flame_Thrower;
+		else if (ut == BWAPI::UnitTypes::Terran_Goliath)
+			return BWAPI::WeaponTypes::Twin_Autocannons;
+		else if (ut == BWAPI::UnitTypes::Terran_Missile_Turret)
+			return BWAPI::WeaponTypes::Longbolt_Missile;
+		else if (ut == BWAPI::UnitTypes::Terran_Siege_Tank_Tank_Mode)
+			return BWAPI::WeaponTypes::Arclite_Cannon;
+		else if (ut == BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode)
+			return BWAPI::WeaponTypes::Arclite_Shock_Cannon;
+		else
+			return BWAPI::WeaponTypes::Gauss_Rifle;
+	}
+
 protected:
 	// C'tor (must be called from subclass)
 	Agent(BWAPI::Unit &u);
