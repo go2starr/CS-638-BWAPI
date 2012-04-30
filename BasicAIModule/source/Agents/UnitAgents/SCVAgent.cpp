@@ -5,6 +5,7 @@
 #include "GroundAgent.h"
 
 #include "TacticalBuildingPlacer.h"
+#include "ResourceAdvisor.h"
 
 #include <BWAPI.h>
 
@@ -27,8 +28,18 @@ void SCVAgent::update()
 
 		case GatherState:
 			// Gather minerals
-			if (unitTarget->getType().isMineralField()) 
+			// Exhausted mineral fields become Unknown type, so we need to check against that type
+			if (unitTarget->getType().isMineralField() || 
+				unitTarget->getType().getID() == UnitTypes::Unknown.getID()) 
 			{
+				// Get a new mineral patch if this one is exhausted
+				if (unitTarget->getResources() <= 0) {
+					Unit* mineralPatch = ResourceAdvisor::getClosestMineralPatch(*this);
+					if (mineralPatch != NULL)
+						unitTarget = mineralPatch;
+					unit.gather(unitTarget);
+				}
+				// Initiate gathering action
 				if (!unit.isGatheringMinerals())
 					unit.gather(unitTarget);
 			}

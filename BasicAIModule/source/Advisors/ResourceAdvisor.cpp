@@ -20,7 +20,10 @@ UnitSet ResourceAdvisor::geysers;
 
 void ResourceAdvisor::discoverMineralPatch( Unit& mineral )
 {
-	// TODO: should probably verify unit type
+	if (!mineral.getType().isMineralField()) {
+		Broodwar->sendText("WARNING: Non-mineral field inserted into minerals!!");
+		return;
+	}
 	minerals.insert(&mineral);
 }
 
@@ -59,7 +62,11 @@ Unit* ResourceAdvisor::getClosestMineralPatch( const Agent& agent )
 		Unit *unit = *it;
 		
 		// Ignore used up patches
-		if( unit->getResources() < 1 )
+		if( unit->getResources() <= 0 )
+			continue;
+
+		// Used up patches become "Unknown" type
+		if (!unit->getType().isMineralField() || unit->getType() == UnitTypes::Unknown)
 			continue;
 
 		int dist = agent.getUnit().getDistance(unit);
