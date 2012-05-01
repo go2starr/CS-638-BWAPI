@@ -10,8 +10,8 @@
 #include <BWAPI.h>
 
 using namespace BWAPI;
-using std::string;
 
+using std::string;
 
 Agent::Agent(Unit& u)
     : unit(u)
@@ -119,3 +119,4 @@ void Agent::draw()
 	}
 	*/
 }
+

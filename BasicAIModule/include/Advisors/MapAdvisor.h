@@ -79,4 +79,8 @@ public:
 	static void onMatchEnd();
 	static void mapLog();
 
+	// Utilities for finding valid positions
+	static bool isOccupiedPosition(BWAPI::Position target);
+	static BWAPI::Position getClosestPosition(BWAPI::Position target);
+
 };
