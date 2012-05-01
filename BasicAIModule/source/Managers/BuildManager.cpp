@@ -26,15 +26,6 @@ void BuildManager::update()
 	// Update Agents
 	Manager::update();
 
-	/*** <DEBUG> ****/
-	if (buildStack.size() > 50 || 
-		buildQueue.size() > 50)
-	{
-		Broodwar->sendText("BM STACK OVERFLOW");
-		return;
-	}
-	/*** </DEBUG> ****/
-
 	// Done with the current request?
 	if (buildStack.empty())
 	{
@@ -57,8 +48,6 @@ void BuildManager::update()
 	{
 	case NEW: 
 	{
-		//Broodwar->sendText("Trying to build: %s", type.c_str());
-
 		// Check reqs
 		int mineralsNeeded = type.mineralPrice();
 		int gasNeeded = type.gasPrice();

@@ -53,10 +53,6 @@ void SCVAgent::update()
 			break;
 
 		case BuildState:
-			// Return cargo
-			//if (unit.isCarryingGas() ||	unit.isCarryingMinerals()) {
-			//	unit.returnCargo();
-			//}
 
 			// Done?
 			if (!unit.isConstructing() && constructingStructure != NULL)
