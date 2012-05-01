@@ -82,5 +82,5 @@ public:
 	// Utilities for finding valid positions
 	static bool isOccupiedPosition(BWAPI::Position target);
 	static BWAPI::Position getClosestPosition(BWAPI::Position target);
-
+	static BWAPI::Position getPositionOutsideNearestChokepoint(BWAPI::Position, int dist = 200);
 };

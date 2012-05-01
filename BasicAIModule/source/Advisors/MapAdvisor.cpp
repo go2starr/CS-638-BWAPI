@@ -269,3 +269,26 @@ Position MapAdvisor::getClosestPosition(Position target)
 	// If we couldn't find anything, try again later
 	return target;
 }
+
+Position MapAdvisor::getPositionOutsideNearestChokepoint(BWAPI::Position p, int dist)
+{
+    BWTA::Chokepoint* chokepoint = BWTA::getNearestChokepoint(p);
+	if( chokepoint != NULL ) {
+		Position cp = chokepoint->getCenter();
+		int cpx = cp.x();
+		int cpy = cp.y();
+
+		// Get a rough estimate of unit vector from Position to Chokepoint
+		int dx = cpx - p.x();
+		int dy = cpy - p.y();
+		int d  = p.getApproxDistance(cp);  // close enough
+
+		// Offset outward
+		cpx += dx * dist / (1 + d);
+		cpy += dy * dist / (1 + d);
+
+		return Position(cpx, cpy).makeValid();
+	} else {
+		return Position();
+	}
+}

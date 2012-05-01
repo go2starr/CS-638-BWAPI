@@ -1,4 +1,5 @@
 #include <StructureAgent.h>
+#include <MapAdvisor.h>
 #include <BWTA.h>
 
 #include <cmath>
@@ -11,21 +12,9 @@ using namespace BWAPI;
 void StructureAgent::update()
 {
 	// Send Units to nearest chokepoint
-    BWTA::Chokepoint* chokepoint = BWTA::getNearestChokepoint(unit.getPosition());
-	if( chokepoint != NULL ) {
-		Position p = chokepoint->getCenter();
-		int px = p.x();
-		int py = p.y();
-
-		// Get a rough estimate of unit vector from Unit to Chokepoint
-		int dx = px - unit.getPosition().x();
-		int dy = py - unit.getPosition().y();
-		int d  = dx + dy;  // close enough
-
-		// Offset outward
-		px += dx * 50 / d;
-		py += dy * 50 / d;
-	}
+	Position rallyPoint = MapAdvisor::getPositionOutsideNearestChokepoint(unit.getPosition());
+	if (rallyPoint != NULL)
+		unit.setRallyPoint(rallyPoint);
 
 	switch (state)
 	{

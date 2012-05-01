@@ -1,5 +1,6 @@
 #include "CombatManager.h"
 #include "SquadAdvisor.h"
+#include <MapAdvisor.h>
 #include "Common.h"
 #include "Squad.h"
 
@@ -233,11 +234,10 @@ void CombatManager::addNewAgents()
 			unassignedAgents.insert(agent);
 
 			// TODO - this is a hack to make them defend in the right place
-			Chokepoint *cp = BWTA::getNearestChokepoint(agent->getUnit().getPosition());
-			if( cp != NULL )
-				agent->setPositionTarget(cp->getCenter());
-			else 
-				agent->setPositionTarget(Position(Broodwar->self()->getStartLocation()));
+			Position unitPosition = agent->getUnit().getPosition();
+			Position rallyPoint = MapAdvisor::getPositionOutsideNearestChokepoint(unitPosition);
+			if (rallyPoint != Positions::None)
+				agent->setPositionTarget(rallyPoint);
 
 			// Assign Agent to a Squad
 
