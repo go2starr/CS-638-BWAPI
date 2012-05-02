@@ -35,19 +35,6 @@ void ResourceAdvisor::discoverVespeneGeyser( Unit& geyser )
 
 bool ResourceAdvisor::makeAgentGatherMinerals( Agent& agent )
 {
-	bool success = false;
-
-	Unit *closest = getClosestMineralPatch(agent);
-	if( closest != NULL )
-	{
-		agent.setState(GatherState);
-		agent.setUnitTarget(closest);
-		agent.setUnitTypeTarget(closest->getType());
-		agent.setPositionTarget(closest->getPosition());
-		success = true;
-	}
-
-	return success;
 }
 
 Unit* ResourceAdvisor::getClosestMineralPatch( const Agent& agent )

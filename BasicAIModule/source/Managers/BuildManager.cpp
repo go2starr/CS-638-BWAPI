@@ -8,6 +8,7 @@
 #include "Common.h"
 #include "Agent.h"
 #include "State.h"
+#include "Agents/UnitAgents/SCVAgent.h"
 
 #include <BWAPI.h>
 #include <BWTA.h>
@@ -173,7 +174,7 @@ void BuildManager::update()
         Agent& agent = **worker;
         if( agent.getState() == IdleState ) 
         {
-            ResourceAdvisor::makeAgentGatherMinerals(agent);
+			((SCVAgent*)&agent)->gatherMinerals();
         }
     }
 }

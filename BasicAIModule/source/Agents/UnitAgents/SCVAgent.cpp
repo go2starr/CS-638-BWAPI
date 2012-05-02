@@ -93,3 +93,19 @@ void SCVAgent::update()
 
     GroundAgent::update();
 }
+
+bool SCVAgent::gatherMinerals()
+{
+	bool success = false;
+	Unit *closest = ResourceAdvisor::getClosestMineralPatch(*this);
+	if( closest != NULL )
+	{
+		setState(GatherState);
+		setUnitTarget(closest);
+		setUnitTypeTarget(closest->getType());
+		setPositionTarget(closest->getPosition());
+		success = true;
+	}
+
+	return success;
+}
