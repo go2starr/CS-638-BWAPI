@@ -56,6 +56,9 @@ public:
     inline const BWAPI::UnitType& getUnitTypeTarget() const { return unitTypeTarget; }
     inline BWAPI::Unit* getUnitTarget() const { return unitTarget; }
 
+	// build - build (SCV) or train the specified unit
+	void build(BWAPI::UnitType type);
+
     void setParentManager(Manager *manager);
     const std::string getParentManagerName() const;
 

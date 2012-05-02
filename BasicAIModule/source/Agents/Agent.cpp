@@ -120,3 +120,12 @@ void Agent::draw()
 	*/
 }
 
+void Agent::build(UnitType type)
+{
+	if (type.isBuilding())
+		setState(BuildState);
+	else
+		setState(TrainState);
+	setUnitTypeTarget(type);
+}
+

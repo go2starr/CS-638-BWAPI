@@ -102,11 +102,8 @@ void BuildManager::update()
 				&& (*i)->getState() != TrainState)  
 			{
 				// Found one, build it (this works for addons too)
-				if (type.isBuilding())
-					(*i)->setState(BuildState);
-				else
-					(*i)->setState(TrainState);
-				(*i)->setUnitTypeTarget(type);
+				(*i)->build(type);
+
 				// Remember we issued the command
 				req.builder = &(*i)->getUnit();
 				req.state = ISSUED;
