@@ -8,6 +8,7 @@
 #include "Common.h"
 #include "Agent.h"
 #include "State.h"
+#include "Agents/UnitAgents/SCVAgent.h"
 
 #include <BWAPI.h>
 #include <BWTA.h>
@@ -25,15 +26,6 @@ void BuildManager::update()
 {
 	// Update Agents
 	Manager::update();
-
-	/*** <DEBUG> ****/
-	if (buildStack.size() > 50 || 
-		buildQueue.size() > 50)
-	{
-		Broodwar->sendText("BM STACK OVERFLOW");
-		return;
-	}
-	/*** </DEBUG> ****/
 
 	// Done with the current request?
 	if (buildStack.empty())
@@ -57,8 +49,6 @@ void BuildManager::update()
 	{
 	case NEW: 
 	{
-		//Broodwar->sendText("Trying to build: %s", type.c_str());
-
 		// Check reqs
 		int mineralsNeeded = type.mineralPrice();
 		int gasNeeded = type.gasPrice();
@@ -112,11 +102,8 @@ void BuildManager::update()
 				&& (*i)->getState() != TrainState)  
 			{
 				// Found one, build it (this works for addons too)
-				if (type.isBuilding())
-					(*i)->setState(BuildState);
-				else
-					(*i)->setState(TrainState);
-				(*i)->setUnitTypeTarget(type);
+				(*i)->build(type);
+
 				// Remember we issued the command
 				req.builder = &(*i)->getUnit();
 				req.state = ISSUED;
@@ -184,7 +171,7 @@ void BuildManager::update()
         Agent& agent = **worker;
         if( agent.getState() == IdleState ) 
         {
-            ResourceAdvisor::makeAgentGatherMinerals(agent);
+			((SCVAgent*)&agent)->gatherMinerals();
         }
     }
 }

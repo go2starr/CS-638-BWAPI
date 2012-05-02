@@ -10,8 +10,8 @@
 #include <BWAPI.h>
 
 using namespace BWAPI;
-using std::string;
 
+using std::string;
 
 Agent::Agent(Unit& u)
     : unit(u)
@@ -61,8 +61,8 @@ void Agent::draw()
 	const int radius = unit.getRight() - px;
 
 	// Draw owner, state, type
-	if (state != GatherState 
-	 && DebugFlags::instance().getFlag(agent_details) )
+	if (//state != GatherState &&
+		DebugFlags::instance().getFlag(agent_details) )
 		Broodwar->drawTextMap(px, py, "(%s, %s%s)", getParentManagerName().c_str(),
 			StateStrings[state], unitTypeTargetValid() ? (string(", ") += string(UnitTypeStrings[unitTypeTarget.getID()])).c_str()
 														:	"");
@@ -94,10 +94,17 @@ void Agent::draw()
             {
                 const int tx = unitTarget->getPosition().x();
                 const int ty = unitTarget->getPosition().y();
-                Broodwar->drawLineMap(px, py, tx, ty, Colors::Red);
+                Broodwar->drawLineMap(px+1, py+1, tx+1, ty+1, Colors::Red);
                 Broodwar->drawTextMap(tx, ty, "id: %x", unitTarget);
             }
         }
+
+		// Draw in-game target
+		if (unit.getTargetPosition().isValid()) {
+			const int tx = unit.getTargetPosition().x();
+			const int ty = unit.getTargetPosition().y();
+			Broodwar->drawLineMap(px+2, py+2, tx+2, ty+2, Colors::Cyan);
+		}
     }
 
 	/*
@@ -112,3 +119,13 @@ void Agent::draw()
 	}
 	*/
 }
+
+void Agent::build(UnitType type)
+{
+	if (type.isBuilding())
+		setState(BuildState);
+	else
+		setState(TrainState);
+	setUnitTypeTarget(type);
+}
+

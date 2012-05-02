@@ -429,6 +429,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\Advisors\ResourceAdvisor.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\Agents\State.h"
 					>
 				</File>
@@ -566,10 +570,6 @@
 				</File>
 				<File
 					RelativePath=".\include\Advisors\MapAdvisor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\Advisors\ResourceAdvisor.h"
 					>
 				</File>
 				<File

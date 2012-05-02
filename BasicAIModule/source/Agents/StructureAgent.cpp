@@ -1,5 +1,10 @@
 #include <StructureAgent.h>
+#include <MapAdvisor.h>
 #include <BWTA.h>
+
+#include <cmath>
+
+using namespace BWAPI;
 
 // currenty is set up to produce / train agents
 // this should be moved to production agent or something
@@ -7,9 +12,9 @@
 void StructureAgent::update()
 {
 	// Send Units to nearest chokepoint
-    BWTA::Chokepoint* chokepoint = BWTA::getNearestChokepoint(unit.getPosition());
-    if( chokepoint != NULL )
-        unit.setRallyPoint(chokepoint->getCenter());
+	Position rallyPoint = MapAdvisor::getPositionOutsideNearestChokepoint(unit.getPosition());
+	if (rallyPoint != NULL)
+		unit.setRallyPoint(rallyPoint);
 
 	switch (state)
 	{

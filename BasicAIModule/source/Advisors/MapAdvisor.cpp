@@ -15,10 +15,13 @@ using namespace BWAPI;
 using std::deque;
 using std::map;
 
+using std::pair;
+using std::set;
 
-	int MapAdvisor::blockXLength = -1;
-	int MapAdvisor::blockYLength = -1;
-	std::ofstream mapAdvisorLogFile;
+
+int MapAdvisor::blockXLength = -1;
+int MapAdvisor::blockYLength = -1;
+std::ofstream mapAdvisorLogFile;
 
 MapBlock MapAdvisor::mapBlocks[MapAdvisor::blockXCount][MapAdvisor::blockYCount];
 
@@ -210,4 +213,82 @@ void MapAdvisor::mapLog()
 		mapAdvisorLogFile << "\n";
 	}
 	
+}
+
+
+
+bool MapAdvisor::isOccupiedPosition(Position target)
+{
+	UnitSet units = Broodwar->getUnitsOnTile(target.x(), target.y());
+	return units.size() > 0;
+}
+
+/* BFS to find closest valid tile without Units */
+Position MapAdvisor::getClosestPosition(Position target)
+{
+	typedef pair<int,int> pt;
+	queue<pt> open;
+	map<pt, bool> visited;
+
+	// Start at target
+	open.push(pt(target.x(), target.y()));
+
+	while (!open.empty())
+	{
+		// Visited?
+		if (visited[open.front()])
+		{
+			open.pop();
+			continue;
+		}
+
+		// Mark visited
+		pt p = open.front(); open.pop();
+		visited[p] = true;
+
+		// Prepare
+		int x = p.first;
+		int y = p.second;
+		Position pos = Position(p.first, p.second).makeValid();
+
+		// Goal test
+		if (!isOccupiedPosition(pos))
+		{
+			return pos;
+		}
+		// Search
+		else
+		{
+			open.push(pt(x + 1, y));
+			open.push(pt(x - 1, y));
+			open.push(pt(x, y + 1));
+			open.push(pt(x, y - 1));
+		}		
+	}
+
+	// If we couldn't find anything, try again later
+	return target;
+}
+
+Position MapAdvisor::getPositionOutsideNearestChokepoint(BWAPI::Position p, int dist)
+{
+    BWTA::Chokepoint* chokepoint = BWTA::getNearestChokepoint(p);
+	if( chokepoint != NULL ) {
+		Position cp = chokepoint->getCenter();
+		int cpx = cp.x();
+		int cpy = cp.y();
+
+		// Get a rough estimate of unit vector from Position to Chokepoint
+		int dx = cpx - p.x();
+		int dy = cpy - p.y();
+		int d  = p.getApproxDistance(cp);  // close enough
+
+		// Offset outward
+		cpx += dx * dist / (1 + d);
+		cpy += dy * dist / (1 + d);
+
+		return Position(cpx, cpy).makeValid();
+	} else {
+		return Position();
+	}
 }

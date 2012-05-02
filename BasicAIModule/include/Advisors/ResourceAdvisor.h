@@ -19,6 +19,5 @@ public:
 	static void discoverMineralPatch(BWAPI::Unit& mineral);
 	static void discoverVespeneGeyser(BWAPI::Unit& geyser);
 
-	static bool makeAgentGatherMinerals(Agent& agent);
 	static BWAPI::Unit* getClosestMineralPatch(const Agent& agent);
 };

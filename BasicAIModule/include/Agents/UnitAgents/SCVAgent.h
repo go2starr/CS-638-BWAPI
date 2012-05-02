@@ -13,6 +13,9 @@ public:
 	SCVAgent(BWAPI::Unit& u);
 	virtual void update();
 
+	// gatherMinerals - make this SCV agent mine minerals.  Returns 0 on failure.
+	bool gatherMinerals();
+
 private:
 	BWAPI::TilePosition buildLocation;
 	bool wasConstructing;

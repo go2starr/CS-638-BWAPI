@@ -1,5 +1,6 @@
 #include "CombatManager.h"
 #include "SquadAdvisor.h"
+#include <MapAdvisor.h>
 #include "Common.h"
 #include "Squad.h"
 
@@ -77,7 +78,7 @@ void CombatManager::update()
 		//set<BWAPI::Unit *> unitsInRange = leaderUnit->getUnitsInWeaponRange(wt);
 
 		// hopefully this covers the back of the squad better (furthest from leader)
-		int killZoneRadius = leaderUnit->getType().sightRange() + (*it)->getRadius();
+		int killZoneRadius = leaderUnit->getType().seekRange() + (*it)->getRadius();
 		set<BWAPI::Unit *> unitsInRange = leaderUnit->getUnitsInRadius(killZoneRadius);
 
 		if ((int)unitsInRange.size() > 0)
@@ -233,11 +234,10 @@ void CombatManager::addNewAgents()
 			unassignedAgents.insert(agent);
 
 			// TODO - this is a hack to make them defend in the right place
-			Chokepoint *cp = BWTA::getNearestChokepoint(agent->getUnit().getPosition());
-			if( cp != NULL )
-				agent->setPositionTarget(cp->getCenter());
-			else 
-				agent->setPositionTarget(Position(Broodwar->self()->getStartLocation()));
+			Position unitPosition = agent->getUnit().getPosition();
+			Position rallyPoint = MapAdvisor::getPositionOutsideNearestChokepoint(unitPosition);
+			if (rallyPoint != Positions::None)
+				agent->setPositionTarget(rallyPoint);
 
 			// Assign Agent to a Squad
 
