@@ -33,10 +33,6 @@ void ResourceAdvisor::discoverVespeneGeyser( Unit& geyser )
 	geysers.insert(&geyser);
 }
 
-bool ResourceAdvisor::makeAgentGatherMinerals( Agent& agent )
-{
-}
-
 Unit* ResourceAdvisor::getClosestMineralPatch( const Agent& agent )
 {
 	Unit *closest = NULL;
