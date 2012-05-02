@@ -5,6 +5,7 @@
 #include "TacticalBuildingPlacer.h"
 #include "DebugFlags.h"
 #include "Common.h"
+#include "MapAdvisor.h"
 
 #include <BWAPI.h>
 #include <BWSAL/BFSBuildingPlacer.h>
@@ -1297,6 +1298,11 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 	// Bunkers
 	else if (unitType == BWAPI::UnitTypes::Terran_Bunker)
 	{
+		Position startPos = BWTA::getStartLocation(Broodwar->self())->getPosition();
+		TilePosition chokeLoc = TilePosition(MapAdvisor::getPositionOutsideNearestChokepoint(startPos));
+		if (chokeLoc != Positions::None)
+			loc = buildingPlacer.findBuildLocation(BWSAL::ReservedMap::getInstance(), unitType, chokeLoc, builder);
+		/*
 		pair<BWTA::Region *, vector<EnhancedChokepoint>> regionChokepoints;
 		BWTA::BaseLocation * baseLoc;
 		BWTA::Region * baseRegion;
@@ -1318,6 +1324,8 @@ BWAPI::TilePosition TacticalBuildingPlacer::reserveBuildLocation(BWAPI::UnitType
 				}
 			}
 		}
+		*/
+
 	}
 
 	// reserve location 
