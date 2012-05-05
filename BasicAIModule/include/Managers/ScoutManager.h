@@ -22,7 +22,7 @@ class ScoutManager : public Manager
 private:
 
 
-	void log(int x, int y);
+	void log(int x, int y, int scoutX, int scoutY);
 
 public: 
 	static const int CONTROLVALUEVALUE = 10;
@@ -36,7 +36,7 @@ public:
 	void draw();
 
 	std::ofstream scoutManagerLogFile;
-	BWAPI::TilePosition getScoutTilePosition(BWAPI::TilePosition tilePosition, bool isFlyer);
+	BWAPI::TilePosition getScoutTilePosition(BWAPI::TilePosition scoutTilePosition, bool isFlyer);
 
 	ScoutMapBlock scoutMapBlocks[MapAdvisor::blockXCount][MapAdvisor::blockYCount];	
 

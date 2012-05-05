@@ -110,12 +110,14 @@ void ActorAgent::update()
 			//			BWAPI::TilePosition target = scoutManager.getScoutTilePosition(unit.getTilePosition());
 
 			//			BWAPI::TilePosition target = Strategizer::instance()::ScoutManager::getScoutTilePosition(unit.getTilePosition());
-
+			if (Broodwar->getFrameCount() % 100 == 0) 
+			{
 			BWAPI::TilePosition target = Strategizer::instance().scoutManager.getScoutTilePosition(unit.getTilePosition(), unit.getType().isFlyer());
 
 			//			Strategizer::instance().scoutManager.scratch();
 
 			unit.move(Position(target));
+			}
 		}
 		break;
 	}

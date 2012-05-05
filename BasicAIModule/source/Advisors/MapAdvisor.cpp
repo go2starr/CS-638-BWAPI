@@ -70,6 +70,9 @@ int MapAdvisor::getStratigicValue(MapBlock mapBlock){
 	// is there a starting location on the block?
 	stratigicValue += mapBlock.startLocation * MapAdvisor::STARTLOCATIONVALUE;
 
+	// is it a base locaiton
+	stratigicValue += mapBlock.baseLocation * MapAdvisor::BASELOCATIONVALUE;
+
 	// are there any resources on the map
 	stratigicValue += mapBlock.gasAvailable / MapAdvisor::GASVALUE;
 	stratigicValue += mapBlock.mineralsAvailable / MapAdvisor::MINERALSVALUE;
@@ -116,18 +119,85 @@ void MapAdvisor::init(int mapX, int mapY){
 			mapBlock.stratigicValue = 0;
 		}
 
-		// Cycle through regions..
-			// Cycle through choke points 
-			// TODO
-			
-			// Cycle through bases
-			//TODO		
 
-			// Cycle through start points
-			//TODO
+		// Initialize Stratigic Values
+		MapAdvisor::initStratigicValues();
 
 	// Create Log file.
 	mapAdvisorLogFile.open("c:\\MapAdvisor.log");
+}
+
+void MapAdvisor::initStratigicValues()
+{
+	int xBlock;
+	int yBlock;
+
+	// Update Starting Locations
+	set<TilePosition>& startPositions = Broodwar->getStartLocations();
+	set<TilePosition>::iterator pit  = startPositions.begin();
+	set<TilePosition>::iterator pend = startPositions.end();
+	for(; pit != pend; ++pit)
+	{
+		TilePosition pos = *pit;
+		xBlock = pos.x() / MapAdvisor::blockXLength;
+		yBlock = pos.y() / MapAdvisor::blockYLength;
+
+		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
+		mapBlock.startLocation = 1;
+	}
+
+	// Update Base Locations
+	for(std::set<BWTA::BaseLocation*>::const_iterator i=BWTA::getBaseLocations().begin();i!=BWTA::getBaseLocations().end();i++)
+	{
+		TilePosition pos = (*i)->getTilePosition();
+		xBlock = pos.x() / MapAdvisor::blockXLength;
+		yBlock = pos.y() / MapAdvisor::blockYLength;
+
+		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
+		mapBlock.baseLocation = 1;		
+	}
+
+	// Update Choke Point Locations
+	for(std::set<BWTA::Chokepoint*>::const_iterator i=BWTA::getChokepoints().begin();i!=BWTA::getChokepoints().end();i++)
+	{
+		Position pos = (*i)->getCenter();
+		int x = pos.x();
+		int y = pos.y();
+		xBlock = x / (MapAdvisor::blockXLength * 32);
+		yBlock = y / (MapAdvisor::blockYLength * 32);
+
+		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
+		mapBlock.chokePoint = 1;		
+	}
+/*
+	const set<TilePosition> basePositions = BWTA::getBaseLocations();
+	pit  = basePositions.begin();
+	pend = basePositions.end();
+	for(; pit != pend; ++pit)
+	{
+		TilePosition pos = *pit;
+		xBlock = pos.x() / MapAdvisor::blockXLength;
+		yBlock = pos.y() / MapAdvisor::blockYLength;
+
+		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
+		mapBlock.baseLocation = 1;
+	}
+/*
+	// Update Choke Point Locations
+	set<TilePosition> chokePositions = BWTA::getChokepoints();
+	pit  = chokePositions.begin();
+	pend = chokePositions.end();
+	for(; pit != pend; ++pit)
+	{
+		TilePosition pos = *pit;
+		xBlock = pos.x() / MapAdvisor::blockXLength;
+		yBlock = pos.y() / MapAdvisor::blockYLength;
+
+		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
+		mapBlock.chokePoint = 1;
+	}
+*/	
+	
 }
 
 void MapAdvisor::onMatchEnd()
@@ -160,6 +230,19 @@ void MapAdvisor::update()
 	if (Broodwar->getFrameCount() % 1000 == 0)
 		MapAdvisor::mapLog();
 
+	// TEMP
+	MapAdvisor::initStratigicValues();
+
+}
+
+double MapAdvisor::getDistance(BWAPI::TilePosition initialTilePosition, BWAPI::TilePosition targetTilePosition, bool isFlyer)
+{
+	if (isFlyer)
+		return initialTilePosition.getDistance(targetTilePosition);
+	else
+		// too slow to calculate
+		// return BWTA::getGroundDistance(initialTilePosition, targetTilePosition);
+		return initialTilePosition.getDistance(targetTilePosition);
 }
 
 void MapAdvisor::draw(){}
@@ -202,6 +285,10 @@ void MapAdvisor::mapLog()
 		mapAdvisorLogFile << "\nStart Location :";
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].startLocation;
+		
+		mapAdvisorLogFile << "\nBase Location :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].baseLocation;
 
 		mapAdvisorLogFile << "\nUL Coordinates :";
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)

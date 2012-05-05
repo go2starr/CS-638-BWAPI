@@ -32,6 +32,7 @@ struct MapBlock {
 	int mineralsAvailable;	//The amount of minerals available in the square
 	bool chokePoint;		//If the block contains a choke point
 	bool startLocation;		//If the block contains a start location
+	bool baseLocation;		// if the block contains a base location
 	// TODO: track existance / ownership of gas extractor
 	// TODO: Add base reference
 } ;
@@ -43,9 +44,10 @@ private:
 
 	static const int CHOKEPOINTVALUE = 20;
 	static const int STARTLOCATIONVALUE = 50;
+	static const int BASELOCATIONVALUE = 100;
 	static const int GASVALUE = 1000;
 	static const int MINERALSVALUE = 1000;
-	static const int LOCATIONVALUE = 25;
+	static const int LOCATIONVALUE = 2;
 
 
 //	static std::ofstream mapAdvisorLogFile;
@@ -57,6 +59,8 @@ private:
 	static int getControlLevel(MapBlock mapBlock);
 
 	static int getLocationControl(int x, int y);
+
+	static void initStratigicValues();
 
 
 public: 
@@ -78,6 +82,9 @@ public:
 	static void draw();
 	static void onMatchEnd();
 	static void mapLog();
+
+	// Utilities for finding distances
+	static double getDistance(BWAPI::TilePosition initialTilePosition, BWAPI::TilePosition targetTilePosition, bool isFlyer);
 
 	// Utilities for finding valid positions
 	static bool isOccupiedPosition(BWAPI::Position target);
