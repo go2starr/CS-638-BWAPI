@@ -139,7 +139,7 @@ BWAPI::TilePosition ScoutManager::getScoutTilePosition(BWAPI::TilePosition scout
 	if (Broodwar->getFrameCount() % 1000 == 0)
 		ScoutManager::log(xMapBlock, yMapBlock, scoutTilePosition.x(), scoutTilePosition.y());
 
-	return targetTilePosition;
+	return targetTilePosition.makeValid();
 
 }
 
