@@ -293,9 +293,9 @@ void Strategizer::updateAgentManagerMap()
 		}
 	}
 
-	// take one of the resourceManager SCV's and give it to the gas manager
+	// take three of the resourceManager SCV's and give it to the gas manager
 	if (Broodwar->self()->supplyUsed() >= 30 &&
-		gasManager.numAgents(UnitTypes::Terran_SCV) < 1)
+		gasManager.numAgents(UnitTypes::Terran_SCV) < 3)
 	{
 		remap(UnitTypes::Terran_SCV, buildManager, gasManager);
 	}
