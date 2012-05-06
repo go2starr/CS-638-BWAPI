@@ -139,7 +139,7 @@ void ActorAgent::update()
 			TilePosition target = moveTilePosition;
 
 			// Try to use BWTA pathing to get to destination
-			bool useBWTAPath = true;
+			bool useBWTAPath = false;
 
 			if (useBWTAPath)
 			{
@@ -150,15 +150,17 @@ void ActorAgent::update()
 					target = unit.getTilePosition(); // Stay where it is.  Will get new order on next cycle.
 					//Broodwar->sendText("!! Scout Path Empty !!");
 				}
-
-				if (pathVector.size() > 20)
-					target = pathVector[20];
-				else
-					//Broodwar->sendText("Close to Scout Target!");
-					//target = pathVector[pathVector.size() - 1];  // Crashes, and I don't know why
-					target = moveTilePosition;
+				else 
+				{
+					if (pathVector.size() > 20)
+						target = pathVector[20];
+					else
+						//Broodwar->sendText("Close to Scout Target!");
+						target = pathVector[pathVector.size() - 1];  // Crashes, and I don't know why
+						//target = moveTilePosition;
+				}
 			}
-
+			// Order the unit to move
 			unit.move(Position(target));
 			
 			// Record posiion for next iteration
