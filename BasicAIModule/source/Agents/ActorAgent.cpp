@@ -23,6 +23,9 @@ ActorAgent::ActorAgent(Unit &u)
 
 void ActorAgent::update()
 {
+	if (unit.exists() == false)
+		return;
+
 	switch(state)
 	{
 	case IdleState:
@@ -115,6 +118,10 @@ void ActorAgent::update()
 
 			//			BWAPI::TilePosition target = Strategizer::instance()::ScoutManager::getScoutTilePosition(unit.getTilePosition());
 
+
+			if(unit.exists() == false)
+				Broodwar->sendText("!! Scout Unit does not exist !!");
+
 			// See if the unit needs a new order
 			bool newOrder = false;
 			if (unit.getTilePosition() == lastTilePosition ||
@@ -141,7 +148,7 @@ void ActorAgent::update()
 				if (pathVector.empty())
 				{
 					target = unit.getTilePosition(); // Stay where it is.  Will get new order on next cycle.
-					Broodwar->sendText("!! Scout Path Empty !!");
+					//Broodwar->sendText("!! Scout Path Empty !!");
 				}
 
 				if (pathVector.size() > 20)
