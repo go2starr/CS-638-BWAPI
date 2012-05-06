@@ -62,10 +62,14 @@ void Agent::draw()
 
 	// Draw owner, state, type
 	if (//state != GatherState &&
-		DebugFlags::instance().getFlag(agent_details) )
+		DebugFlags::instance().getFlag(agent_details) ) {
+		
 		Broodwar->drawTextMap(px, py, "(%s, %s%s)", getParentManagerName().c_str(),
 			StateStrings[state], unitTypeTargetValid() ? (string(", ") += string(UnitTypeStrings[unitTypeTarget.getID()])).c_str()
 														:	"");
+		if (buildQueue.size())
+			Broodwar->drawTextMap(px, py+10, "BQ Size: %d", buildQueue.size());
+	}
 	// Targets
 	if( DebugFlags::instance().getFlag(agent_targets) )
 	{
