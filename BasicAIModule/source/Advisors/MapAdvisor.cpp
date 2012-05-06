@@ -169,34 +169,6 @@ void MapAdvisor::initStratigicValues()
 		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
 		mapBlock.chokePoint = 1;		
 	}
-/*
-	const set<TilePosition> basePositions = BWTA::getBaseLocations();
-	pit  = basePositions.begin();
-	pend = basePositions.end();
-	for(; pit != pend; ++pit)
-	{
-		TilePosition pos = *pit;
-		xBlock = pos.x() / MapAdvisor::blockXLength;
-		yBlock = pos.y() / MapAdvisor::blockYLength;
-
-		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
-		mapBlock.baseLocation = 1;
-	}
-/*
-	// Update Choke Point Locations
-	set<TilePosition> chokePositions = BWTA::getChokepoints();
-	pit  = chokePositions.begin();
-	pend = chokePositions.end();
-	for(; pit != pend; ++pit)
-	{
-		TilePosition pos = *pit;
-		xBlock = pos.x() / MapAdvisor::blockXLength;
-		yBlock = pos.y() / MapAdvisor::blockYLength;
-
-		MapBlock& mapBlock = MapAdvisor::mapBlocks[xBlock][yBlock];
-		mapBlock.chokePoint = 1;
-	}
-*/	
 	
 }
 
