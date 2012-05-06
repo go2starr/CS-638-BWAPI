@@ -63,9 +63,9 @@ BWAPI::TilePosition ScoutManager::getScoutTilePosition(BWAPI::TilePosition scout
 	int y = 0;
 	int xMapBlock = 0;
 	int yMapBlock = 0;
-	double stratigicValue;
-	double distanceValue;
-	double lastVisibleValue;
+	double stratigicValue = 0.0;
+	double distanceValue = 0.0;
+	double lastVisibleValue = 0.0;
 
 
 	bool reachable;
@@ -84,17 +84,15 @@ BWAPI::TilePosition ScoutManager::getScoutTilePosition(BWAPI::TilePosition scout
 
 			// Check to see if there is a path to the desired tile position
 			reachable = (isFlyer || scoutTilePosition.hasPath(tempTilePosition));
-			if (reachable)  // Only need to evaluate the tile if it is reachable.
-			{
-				// Value based on the strategic value of the block
-				stratigicValue = (MapAdvisor::mapBlocks[i][j].stratigicValue * ScoutManager::CONTROLVALUEVALUE);
 
-				// Reduce the value for blocks that are further away
-				distanceValue = (MapAdvisor::getDistance(scoutTilePosition, tempTilePosition, isFlyer) / ScoutManager::DISTANCEVALUE);
+			// Value based on the strategic value of the block
+			stratigicValue = (MapAdvisor::mapBlocks[i][j].stratigicValue * ScoutManager::CONTROLVALUEVALUE);
 
-				// Reduce the value of blocks that have been visited more recently
-				lastVisibleValue = (Broodwar->getFrameCount() - MapAdvisor::mapBlocks[i][j].lastVisibileFrame) / ScoutManager::FRAMECOUNTVALUE;
-			}
+			// Reduce the value for blocks that are further away
+			distanceValue = (MapAdvisor::getDistance(scoutTilePosition, tempTilePosition, isFlyer) / ScoutManager::DISTANCEVALUE);
+
+			// Reduce the value of blocks that have been visited more recently
+			lastVisibleValue = (Broodwar->getFrameCount() - MapAdvisor::mapBlocks[i][j].lastVisibileFrame) / ScoutManager::FRAMECOUNTVALUE;
 
 			tempValue = reachable * lastVisibleValue * (stratigicValue - distanceValue);
 
