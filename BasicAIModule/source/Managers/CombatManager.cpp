@@ -16,10 +16,6 @@ using BWTA::Chokepoint;
 
 using namespace std;
 
-// how large to make attack squads
-// and when to attack with them
-static int AttackSquadSize = 15;
-
 void CombatManager::onMatchStart()
 {
 	Player* enemy = Broodwar->enemy();
@@ -36,8 +32,6 @@ void CombatManager::onMatchEnd(bool isWinner)
 	attackSquads.clear();
 	for_each(defendSquads.begin(), defendSquads.end(), DeleteObjectFunctor());
 	defendSquads.clear();
-	for_each(bunkerSquads.begin(), bunkerSquads.end(), DeleteObjectFunctor());
-	bunkerSquads.clear();
 }
 
 void CombatManager::update()
@@ -45,21 +39,182 @@ void CombatManager::update()
 	// Get new agents into state
 	addNewAgents();  
 
-	// TODO : Merge squads
+	// Update leaders
+	updateSquadLeaders();
 
-	// Attack?
+	/* Update attack, defend, and bunker squads */
+	for (SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); it++)
+	{
+		(*it)->update();
+	}
+	for (SquadVectorIter it = defendSquads.begin(); it != defendSquads.end(); it++)
+	{
+		(*it)->update();
+	}
+
+	// Remove squads without agents
+	cleanUpSquads();
+
+	/* Base class updates Agents */
+	Manager::update();
+}
+
+
+void CombatManager::addNewAgents()
+{
+	for (AgentSetIter it = agents.begin(); it != agents.end(); ++it)
+	{
+		Squad *squad = NULL;
+		Agent *agent = *it;
+		UnitType ut = agent->getUnit().getType();
+
+		// Agent does not have a squad?
+		if(agentSquadMap.find(agent) == agentSquadMap.end()) 
+		{
+			// TODO - this is a hack to make them defend in the right place
+			Position unitPosition = agent->getUnit().getPosition();
+			Position rallyPoint = MapAdvisor::getPositionOutsideNearestChokepoint(unitPosition);
+			if (rallyPoint != Positions::None)
+				agent->setPositionTarget(rallyPoint);
+
+			// Assign Agent to a Squad
+			// Defense squad?
+			if (defendSquads.size() < getDefendSquadTargetSize()) {
+				if (!defendSquads.size() ||
+					defendSquads.back()->getSize() >= DefendSquadSize)
+					defendSquads.push_back(new Squad("defend-squad", defend));
+				squad = defendSquads.back();
+			}
+
+			// Attack squad?
+			else if (attackSquads.size() < getAttackSquadTargetSize()) {
+				if (!attackSquads.size() ||
+					attackSquads.back()->getSize() >= AttackSquadSize) 
+					attackSquads.push_back(new Squad("attack-squad", attack));
+				squad = attackSquads.back();
+			}
+
+			// Add
+			squad->addAgent(agent);
+			agentSquadMap[agent] = squad;
+
+			// Set leader - TODO: This should really be constructor.  If omitted, we get
+			// null pointers
+			if (squad->getLeader() == NULL)
+				squad->setLeader(agent);
+		}
+	}
+}
+
+void CombatManager::draw()
+{
+	SquadVectorConstIter it, end;
+
+	it  = attackSquads.begin();
+	end = attackSquads.end();
+	for(; it != end; ++it)
+	{
+		(*it)->draw();
+	}
+	it  = defendSquads.begin();
+	end = defendSquads.end();
+	for(; it != end; ++it)
+	{
+		(*it)->draw();
+	}
+	Manager::draw();
+}
+
+int CombatManager::numLivingAgents() const
+{
+	int num = 0;
+
+	AgentSetConstIter it  = agents.begin();
+	AgentSetConstIter end = agents.end();
+	for(; it != end; ++it)
+	{
+		const Agent *agent = *it;
+		if( agent->getUnit().getHitPoints() > 0 ) 
+			++num;
+	}
+
+	return num;
+}
+
+void CombatManager::discoverEnemyUnit(Unit* unit)
+{
+	enemyUnits.insert(unit);
+	if( unit->getType().isBuilding() )
+	{
+		enemyBuildings.insert(unit);
+	}
+	else
+	{
+		enemyActors.insert(unit);
+	}
+}
+
+
+
+
+void CombatManager::cleanUpSquads()
+{
+	// Clean up squads where everyone is dead 
+	vector<SquadVectorIter> itersToErase;
+	for(SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); ++it)
+	{
+		Squad *squad = *it;
+		if( squad->numAlive() == 0 )
+		{
+			delete squad;
+			itersToErase.push_back(it);
+		}
+	}
+	for(vector<SquadVectorIter>::iterator it = itersToErase.begin();
+		it != itersToErase.end(); ++it)
+	{
+		attackSquads.erase(*it);
+	}
+	itersToErase.clear();
+	for(SquadVectorIter it = defendSquads.begin(); it != defendSquads.end(); ++it)
+	{
+		Squad *squad = *it;
+		if( squad->numAlive() == 0 )
+		{
+			delete squad;
+			itersToErase.push_back(it);
+		}
+	}
+	for(vector<SquadVectorIter>::iterator it = itersToErase.begin();
+		it != itersToErase.end(); ++it)
+	{
+		defendSquads.erase(*it);
+	}
+	itersToErase.clear();
+}
+
+unsigned CombatManager::getAttackSquadTargetSize() const
+{
+	return 5;
+}
+
+unsigned CombatManager::getDefendSquadTargetSize() const
+{
+	return 3;
+}
+
+void CombatManager::updateSquadLeaders()
+{
 	const int numTroops = numLivingAgents();
-	//const int threshold = 15;
-
 
 	// Update squad leaders
 	for (SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); it++)
 	{
 		Agent *leader = (*it)->getLeader();
-		BWAPI::Unit * leaderUnit = &(leader->getUnit());
+		BWAPI::Unit *leaderUnit = &(leader->getUnit());
 
 		// Attack with full squad force (adjust to lower)
-		// Otherwise while we are filling up, look mean
+		// Otherwise while we are filling up, stand at chokepoint
 		if ((*it)->getSize() == AttackSquadSize && leader != NULL && numTroops > 50)
 		{
 			leader->setState(AttackState);
@@ -67,20 +222,15 @@ void CombatManager::update()
 		}
 		else if (leader != NULL){
 			leader->setState(AttackState);
-			// keep position target at base chokepoint
 		}
 
-		// check for enemy unit targets in range of leader
-		// TODO: set this up for closest weakest enemy
-
-		//BWAPI::WeaponType wt = leader->getUnitWeaponType();
-		// TODO: add more weapon types
-		//set<BWAPI::Unit *> unitsInRange = leaderUnit->getUnitsInWeaponRange(wt);
-
+		/**
 		// hopefully this covers the back of the squad better (furthest from leader)
 		int killZoneRadius = leaderUnit->getType().seekRange() + (*it)->getRadius();
 		set<BWAPI::Unit *> unitsInRange = leaderUnit->getUnitsInRadius(killZoneRadius);
 
+		
+		
 		if ((int)unitsInRange.size() > 0)
 		{
 			int hitPoints = 99999;
@@ -125,235 +275,6 @@ void CombatManager::update()
 				leader->setUnitTarget(NULL);
 			}
 		}
+		**/
 	} // end squad leader update
-
-
-	// Move marines from defense squad to bunker squad if one available
-	if ((int)bunkerAgents.size() > 0 
-		&& (int)bunkerSquads.size() > 0 
-		&& (int)defendSquads.size() > 0)
-	{
-		while ( bunkerSquads.back()->getSize() < 4 
-			&& defendSquads.back()->getSize() > 0)
-		{
-			defendSquads.back()->moveAgent(*(defendSquads.back()->getAgents().begin()), bunkerSquads.back());
-		}
-	}
-
-	/* Update attack, defend, and bunker squads */
-	for (SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); it++)
-	{
-		(*it)->update();
-	}
-	for (SquadVectorIter it = defendSquads.begin(); it != defendSquads.end(); it++)
-	{
-		(*it)->update();
-	}
-	for (SquadVectorIter it = bunkerSquads.begin(); it != bunkerSquads.end(); it++)
-	{
-		(*it)->update();
-	}
-
-	// Clean up squads where everyone is dead 
-	vector<SquadVectorIter> itersToErase;
-	for(SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); ++it)
-	{
-		Squad *squad = *it;
-		if( squad->numAlive() == 0 )
-		{
-			delete squad;
-			itersToErase.push_back(it);
-		}
-	}
-	for(vector<SquadVectorIter>::iterator it = itersToErase.begin();
-		it != itersToErase.end(); ++it)
-	{
-		attackSquads.erase(*it);
-	}
-	itersToErase.clear();
-	for(SquadVectorIter it = defendSquads.begin(); it != defendSquads.end(); ++it)
-	{
-		Squad *squad = *it;
-		if( squad->numAlive() == 0 )
-		{
-			delete squad;
-			itersToErase.push_back(it);
-		}
-	}
-	for(vector<SquadVectorIter>::iterator it = itersToErase.begin();
-		it != itersToErase.end(); ++it)
-	{
-		defendSquads.erase(*it);
-	}
-	itersToErase.clear();
-	for(SquadVectorIter it = bunkerSquads.begin(); it != bunkerSquads.end(); ++it)
-	{
-		Squad *squad = *it;
-		if( squad->numAlive() == 0 )
-		{
-			delete squad;
-			itersToErase.push_back(it);
-		}
-	}
-	for(vector<SquadVectorIter>::iterator it = itersToErase.begin();
-		it != itersToErase.end(); ++it)
-	{
-		bunkerSquads.erase(*it);
-	}
-	itersToErase.clear();
-
-
-	/* Base class updates Agents */
-	Manager::update();
-}
-
-
-void CombatManager::addNewAgents()
-{
-	// If we have any new Agents, they should go in the unassigned set
-	AgentSetIter it  = agents.begin();
-	AgentSetIter end = agents.end();
-	Squad * squad;
-
-	for(; it != end; ++it)
-	{
-		Agent *agent = *it;
-		UnitType ut = agent->getUnit().getType();
-
-		// if not assigned yet
-		if( assignedAgents.find(agent) == assignedAgents.end() ) 
-		{
-
-			// check for bunkers
-			if (ut == UnitTypes::Terran_Bunker) {
-				bunkerAgents.insert(agent);
-				assignedAgents.insert(agent);
-				continue;
-			}
-			// init to unassigned
-			unassignedAgents.insert(agent);
-
-			// TODO - this is a hack to make them defend in the right place
-			Position unitPosition = agent->getUnit().getPosition();
-			Position rallyPoint = MapAdvisor::getPositionOutsideNearestChokepoint(unitPosition);
-			if (rallyPoint != Positions::None)
-				agent->setPositionTarget(rallyPoint);
-
-			// Assign Agent to a Squad
-
-			// if there isn't an empty bunker fill up defense squad
-			// with marines at max of 4 (only 1 bunker atm)
-			// these will be reassigned to a bunker squad eventually
-			if ((int)bunkerAgents.size() == 0 
-				&& ut == UnitTypes::Terran_Marine 
-				&& ( (int)defendSquads.size() == 0 || defendSquads.back()->getSize() < 4)) 
-			{
-				// if there isn't a defend squad make one
-				if ((int)defendSquads.size() == 0)
-				{
-					defendSquads.push_back(new Squad("defend-squad", defend));
-				}
-				// set pointer
-				squad = defendSquads.back();
-			}
-			else if ((int)bunkerAgents.size() == 1 
-				&& ut == UnitTypes::Terran_Marine
-				&& ((int)bunkerSquads.size() == 0 || bunkerSquads.back()->getSize() < 4))
-			{
-				// if there isn't a bunker squad make one
-				if ((int)bunkerSquads.size() == 0)
-				{
-					bunkerSquads.push_back(new Squad("bunker-squad", bunker));
-					// always assigns first bunker as target
-					// TODO: make better bunker agent arrangement
-					bunkerSquads.back()->setBunkerTarget(&(*bunkerAgents.begin())->getUnit());
-				}
-				// set pointer
-				squad = bunkerSquads.back();
-			}
-			else 
-			{
-				// if there isn't an attack squad make one
-				if ((int)attackSquads.size() == 0 
-					|| attackSquads.back()->getSize() == AttackSquadSize)
-				{
-					attackSquads.push_back(new Squad("attack-squad", attack));
-				}
-				squad = attackSquads.back();
-			}
-
-			// TODO: only add the agent if we have (or can create)
-			// a squad that has an unfulfilled requirement for this type of unit,
-			// otherwise leave it in the unassigned set
-			squad->addAgent(*it);
-
-			// For now this should always be set, giving them the ability
-			// to look for nearby enemy targets
-			(*it)->setState(AttackState);
-
-			if (squad->getLeader() == NULL)
-			{
-				squad->setLeader(*it);
-			}
-
-			// change to assigned
-			unassignedAgents.erase(agent);
-			assignedAgents.insert(agent);
-		}
-	}
-}
-
-void CombatManager::draw()
-{
-	SquadVectorConstIter it, end;
-
-	it  = attackSquads.begin();
-	end = attackSquads.end();
-	for(; it != end; ++it)
-	{
-		(*it)->draw();
-	}
-	it  = defendSquads.begin();
-	end = defendSquads.end();
-	for(; it != end; ++it)
-	{
-		(*it)->draw();
-	}
-	it  = bunkerSquads.begin();
-	end = bunkerSquads.end();
-	for(; it != end; ++it)
-	{
-		(*it)->draw();
-	}
-
-	Manager::draw();
-}
-
-int CombatManager::numLivingAgents() const
-{
-	int num = 0;
-
-	AgentSetConstIter it  = agents.begin();
-	AgentSetConstIter end = agents.end();
-	for(; it != end; ++it)
-	{
-		const Agent *agent = *it;
-		if( agent->getUnit().getHitPoints() > 0 ) 
-			++num;
-	}
-
-	return num;
-}
-
-void CombatManager::discoverEnemyUnit(Unit* unit)
-{
-	enemyUnits.insert(unit);
-	if( unit->getType().isBuilding() )
-	{
-		enemyBuildings.insert(unit);
-	}
-	else
-	{
-		enemyActors.insert(unit);
-	}
 }

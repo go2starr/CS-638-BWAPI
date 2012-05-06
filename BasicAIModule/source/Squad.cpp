@@ -152,12 +152,6 @@ void Squad::addRequirement(const int numDesired, const UnitType& unitType)
 void Squad::addAgent(Agent* agent)
 {
 	agents.insert(agent);
-
-	if (type == bunker && bunkerTarget != NULL)
-	{
-		agent->getUnit().load(bunkerTarget);
-		//bunkerTarget->load(&agent->getUnit());
-	}
 }
 
 void Squad::moveAgent(Agent* agent, Squad * toSquad)
