@@ -7,19 +7,27 @@
 #include "Manager.h"
 #include "Common.h"
 
+#include <map>
+
 #include <BWAPI.h>
+
+using std::map;
 
 
 class CombatManager : public Manager
 {
 private:
-    AgentSet unassignedAgents;
-    AgentSet assignedAgents;
-	AgentSet bunkerAgents;
-	// manage squad types separately
+	// Map from Agents to Squads
+	map<Agent*, Squad*> agentSquadMap;
+
+	// Squad types
     SquadVector attackSquads;
 	SquadVector defendSquads;
-	SquadVector bunkerSquads;
+
+	// How large to make squads
+	static const int AttackSquadSize = 15;
+	static const int DefendSquadSize = 10;
+
     BWAPI::Position enemyBase;
     UnitSet enemyUnits;
     UnitSet enemyActors;
@@ -29,13 +37,20 @@ public:
     void discoverEnemyUnit(BWAPI::Unit* unit);
     virtual void onMatchStart();
     virtual void onMatchEnd(bool isWinner);
+
 	virtual void update();
+	virtual void updateSquadLeaders();
+
     virtual void draw();
 
 	int numSquads() const;
 	int numEnemyUnits() const;
 	int numEnemyActors() const;
 	int numEnemyBuildings() const;
+
+	// Desired number of attack/defend squads
+	unsigned getAttackSquadTargetSize() const;
+	unsigned getDefendSquadTargetSize() const;
 
     virtual const std::string& getName() const 
     { 
@@ -46,11 +61,14 @@ public:
 private:
 	void addNewAgents();
     int numLivingAgents() const;
+
+	// Remove squads without agents
+	void cleanUpSquads();
 };
 
 inline int CombatManager::numSquads() const 
 { 
-	return attackSquads.size() +  defendSquads.size() + bunkerSquads.size();
+	return attackSquads.size() +  defendSquads.size();
 }
 inline int CombatManager::numEnemyUnits()     const { return enemyUnits.size(); }
 inline int CombatManager::numEnemyActors()    const { return enemyActors.size(); }
