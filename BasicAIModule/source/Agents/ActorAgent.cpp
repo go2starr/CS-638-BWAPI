@@ -15,10 +15,17 @@ using namespace BWAPI;
 
 ActorAgent::ActorAgent(Unit &u)
 : Agent(u)
-{ }
+{ 
+	lastOrderFrame = 0;  // This contains the last time a unit recieved an order.
+						 // Used to expire orders that are either too old or impossible
+	lastTilePosition = unit.getTilePosition();
+}
 
 void ActorAgent::update()
 {
+	if (unit.exists() == false)
+		return;
+
 	switch(state)
 	{
 	case IdleState:
@@ -110,14 +117,52 @@ void ActorAgent::update()
 			//			BWAPI::TilePosition target = scoutManager.getScoutTilePosition(unit.getTilePosition());
 
 			//			BWAPI::TilePosition target = Strategizer::instance()::ScoutManager::getScoutTilePosition(unit.getTilePosition());
-			if (Broodwar->getFrameCount() % 100 == 0) 
-			{
-			BWAPI::TilePosition target = Strategizer::instance().scoutManager.getScoutTilePosition(unit.getTilePosition(), unit.getType().isFlyer());
 
-			//			Strategizer::instance().scoutManager.scratch();
+
+			if(unit.exists() == false)
+				Broodwar->sendText("!! Scout Unit does not exist !!");
+
+			// See if the unit needs a new order
+			bool newOrder = false;
+			if (unit.getTilePosition() == lastTilePosition ||
+				unit.getTilePosition() == moveTilePosition ||
+				lastOrderFrame < Broodwar->getFrameCount() - 500)
+				newOrder = true;
+
+
+			if (newOrder) 
+			{
+				moveTilePosition = Strategizer::instance().scoutManager.getScoutTilePosition(unit.getTilePosition(), unit.getType().isFlyer());
+				lastOrderFrame = Broodwar->getFrameCount();
+			}
+
+			TilePosition target = moveTilePosition;
+
+			// Try to use BWTA pathing to get to destination
+			bool useBWTAPath = true;
+
+			if (useBWTAPath)
+			{
+				std::vector<BWAPI::TilePosition> pathVector = getShortestPath(unit.getTilePosition(), moveTilePosition);
+
+				if (pathVector.empty())
+				{
+					target = unit.getTilePosition(); // Stay where it is.  Will get new order on next cycle.
+					//Broodwar->sendText("!! Scout Path Empty !!");
+				}
+
+				if (pathVector.size() > 20)
+					target = pathVector[20];
+				else
+					//Broodwar->sendText("Close to Scout Target!");
+					//target = pathVector[pathVector.size() - 1];  // Crashes, and I don't know why
+					target = moveTilePosition;
+			}
 
 			unit.move(Position(target));
-			}
+			
+			// Record posiion for next iteration
+			lastTilePosition = unit.getTilePosition();
 		}
 		break;
 	}
