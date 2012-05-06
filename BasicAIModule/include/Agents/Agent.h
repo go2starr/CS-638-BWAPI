@@ -6,6 +6,9 @@
 #include <Common.h>
 
 #include <BWAPI.h>
+#include <queue>
+
+using std::queue;
 
 class Manager;
 
@@ -20,6 +23,7 @@ protected:
 	BWAPI::Position positionTarget;         // Targeted position (for moving, evade, etc.)
 	BWAPI::UnitType unitTypeTarget;         // Targeted unit type (for production of units, buildings, etc.)
 
+	queue<BWAPI::UnitType> buildQueue;		// Queue of units to produce
 	bool buildingReserved;                  // Have we reserved space for a building yet?
 	BWAPI::TilePosition buildingLocation;	// Location to build target building at
 
@@ -57,7 +61,7 @@ public:
     inline BWAPI::Unit* getUnitTarget() const { return unitTarget; }
 
 	// build - build (SCV) or train the specified unit
-	void build(BWAPI::UnitType type);
+	void build(BWAPI::UnitType type, int count=1);
 
     void setParentManager(Manager *manager);
     const std::string getParentManagerName() const;

@@ -6,6 +6,8 @@
 #include "GasManager.h"
 #include "Common.h"
 #include "Agent.h"
+#include "BuildManager.h"
+#include "Strategizer.h"
 
 #include <BWAPI.h>
 
@@ -21,43 +23,20 @@ GasManager::GasManager()
 
 void GasManager::update()
 {
-    // TODO: the refineries could be persistently stores by the GasMgr
-    // so we can see who is gathering from where, and whether its exhausted
-	// TODO: worry about gas steal?
     AgentSet refineries(getAgentsOfType(UnitTypes::Terran_Refinery));
 
-    // Get a count on new refineries
-    newRefineries = static_cast<int>(refineries.size()) - refineryCount;
-	refineryCount = static_cast<int>(refineries.size());
-
-	// Keep the workers constructing count up to date
-    // TODO: remove this? is this responsibility being delegated to the BuildMgr?
-    //*
-	if( newRefineries > 0 ) 
+	if( refineries.empty() && agents.size() )
     {
-//		refineryConstructingCount -= newRefineries;
-		workersConstructing -= newRefineries;
-	}
-    //*/
-
-    AgentSet workers(getAgentsOfType(UnitTypes::Terran_SCV));
-
-    // Set a worker to build a refinery if we need to (for now just grab the first one)
-    // TODO: remove this? is this responsibility being delegated to the BuildMgr?
-    //*
-    if( refineries.empty() && !workers.empty() && workersConstructing == 0 )
-    {
-        //Broodwar->sendText("Gas manager, search for agent out of %d\n", (int)workers.size());
-        Agent* worker = *(workers.begin());
-        worker->setState(BuildState);
-        worker->setUnitTypeTarget(UnitTypes::Terran_Refinery);
-        // TODO - worker->setPositionTarget() to where?  
-        // how does this worker know where to build?
-        ++workersConstructing;
+		// TODO: HACK.  Fix me
+		static bool planned = false;
+		if (!planned) {
+			planned = true;
+			Strategizer::instance().buildManager.build(UnitTypes::Terran_Refinery, 1, 1);
+		}
     }
-    //*/
 
     // Get our workers gathering from our refineries
+	AgentSet workers = agents;
 	for(AgentSetIter worker = workers.begin(); worker != workers.end(); ++worker)
 	{
 		Unit& unit = (*worker)->getUnit();

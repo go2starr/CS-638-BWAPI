@@ -19,26 +19,44 @@ void StructureAgent::update()
 	switch (state)
 	{
 	case IdleState:
-		// fall through
-
-	case TrainState:
-		if (!unit.isTraining() && !unit.isBeingConstructed()) 
-		{
-			unit.train(unitTypeTarget);
-		}
-		else
-		{
-			//state = IdleState;
-		}
 		break;
 
+	case TrainState:
 	case BuildState:
-		if (unitTypeTarget.isAddon())
-		{
+		// Need new target?
+		if (unitTypeTarget == UnitTypes::None &&
+			!unit.isTraining() &&
+			!unit.isBeingConstructed() &&
+			!unit.isConstructing()) {
+			if (!buildQueue.empty()) {
+				unitTypeTarget = buildQueue.front();
+				buildQueue.pop();
+			} else {
+				setState(IdleState);
+			}
+		}
+
+		// Build Addon?
+		if (unitTypeTarget.isAddon()) {
 			unit.buildAddon(unitTypeTarget);
+
+			// Done?
 			if (unit.getAddon() != NULL && 
-				unit.getAddon()->getType().getID() == unitTypeTarget.getID())
-				state = IdleState;
+				unit.getAddon()->getType().getID() == unitTypeTarget.getID()) {
+				setUnitTypeTarget(UnitTypes::None);
+			}
+		}
+		// Else, build units
+		else {
+			if (!unit.isTraining() && !unit.isBeingConstructed()) 
+			{
+				unit.train(unitTypeTarget);
+			}
+			else
+			{
+				setUnitTypeTarget(UnitTypes::None);
+			}
+			break;
 		}
 	}
 }

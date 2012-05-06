@@ -102,12 +102,12 @@ void BuildManager::update()
 				&& (*i)->getState() != TrainState)  
 			{
 				// Found one, build it (this works for addons too)
-				(*i)->build(type);
+				(*i)->build(type, req.count);
 
 				// Remember we issued the command
 				req.builder = &(*i)->getUnit();
 				req.state = ISSUED;
-				Broodwar->sendText("BM: Worker found, building %s", type.c_str());
+				Broodwar->sendText("BM: Worker found, building %d x %s", req.count, type.c_str());
 				break;
 			}
 		}
@@ -176,19 +176,20 @@ void BuildManager::update()
     }
 }
 
-void BuildManager::build(UnitType type, bool immediate)
+
+void BuildManager::build(UnitType type, bool immediate, int count)
 {
 	TilePosition defaultLocation = Broodwar->self()->getStartLocation();
-	build(type, defaultLocation, immediate);
+	build(type, defaultLocation, immediate, count);
 }
 
-void BuildManager::build(UnitType type, TilePosition goalPosition, bool immediate)
+void BuildManager::build(UnitType type, TilePosition goalPosition, bool immediate, int count)
 {
 	BuildReq req;
 	// Internal
 	req.type = type;
 	req.goalPosition = goalPosition;
-	req.count = 1;
+	req.count = count;
 	// External
 	req.state = NEW;
 	req.builder = NULL;

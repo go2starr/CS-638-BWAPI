@@ -61,7 +61,20 @@ void SCVAgent::update()
 				{
 					constructingStructure = NULL;
 					buildingReserved = false;
-					state = IdleState;
+					setUnitTypeTarget(UnitTypes::None);
+				}
+			}
+
+			// Need new target?
+			else if (unitTypeTarget == UnitTypes::None &&
+				!unit.isTraining() &&
+				!unit.isBeingConstructed() && 
+				!unit.isConstructing()) {
+				if (!buildQueue.empty()) {
+					unitTypeTarget = buildQueue.front();
+					buildQueue.pop();
+				} else {
+					setState(IdleState);
 				}
 			}
 
@@ -102,7 +115,7 @@ bool SCVAgent::gatherMinerals()
 	{
 		setState(GatherState);
 		setUnitTarget(closest);
-		setUnitTypeTarget(closest->getType());
+		setUnitTypeTarget(UnitTypes::None);
 		setPositionTarget(closest->getPosition());
 		success = true;
 	}

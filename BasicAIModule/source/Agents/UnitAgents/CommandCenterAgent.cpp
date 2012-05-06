@@ -15,15 +15,5 @@ CommandCenterAgent::CommandCenterAgent(Unit &u)
 
 void CommandCenterAgent::update()
 {
-	switch (state)
-	{
-	case TrainState:
-        if (!unit.isTraining() && !unit.isBeingConstructed() ) 
-		{
-			unit.train(UnitTypes::Terran_SCV);
-		}
-		break;
-	}
-
 	StructureAgent::update();
 }
