@@ -120,12 +120,20 @@ void Agent::draw()
 	*/
 }
 
-void Agent::build(UnitType type)
+void Agent::build(UnitType type, int count)
 {
 	if (type.isBuilding())
 		setState(BuildState);
 	else
 		setState(TrainState);
-	setUnitTypeTarget(type);
+
+	for (int i = 0; i < count; i++)
+		buildQueue.push(type);
+
+	// Remove mineral/gas targets
+	if (unitTypeTarget.isMineralField() ||
+		unitTypeTarget == UnitTypes::Resource_Vespene_Geyser ||
+		unitTypeTarget == UnitTypes::Unknown)
+		setUnitTypeTarget(UnitTypes::None);
 }
 

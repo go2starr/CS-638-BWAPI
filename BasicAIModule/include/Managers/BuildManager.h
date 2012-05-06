@@ -39,8 +39,8 @@ public:
 	void draw();
     void drawDebugText();
 
-	void build(BWAPI::UnitType type, bool immediate=false);
-	void build(BWAPI::UnitType type, BWAPI::TilePosition goalPosition, bool immediate=false);
+	void build(BWAPI::UnitType type, bool immediate=false, int count=1);
+	void build(BWAPI::UnitType type, BWAPI::TilePosition goalPosition, bool immediate=false, int count=1);
 
     virtual const std::string& getName() const 
     {

@@ -70,16 +70,16 @@ void Strategizer::onMatchStart()
 
 	MapAdvisor::init(Broodwar->mapWidth(), Broodwar->mapHeight());
 
-
-	buildManager.build(UnitTypes::Terran_SCV);
+	// Start off building SCVs
+	buildManager.build(UnitTypes::Terran_SCV, false, 15);
 
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Initial troops
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Marine, false, 10);
 	buildManager.build(UnitTypes::Terran_Bunker);
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine);
+	buildManager.build(UnitTypes::Terran_Marine, false, 10);
 	//buildManager.build(UnitTypes::Terran_Bunker);
 
 	// Expand
@@ -87,23 +87,23 @@ void Strategizer::onMatchStart()
 
 	// Secondary troops
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Firebat);
+	buildManager.build(UnitTypes::Terran_Firebat, false, 10);
 	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Vulture);
+	buildManager.build(UnitTypes::Terran_Vulture, false, 10);
 
 	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Siege_Tank_Siege_Mode);
+	buildManager.build(UnitTypes::Terran_Siege_Tank_Tank_Mode, false, 10);
 
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
 
 	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);	
-	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
-	buildManager.build(UnitTypes::Terran_Goliath);
-	buildManager.build(UnitTypes::Terran_Goliath);
+	//buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
+	buildManager.build(UnitTypes::Terran_Goliath, false, 10);
+	//buildManager.build(UnitTypes::Terran_Goliath);
 
 	buildManager.build(UnitTypes::Terran_Starport);
-	buildManager.build(UnitTypes::Terran_Battlecruiser);
+	buildManager.build(UnitTypes::Terran_Battlecruiser, false, 10);
 }
 
 /* 
