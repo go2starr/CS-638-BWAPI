@@ -6,17 +6,30 @@
 
 #include <BWAPI.h>
 
-using BWAPI::Unit;
+using namespace BWAPI;
 
 
 MarineAgent::MarineAgent(Unit& u)
 	: GroundAgent(u)
 {
-//    state = DefendState;
+
 }
 
 void MarineAgent::update()
 {
+//    state = DefendState;
+	switch (state) {
+		case DefendState:
+		case IdleState:
+			// Load into bunkers
+			UnitSet unitsInRange = unit.getUnitsInRadius(100);
+			for (UnitSetIter it = unitsInRange.begin(); it != unitsInRange.end(); it++) {
+				if ((*it)->getType() == UnitTypes::Terran_Bunker &&
+					(*it)->getLoadedUnits().size() < 4)
+						(*it)->load(&unit);
+			}
+	}
+
     GroundAgent::update();
 }
 

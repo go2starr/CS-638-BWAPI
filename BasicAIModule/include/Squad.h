@@ -147,6 +147,9 @@ inline BWAPI::Unit* Squad::getBunkerTarget() const { return bunkerTarget; }
 
 inline int Squad::numAlive() const 
 {
+	if (agents.empty())
+		return 0;
+
     int num = 0;
     AgentSetConstIter it  = agents.begin();
     AgentSetConstIter end = agents.end();

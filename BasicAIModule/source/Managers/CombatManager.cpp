@@ -164,6 +164,10 @@ void CombatManager::cleanUpSquads()
 	for(SquadVectorIter it = attackSquads.begin(); it != attackSquads.end(); ++it)
 	{
 		Squad *squad = *it;
+		
+		// Hack fix for crash
+		if( squad == NULL ) continue;
+
 		if( squad->numAlive() == 0 )
 		{
 			delete squad;
@@ -179,6 +183,10 @@ void CombatManager::cleanUpSquads()
 	for(SquadVectorIter it = defendSquads.begin(); it != defendSquads.end(); ++it)
 	{
 		Squad *squad = *it;
+		
+		// Hack fix for crash
+		if( squad == NULL ) continue;
+
 		if( squad->numAlive() == 0 )
 		{
 			delete squad;

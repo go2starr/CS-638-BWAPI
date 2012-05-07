@@ -62,6 +62,11 @@ void Squad::update()
 			break;
 		}
 	}
+	// Remove dead agents
+	for (AgentSetIter it = agents.begin(); it != agents.end(); it++) {
+		if ((*it)->getUnit().getHitPoints() <= 0)
+			removeAgent(*it);
+	}
 
 	// Regather every so often
 	if( getRadius() > 100  && Broodwar->getFrameCount() % 10000 == 0 )
