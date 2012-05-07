@@ -37,6 +37,9 @@ if(SUCCEEDED(SHGetFolderPath(NULL,
 	
 	// Open file
 	scoutManagerLogFile.open("c:\\scoutManager.log");
+
+	// Init log frame tracking
+	lastLogFrame = 0;
 }
 
 void ScoutManager::onMatchEnd()
@@ -141,8 +144,11 @@ BWAPI::TilePosition ScoutManager::getScoutTilePosition(BWAPI::TilePosition scout
 	
 	// Log the results
 	ScoutManager::scoutMapBlocks[xMapBlock][yMapBlock].selected = true;
-	if (Broodwar->getFrameCount() % 1000 == 0)
+	if (Broodwar->getFrameCount() > lastLogFrame + 1000)
+	{
+		lastLogFrame = Broodwar->getFrameCount();
 		ScoutManager::log(xMapBlock, yMapBlock, scoutTilePosition.x(), scoutTilePosition.y());
+	}
 
 	return targetTilePosition.makeValid();
 

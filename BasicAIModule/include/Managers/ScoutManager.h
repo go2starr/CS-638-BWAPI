@@ -37,6 +37,7 @@ public:
 	void draw();
 
 	std::ofstream scoutManagerLogFile;
+	int lastLogFrame;
 	BWAPI::TilePosition getScoutTilePosition(BWAPI::TilePosition scoutTilePosition, bool isFlyer);
 
 	ScoutMapBlock scoutMapBlocks[MapAdvisor::blockXCount][MapAdvisor::blockYCount];	
