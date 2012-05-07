@@ -25,7 +25,9 @@ struct MapBlock {
 
 //	BWAPI::UnitType type;
 //	BWAPI::Player controlPlayer;
-	int controlLevel;		//The strength of the strongest presence in the block
+	int controlLevel;		//The total control value of the block: presenceLevel + influenceLevel
+	int influenceLevel;		//The strength of nearby map blocks
+	int presenceLevel;		//The strength of the strongest presence in the block
 	int stratigicValue;		//The stratigic value of the block
 	int lastVisibileFrame;	//The last frame for which the main tile was visible
 	int gasAvailable;		//The amount of gas available in the square
@@ -79,6 +81,9 @@ public:
 	static void init(int mapX, int mapY);
 	static MapBlock tileToBlock(int x, int y);
 	static void update();
+	static void updateMapControl();
+	static void updateMapPresence();
+	static void updateMapInfluence();
 	static void draw();
 	static void onMatchEnd();
 	static void mapLog();
