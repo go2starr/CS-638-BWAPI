@@ -348,11 +348,11 @@ void MapAdvisor::mapLog()
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			mapAdvisorLogFile << "	" << i << ", " << j;
 
-		mapAdvisorLogFile << "\nPresence Value  :";
+		mapAdvisorLogFile << "\nPresence Value :";
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].presenceLevel;
 
-		mapAdvisorLogFile << "\nInfluence Value  :";
+		mapAdvisorLogFile << "\nInfluence Value:";
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].influenceLevel;
 
@@ -384,7 +384,7 @@ void MapAdvisor::mapLog()
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].startLocation;
 		
-		mapAdvisorLogFile << "\nBase Location :";
+		mapAdvisorLogFile << "\nBase Location  :";
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].baseLocation;
 
