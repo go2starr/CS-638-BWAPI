@@ -25,6 +25,8 @@ struct MapBlock {
 
 //	BWAPI::UnitType type;
 //	BWAPI::Player controlPlayer;
+	int presenceLevel;		//The stregth of units in the block
+	int influenceLevel;		//The influence of units in surrounding blocks
 	int controlLevel;		//The strength of the strongest presence in the block
 	int stratigicValue;		//The stratigic value of the block
 	int lastVisibileFrame;	//The last frame for which the main tile was visible
@@ -61,7 +63,9 @@ private:
 	static int getLocationControl(int x, int y);
 
 	static void initStratigicValues();
-
+	static void updateControlValues();
+	static void updatePresenceValues();
+	static void updateInfluenceValues();
 
 public: 
 

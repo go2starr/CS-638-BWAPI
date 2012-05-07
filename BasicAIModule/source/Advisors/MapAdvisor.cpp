@@ -85,18 +85,104 @@ int MapAdvisor::getStratigicValue(MapBlock mapBlock){
 
 // Determines and returns the level of control in the block
 // Positive values for friendly control, negative values for opponent's control
-int MapAdvisor::getControlLevel(MapBlock mapBlock){
+void MapAdvisor::updateControlValues()
+{
+	// Update Presence Values
+	MapAdvisor::updatePresenceValues();
 
-	int controlLevel = 0;
+	// Update Influence Values
+	MapAdvisor::updateInfluenceValues();
 
-	// net number of buildings
-	//TODO
+	// Update Control Values
+	for(int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+		for (int j = 0 ; j < MapAdvisor::blockYCount ; j++)
+		{
+			MapBlock& mapBlock = mapBlocks[i][j];
+			mapBlock.controlLevel = mapBlock.influenceLevel + mapBlock.presenceLevel;
+		}
+	return;
+}
 
-	// net units by supply values
-	//TODO
+void MapAdvisor::updatePresenceValues()
+{
+	int xBlock;
+	int yBlock;
+	int supplyValue;
+	int playerValue;
+	
+	// Init Visible Block Presence Values
+	for(int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+		for (int j = 0 ; j < MapAdvisor::blockYCount ; j++)
+		{
+			MapBlock& mapBlock = mapBlocks[i][j];
+			if (mapBlock.lastVisibileFrame == Broodwar->getFrameCount())
+				mapBlock.presenceLevel = 0;
+		}
 
-	return controlLevel;
+	// Go through the set of units
+	std::set<BWAPI::Unit*> unitSet = Broodwar->getAllUnits();
+	UnitSetConstIter it  = unitSet.begin();
+    UnitSetConstIter end = unitSet.end();
+    for(; it != end; ++it)
+    {
+        Unit *unit = *it;
+		if (unit->exists())
+		{
+			xBlock = unit->getTilePosition().x() / MapAdvisor::blockXLength;
+			yBlock = unit->getTilePosition().y() / MapAdvisor::blockYLength;
+			MapBlock& mapBlock = mapBlocks[xBlock][yBlock];
 
+			if (mapBlock.lastVisibileFrame == Broodwar->getFrameCount())
+			{
+				BWAPI::UnitType unitType = unit->getType();
+				supplyValue = unitType.supplyRequired();
+				if (supplyValue == 0)
+					supplyValue = 1;
+				
+				if (unit->getPlayer() == Broodwar->self())
+					playerValue = 1;
+				else
+					playerValue = -1;
+
+				mapBlock.presenceLevel += (supplyValue * playerValue);
+			}
+		}
+	}
+	return;
+}
+
+void MapAdvisor::updateInfluenceValues()
+{
+	int m;
+	int n;
+	int influenceValue;
+
+	// Init Influence Values
+	for(int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+		for (int j = 0 ; j < MapAdvisor::blockYCount ; j++)
+		{
+			MapBlock& mapBlock = mapBlocks[i][j];
+				mapBlock.influenceLevel = 0;
+		}
+
+	// Populate Influence Values
+	for(int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+		for (int j = 0 ; j < MapAdvisor::blockYCount ; j++)
+		{
+			MapBlock& mapBlock = mapBlocks[i][j];
+			for (int k = -2 ; k <= 2 ; k++)
+				for (int l = -2 ; l <= 2 ; l++)
+				{
+					m = i + k;
+					n = j + l;
+
+					if (m >= 0 && n >= 0 && m < MapAdvisor::blockXCount && n < MapAdvisor::blockYCount && !(k == 0 && l == 0))
+						//MapBlock& influenceBlock = mapBlocks[m][n];
+						mapBlock.influenceLevel += mapBlocks[m][n].presenceLevel / (1 + abs(k) + abs(l));
+				}
+		}
+
+	return;
 }
 
 void MapAdvisor::init(int mapX, int mapY){
@@ -193,14 +279,14 @@ void MapAdvisor::update()
 			{
 				// Update lastVisibleFrame
 				mapBlock.lastVisibileFrame = Broodwar->getFrameCount();
-				// Update control Level (start with simple count)
-				mapBlock.controlLevel = MapAdvisor::getControlLevel(mapBlock);
-
 			}
 		}
 
 	if (Broodwar->getFrameCount() % 1000 == 0)
 		MapAdvisor::mapLog();
+
+	// Update Control Values
+	MapAdvisor::updateControlValues();
 
 	// TEMP
 	MapAdvisor::initStratigicValues();
@@ -229,6 +315,14 @@ void MapAdvisor::mapLog()
 		mapAdvisorLogFile << "\nMapBlock       :";
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
 			mapAdvisorLogFile << "	" << i << ", " << j;
+
+		mapAdvisorLogFile << "\nPresence Value :";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].presenceLevel;
+
+		mapAdvisorLogFile << "\nInfluence Value:";
+		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
+			mapAdvisorLogFile << "	" << MapAdvisor::mapBlocks[i][j].influenceLevel;
 
 		mapAdvisorLogFile << "\nControl Value  :";
 		for (int i = 0 ; i < MapAdvisor::blockXCount ; i++)
