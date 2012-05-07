@@ -25,7 +25,8 @@ private:
 	void log(int x, int y, int scoutX, int scoutY);
 
 public: 
-	static const int CONTROLVALUEVALUE = 10;
+	static const int STRATIGICVALUE = 100;
+	static const int CONTROLVALUE = 100;
 	static const int DISTANCEVALUE = 100;
 	static const int FRAMECOUNTVALUE = 100;
 	static const int LOGFREQUENCY = 1000;
