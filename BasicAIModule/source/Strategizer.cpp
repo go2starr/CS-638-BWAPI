@@ -76,35 +76,41 @@ void Strategizer::onMatchStart()
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Initial troops
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine, false, 20);
+	buildManager.build(UnitTypes::Terran_Marine, false, 25);
 	buildManager.build(UnitTypes::Terran_Bunker);
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine, false, 15); 
+	buildManager.build(UnitTypes::Terran_Marine, false, 15);
 	buildManager.build(UnitTypes::Terran_Bunker);
 	buildManager.build(UnitTypes::Terran_Bunker);
+
+	// Secondary troops
+	buildManager.build(UnitTypes::Terran_Factory);
+	buildManager.build(UnitTypes::Terran_Vulture, false, 20);
+	buildManager.build(UnitTypes::Terran_Barracks);
+	buildManager.build(UnitTypes::Terran_Firebat, false, 20);
 
 	// Expand
 	buildManager.build(UnitTypes::Terran_Command_Center);
-
-	// Secondary troops
-	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Firebat, false, 20);
-	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Vulture, false, 10);
 
 	buildManager.build(UnitTypes::Terran_Factory);
 	buildManager.build(UnitTypes::Terran_Siege_Tank_Tank_Mode, false, 30);
 
+	buildManager.build(UnitTypes::Terran_Wraith.whatBuilds().first);
+	buildManager.build(UnitTypes::Terran_Wraith, false, 30);
+
+	buildManager.build(UnitTypes::Terran_Valkyrie.whatBuilds().first);
+	buildManager.build(UnitTypes::Terran_Valkyrie, false, 30);
+
 	// Expand
-	buildManager.build(UnitTypes::Terran_Command_Center);
+	//buildManager.build(UnitTypes::Terran_Command_Center);
 
 	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);	
 	//buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
 	buildManager.build(UnitTypes::Terran_Goliath, false, 30);
 	//buildManager.build(UnitTypes::Terran_Goliath);
 
-	buildManager.build(UnitTypes::Terran_Starport);
-	buildManager.build(UnitTypes::Terran_Battlecruiser, false, 30);
+	//buildManager.build(UnitTypes::Terran_Starport);
+	//buildManager.build(UnitTypes::Terran_Battlecruiser, false, 30);
 }
 
 /* 
