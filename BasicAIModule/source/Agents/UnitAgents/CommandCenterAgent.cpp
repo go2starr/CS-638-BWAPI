@@ -15,5 +15,9 @@ CommandCenterAgent::CommandCenterAgent(Unit &u)
 
 void CommandCenterAgent::update()
 {
+	// Keep workers in production, if resources available
+	if (buildQueue.empty() && Broodwar->self()->minerals() > 300)
+		build(UnitTypes::Terran_SCV, 1);
+
 	StructureAgent::update();
 }

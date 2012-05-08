@@ -76,10 +76,10 @@ void Strategizer::onMatchStart()
 	// Barracks do not ever leave idle state (for now), so 1 per unit type
 	// Initial troops
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine, false, 40);
+	buildManager.build(UnitTypes::Terran_Marine, false, 20);
 	buildManager.build(UnitTypes::Terran_Bunker);
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Marine, false, 30);
+	buildManager.build(UnitTypes::Terran_Marine, false, 15); 
 	buildManager.build(UnitTypes::Terran_Bunker);
 	buildManager.build(UnitTypes::Terran_Bunker);
 
@@ -88,9 +88,9 @@ void Strategizer::onMatchStart()
 
 	// Secondary troops
 	buildManager.build(UnitTypes::Terran_Barracks);
-	buildManager.build(UnitTypes::Terran_Firebat, false, 30);
+	buildManager.build(UnitTypes::Terran_Firebat, false, 20);
 	buildManager.build(UnitTypes::Terran_Factory);
-	buildManager.build(UnitTypes::Terran_Vulture, false, 30);
+	buildManager.build(UnitTypes::Terran_Vulture, false, 10);
 
 	buildManager.build(UnitTypes::Terran_Factory);
 	buildManager.build(UnitTypes::Terran_Siege_Tank_Tank_Mode, false, 30);
