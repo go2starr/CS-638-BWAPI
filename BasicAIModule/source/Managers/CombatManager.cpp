@@ -93,6 +93,11 @@ void CombatManager::addNewAgents()
 					attackSquads.push_back(new Squad("attack-squad", attack));
 				squad = attackSquads.back();
 			}
+			else
+			{
+				attackSquads.push_back(new Squad("attack-squad", attack));
+				squad = attackSquads.back();
+			}
 
 			// Add
 			squad->addAgent(agent);
