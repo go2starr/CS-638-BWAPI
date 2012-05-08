@@ -26,7 +26,7 @@ private:
 
 	// How large to make squads
 	static const int AttackSquadSize = 15;
-	static const int DefendSquadSize = 10;
+	static const int DefendSquadSize = 4;
 
     BWAPI::Position enemyBase;
     UnitSet enemyUnits;

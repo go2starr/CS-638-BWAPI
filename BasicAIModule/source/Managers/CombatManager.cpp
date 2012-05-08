@@ -203,7 +203,7 @@ void CombatManager::cleanUpSquads()
 
 unsigned CombatManager::getAttackSquadTargetSize() const
 {
-	return 5;
+	return 15;
 }
 
 unsigned CombatManager::getDefendSquadTargetSize() const
@@ -223,7 +223,7 @@ void CombatManager::updateSquadLeaders()
 
 		// Attack with full squad force (adjust to lower)
 		// Otherwise while we are filling up, stand at chokepoint
-		if ((*it)->getSize() == AttackSquadSize && leader != NULL && numTroops > 50)
+		if ((*it)->getSize() == AttackSquadSize && leader != NULL && numTroops > 60)
 		{
 			leader->setState(AttackState);
 			leader->setPositionTarget(enemyBase);

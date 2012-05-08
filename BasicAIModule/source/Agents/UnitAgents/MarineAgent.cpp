@@ -22,7 +22,7 @@ void MarineAgent::update()
 		case DefendState:
 		case IdleState:
 			// Load into bunkers
-			UnitSet unitsInRange = unit.getUnitsInRadius(100);
+			UnitSet unitsInRange = unit.getUnitsInRadius(200);
 			for (UnitSetIter it = unitsInRange.begin(); it != unitsInRange.end(); it++) {
 				if ((*it)->getType() == UnitTypes::Terran_Bunker &&
 					(*it)->getLoadedUnits().size() < 4)
