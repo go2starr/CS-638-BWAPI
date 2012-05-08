@@ -232,6 +232,7 @@ void CombatManager::updateSquadLeaders()
 			leader->setState(AttackState);
 		}
 
+                /*
 		// hopefully this covers the back of the squad better (furthest from leader)
 		int killZoneRadius = leaderUnit->getType().seekRange() + (*it)->getRadius();
 		set<BWAPI::Unit *> unitsInRange = leaderUnit->getUnitsInRadius(killZoneRadius);
@@ -280,5 +281,6 @@ void CombatManager::updateSquadLeaders()
 				leader->setUnitTarget(NULL);
 			}
 		}
+                */
 	} // end squad leader update
 }

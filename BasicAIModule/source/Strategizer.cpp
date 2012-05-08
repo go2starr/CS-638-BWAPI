@@ -98,19 +98,18 @@ void Strategizer::onMatchStart()
 	buildManager.build(UnitTypes::Terran_Wraith.whatBuilds().first);
 	buildManager.build(UnitTypes::Terran_Wraith, false, 30);
 
-	buildManager.build(UnitTypes::Terran_Valkyrie.whatBuilds().first);
-	buildManager.build(UnitTypes::Terran_Valkyrie, false, 30);
 
 	// Expand
 	//buildManager.build(UnitTypes::Terran_Command_Center);
 
 	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);	
-	//buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);
+	buildManager.build(UnitTypes::Terran_Goliath, false, 30);
+	buildManager.build(UnitTypes::Terran_Goliath.whatBuilds().first);	
 	buildManager.build(UnitTypes::Terran_Goliath, false, 30);
 	//buildManager.build(UnitTypes::Terran_Goliath);
 
-	//buildManager.build(UnitTypes::Terran_Starport);
-	//buildManager.build(UnitTypes::Terran_Battlecruiser, false, 30);
+	buildManager.build(UnitTypes::Terran_Starport);
+	buildManager.build(UnitTypes::Terran_Battlecruiser, false, 30);
 }
 
 /* 
